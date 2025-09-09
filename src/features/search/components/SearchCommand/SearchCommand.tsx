@@ -22,9 +22,11 @@ import {
   CommandShortcut,
 } from "@/components/ui/command"
 import { useCommandSearch } from '@/lib/hooks/use-command-search';
+import { useTranslation } from 'react-i18next';
 
 export function SearchCommand() {
   const { isOpen, onClose, toggle } = useCommandSearch();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -44,46 +46,46 @@ export function SearchCommand() {
     <CommandDialog open={isOpen} onOpenChange={onClose}>
       {/* Make the input taller and the font larger */}
       <CommandInput 
-        placeholder="Type a command or search..." 
+        placeholder={t('search.placeholder')} 
         className="h-14 text-base"
       />
       <CommandList>
-        <CommandEmpty>No results found.</CommandEmpty>
+        <CommandEmpty>{t('search.empty')}</CommandEmpty>
         <CommandGroup>
           {/* Add padding and increase font size for each item */}
           <CommandItem className="py-3 text-base">
             {/* Make icons bigger and add more margin */}
             <SquarePen className="mr-3 h-5 w-5" />
-            <span>New Note</span>
+            <span>{t('search.newNote')}</span>
           </CommandItem>
           <CommandItem className="py-3 text-base">
             <ClipboardPen className="mr-3 h-5 w-5" />
-            <span>New Task</span>
+            <span>{t('search.newTask')}</span>
           </CommandItem>
         </CommandGroup>
-        <CommandGroup heading="Previous 7 days">
+        <CommandGroup heading={t('search.previous7Days')}>
           <CommandItem className="py-3 text-base">
             <User className="mr-3 h-5 w-5" />
-            <span>Note 89</span>
+            <span>{t('search.note89')}</span>
           </CommandItem>
         </CommandGroup>
-        <CommandGroup heading="Previous 30 days">
+        <CommandGroup heading={t('search.previous30Days')}>
           <CommandItem className="py-3 text-base">
             <User className="mr-3 h-5 w-5" />
-            <span>Note33</span>
+            <span>{t('search.note33')}</span>
           </CommandItem>
         </CommandGroup>
         <CommandSeparator />
-        <CommandGroup heading="Settings">
+        <CommandGroup heading={t('search.settings')}>
           <CommandItem className="py-3 text-base">
             <User className="mr-3 h-5 w-5" />
-            <span>Profile</span>
-            <CommandShortcut>⌘P</CommandShortcut>
+            <span>{t('search.profile')}</span>
+            <CommandShortcut>{t('search.shortcutProfile')}</CommandShortcut>
           </CommandItem>
           <CommandItem className="py-3 text-base">
             <Settings className="mr-3 h-5 w-5" />
-            <span>Settings</span>
-            <CommandShortcut>⌘S</CommandShortcut>
+            <span>{t('search.settings')}</span>
+            <CommandShortcut>{t('search.shortcutSettings')}</CommandShortcut>
           </CommandItem>
         </CommandGroup>
       </CommandList>

@@ -5,7 +5,7 @@ export const en = {
     createAccount: "Create an Account",
     prompt: "Sign in to continue to your AI-powered study assistant.",
     email: "Email",
-    username:"Username",
+    username: "Username",
     emailPlaceholder: "you@example.com",
     password: "Password",
     passwordPlaceholder: "••••••••",
@@ -191,6 +191,18 @@ export const en = {
     resultsFound: "Found {{count}} result for \"{{query}}\"",
     resultsFound_plural: "Found {{count}} results for \"{{query}}\"",
     noResults: "No notes found.",
+    placeholder: "Type a command or search...",
+    empty: "No results found.",
+    newNote: "New Note",
+    newTask: "New Task",
+    previous7Days: "Previous 7 days",
+    note89: "Note 89",
+    previous30Days: "Previous 30 days",
+    note33: "Note33",
+    settings: "Settings",
+    profile: "Profile",
+    shortcutProfile: "⌘P",
+    shortcutSettings: "⌘S",
   },
   modal: {
     cancel: "Cancel",
@@ -255,7 +267,7 @@ export const en = {
     missingEmail: "Email address is missing from the verification request.",
     contactSupport: "Please contact support for assistance.",
     codeRequired: "Verification code is required."
-},
+  },
   toast: {
     success: {
       default: "This is a success message",
