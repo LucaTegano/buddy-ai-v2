@@ -1,7 +1,7 @@
 // Notes Service
 import apiClient from '@/shared/api/apiClient';
 import { NOTES_ENDPOINTS } from '@/features/notes/api/notes.api';
-import { backendNoteToFrontendNote, frontendNoteToBackendNote } from '@/features/notes/utils/noteMapper';
+import { backendNoteListItemToFrontendNote, backendNoteDetailToFrontendNote, frontendNoteToBackendNote } from '@/features/notes/utils/noteMapper';
 import TokenManager from '@/features/auth/utils/tokenManager';
 import { handleNoteOperationError } from '@/features/notes/utils/errorHandler';
 
@@ -43,7 +43,7 @@ class NotesService {
       console.log('Making request to:', NOTES_ENDPOINTS.GET_ALL);
       const response = await apiClient.get<any[]>(NOTES_ENDPOINTS.GET_ALL);
       console.log('Received notes response:', response.data);
-      return response.data.map(backendNoteToFrontendNote);
+      return response.data.map(backendNoteListItemToFrontendNote);
     } catch (error: any) {
       console.error('Error fetching notes:', error);
       console.error('Error response:', error.response);
@@ -83,7 +83,7 @@ class NotesService {
         throw new Error('Received empty response from server when fetching note');
       }
       
-      const mappedNote = backendNoteToFrontendNote(response.data);
+      const mappedNote = backendNoteDetailToFrontendNote(response.data);
       if (!mappedNote) {
         console.error('Failed to map backend note to frontend note');
         throw new Error('Failed to process note data from server');
@@ -135,7 +135,7 @@ class NotesService {
       
       const response = await apiClient.post<any>(NOTES_ENDPOINTS.CREATE, backendNote);
       console.log('Received create note response:', response.data);
-      return backendNoteToFrontendNote(response.data);
+      return backendNoteDetailToFrontendNote(response.data);
     } catch (error: any) {
       console.error('Error creating note:', error);
       console.error('Error response:', error.response);
@@ -145,7 +145,7 @@ class NotesService {
     }
   }
 
-  async updateNote(id: string, note: any): Promise<any> {
+  async updateNote(id: string, note: any): Promise<void> {
     console.log(`Updating note ${id} with data:`, note);
     
     // Check authentication before proceeding
@@ -169,22 +169,7 @@ class NotesService {
     console.log(`Sending backend note data for note ${id}:`, backendNote);
     try {
       console.log('Making PATCH request to:', NOTES_ENDPOINTS.UPDATE(id));
-      const response = await apiClient.patch<any>(NOTES_ENDPOINTS.UPDATE(id), backendNote);
-      console.log('Received update note response:', response.data);
-      
-      // Check if response data exists before mapping
-      if (!response.data) {
-        console.error('Update note response data is undefined or null');
-        throw new Error('Received empty response from server when updating note');
-      }
-      
-      const mappedNote = backendNoteToFrontendNote(response.data);
-      if (!mappedNote) {
-        console.error('Failed to map backend note to frontend note');
-        throw new Error('Failed to process note data from server');
-      }
-      
-      return mappedNote;
+      await apiClient.patch<any>(NOTES_ENDPOINTS.UPDATE(id), backendNote);
     } catch (error: any) {
       console.error(`Error updating note ${id}:`, error);
       throw handleNoteOperationError(error, 'update');

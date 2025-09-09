@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.NoteListItemDto;
 import com.example.demo.model.Note;
 import com.example.demo.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,8 @@ public class NoteController {
     private NoteService noteService;
 
     @GetMapping
-    public List<Note> getAllMyNotes(@AuthenticationPrincipal UserDetails userDetails) {
-        return noteService.getAllNotesForUser(userDetails.getUsername());
+    public List<NoteListItemDto> getAllMyNotes(@AuthenticationPrincipal UserDetails userDetails) {
+        return noteService.getNoteListItemsForUser(userDetails.getUsername());
     }
 
     @GetMapping("/{id}")

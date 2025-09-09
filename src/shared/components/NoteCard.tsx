@@ -12,18 +12,21 @@ interface NoteCardProps {
 const NoteCard: React.FC<NoteCardProps> = ({ note }) => {
     const { t } = useTranslation();
 
-    // Format the date for display
-    const formatDate = (date: Date | string) => {
-        // Handle undefined, null, or invalid dates
-        if (!date) {
+    // Use the formatted date from backend or fallback to formatting updatedAt
+    const displayDate = () => {
+        if (note.formattedDate) {
+            return note.formattedDate;
+        }
+        
+        // Fallback to formatting updatedAt if formattedDate is not available
+        if (!note.updatedAt) {
             return 'Unknown date';
         }
         
-        const dateObj = typeof date === 'string' ? new Date(date) : date;
+        const dateObj = note.updatedAt instanceof Date ? note.updatedAt : new Date(note.updatedAt);
         
-        // Check if dateObj is a valid Date object
         if (!(dateObj instanceof Date) || isNaN(dateObj.getTime())) {
-            return 'Invalid date';
+            return 'Unknown date';
         }
         
         return dateObj.toLocaleDateString();
@@ -41,7 +44,7 @@ const NoteCard: React.FC<NoteCardProps> = ({ note }) => {
                 <h3 className="flex-1 font-bold text-text-primary truncate group-hover:text-brand-primary transition-colors">{note.title}</h3>
             </div>
             <div className="text-xs text-text-secondary space-y-2">
-                <p>{t('noteCard.lastEdited')} <span className="font-medium text-text-primary">{formatDate(note.updatedAt)}</span></p>
+                <p>{t('noteCard.lastEdited')} <span className="font-medium text-text-primary">{displayDate()}</span></p>
                 {note.participantCount > 1 && (
                     <div className="flex items-center gap-1.5">
                         <UsersIcon className="w-4 h-4" />

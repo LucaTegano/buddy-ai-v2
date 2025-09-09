@@ -4,11 +4,10 @@ import React, {
   useEffect
 } from 'react';
 import {
-  Calculator,
-  Calendar,
+  SquarePen,
+  ClipboardPen,
   CreditCard,
   Settings,
-  Smile,
   User,
 } from "lucide-react"
 
@@ -40,38 +39,49 @@ export function SearchCommand() {
   }, [toggle]);
 
   return (
+    // Note: Changing the width here is difficult without recomposing the component.
+    // The changes below will make the content inside larger, giving it a bigger feel.
     <CommandDialog open={isOpen} onOpenChange={onClose}>
-      <CommandInput placeholder="Type a command or search..." />
+      {/* Make the input taller and the font larger */}
+      <CommandInput 
+        placeholder="Type a command or search..." 
+        className="h-14 text-base"
+      />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
-        <CommandGroup heading="Suggestions">
-          <CommandItem>
-            <Calendar />
-            <span>Calendar</span>
+        <CommandGroup>
+          {/* Add padding and increase font size for each item */}
+          <CommandItem className="py-3 text-base">
+            {/* Make icons bigger and add more margin */}
+            <SquarePen className="mr-3 h-5 w-5" />
+            <span>New Note</span>
           </CommandItem>
-          <CommandItem>
-            <Smile />
-            <span>Search Emoji</span>
+          <CommandItem className="py-3 text-base">
+            <ClipboardPen className="mr-3 h-5 w-5" />
+            <span>New Task</span>
           </CommandItem>
-          <CommandItem disabled>
-            <Calculator />
-            <span>Calculator</span>
+        </CommandGroup>
+        <CommandGroup heading="Previous 7 days">
+          <CommandItem className="py-3 text-base">
+            <User className="mr-3 h-5 w-5" />
+            <span>Note 89</span>
+          </CommandItem>
+        </CommandGroup>
+        <CommandGroup heading="Previous 30 days">
+          <CommandItem className="py-3 text-base">
+            <User className="mr-3 h-5 w-5" />
+            <span>Note33</span>
           </CommandItem>
         </CommandGroup>
         <CommandSeparator />
         <CommandGroup heading="Settings">
-          <CommandItem>
-            <User />
+          <CommandItem className="py-3 text-base">
+            <User className="mr-3 h-5 w-5" />
             <span>Profile</span>
             <CommandShortcut>⌘P</CommandShortcut>
           </CommandItem>
-          <CommandItem>
-            <CreditCard />
-            <span>Billing</span>
-            <CommandShortcut>⌘B</CommandShortcut>
-          </CommandItem>
-          <CommandItem>
-            <Settings />
+          <CommandItem className="py-3 text-base">
+            <Settings className="mr-3 h-5 w-5" />
             <span>Settings</span>
             <CommandShortcut>⌘S</CommandShortcut>
           </CommandItem>

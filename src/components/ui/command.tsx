@@ -22,7 +22,7 @@ function Command({
       data-slot="command"
       className={cn(
         // Prefixed: bg-scn-popover, text-scn-popover-foreground, rounded-scn-md
-        "bg-scn-popover text-scn-popover-foreground flex h-full w-full flex-col overflow-hidden rounded-scn-md",
+        "min-h-[500px] bg-scn-popover text-scn-popover-foreground flex h-full w-full flex-col overflow-hidden rounded-scn-md",
         className
       )}
       {...props}
@@ -50,7 +50,7 @@ function CommandDialog({
         <DialogDescription>{description}</DialogDescription>
       </DialogHeader>
       <DialogContent
-        className={cn("overflow-hidden p-0 spotlight-backdrop", className)}
+        className={cn("overflow-hidden p-0 spotlight-backdrop sm:max-w-3xl", className)}
         showCloseButton={showCloseButton}
       >
         <Command
@@ -102,7 +102,7 @@ function CommandList({
       data-slot="command-list"
       className={cn(
         // Prefixed: scrollbar-thumb-border -> scrollbar-thumb-scn-border
-        "max-h-[300px] overflow-x-hidden overflow-y-auto overscroll-contain py-2 scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-transparent scrollbar-thumb-scn-border/30",
+        "max-h-[700px] overflow-x-hidden overflow-y-auto overscroll-contain py-2 scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-transparent scrollbar-thumb-scn-border/30",
         className
       )}
       {...props}
@@ -128,15 +128,15 @@ function CommandGroup({
   ...props
 }: React.ComponentProps<typeof CommandPrimitive.Group>) {
   return (
-    <CommandPrimitive.Group
-      data-slot="command-group"
-      className={cn(
-        // Prefixed: text-foreground, text-muted-foreground
-        "text-scn-foreground [&_[cmdk-group-heading]]:text-scn-muted-foreground overflow-hidden p-1 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium spotlight-group-heading",
-        className
-      )}
-      {...props}
-    />
+  <CommandPrimitive.Group
+    data-slot="command-group"
+    className={cn(
+      // Prefixed: text-foreground, text-muted-foreground
+      "text-scn-foreground [&_[cmdk-group-heading]]:text-scn-muted-foreground overflow-hidden p-1 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-sm [&_[cmdk-group-heading]]:font-medium spotlight-group-heading",
+      className
+    )}
+    {...props}
+  />
   )
 }
 

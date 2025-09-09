@@ -56,18 +56,13 @@ export const useNotesStore = create<NotesState>((set, get) => ({
   updateNote: async (noteId: string, updates: any) => {
     try {
       console.log(`Sending note update request for note ${noteId} with data:`, updates);
-      const updatedNote = await notesService.updateNote(noteId, updates);
-      console.log('Received note update response:', updatedNote);
-      if (updatedNote) {
-        set(state => ({
-          notes: state.notes.map(note => 
-            note.id === noteId ? { ...note, ...updatedNote } : note
-          )
-        }));
-        return updatedNote;
-      } else {
-        throw new NoteOperationError('Failed to update note - no data returned', 'UPDATE_FAILED');
-      }
+      await notesService.updateNote(noteId, updates);
+      set(state => ({
+        notes: state.notes.map(note => 
+          note.id === noteId ? { ...note, ...updates } : note
+        )
+      }));
+      return { ...get().notes.find(n => n.id === noteId) };
     } catch (error: any) {
       console.error('Error in updateNote:', error);
       const errorMessage = error instanceof NoteOperationError 

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useEditor } from '@tiptap/react';
 import * as TiptapExtensions from './tiptapExtensions';
@@ -12,10 +12,9 @@ import { noteActions } from '../../actions/note.actions';
 import ConfirmationModal from './ConfirmationModal';
 import ChatPanel from '@/features/chat/components/ChatPanel';
 import Resizer from '@/shared/components/Resizer';
-import { useNoteAutoSave } from '../../hooks/useNoteAutoSave';
 
 interface NoteEditorProps {
-  note: Partial<Note>; // Accepts a complete or partial Note object
+  note: Partial<Note>;
   isChatPanelOpen: boolean;
   toggleChatPanel: () => void;
   isNewNote?: boolean;
@@ -32,14 +31,9 @@ const NoteEditor: React.FC<NoteEditorProps> = ({
   const { t } = useTranslation();
   const router = useRouter();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  // Safely initialize state with a fallback value
   const [noteTitle, setNoteTitle] = useState(note?.title || 'Untitled Note');
-  
-  // Safely initialize refs with fallback values
-  const lastSavedTitleRef = useRef(note?.title || 'Untitled Note');
-  const lastSavedContentRef = useRef(note?.content || '');
-  const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const saveIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [isDirty, setIsDirty] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   
   const { isResizing, editorHeight, chatPanelHeight, handleMouseDownOnResizer } = useNewResizablePanel(
     400, 120, 0.8, { onClose: toggleChatPanel }
@@ -59,110 +53,44 @@ const NoteEditor: React.FC<NoteEditorProps> = ({
         class: 'tiptap prose dark:prose-invert prose-sm sm:prose-base m-5 focus:outline-none w-full max-w-none',
       },
     },
-    onUpdate: ({ editor }) => {
-      // Guarded logic is already safe
-      if (!isNewNote && note.id) {
-        if (saveTimeoutRef.current) {
-          clearTimeout(saveTimeoutRef.current);
-        }
-        saveTimeoutRef.current = setTimeout(() => {
-          checkAndSaveNote();
-        }, 1000);
+    onUpdate: () => {
+      if (!isNewNote) {
+        setIsDirty(true);
       }
     },
   });
 
-  // Use the auto-save hook for periodic saving
-  const { isSaving, lastSaved, error: autoSaveError, saveNote: triggerAutoSave } = useNoteAutoSave(
-    note,
-    {
-      interval: 5000, // Save every 5 seconds
-      onSave: (updatedNote) => {
-        console.log('Note auto-saved:', updatedNote);
-        // Update refs with the latest saved content
-        lastSavedTitleRef.current = updatedNote.title;
-        lastSavedContentRef.current = updatedNote.content;
-      },
-      onError: (error) => {
-        console.error('Auto-save error:', error);
-      }
-    }
-  );
-
-  const checkAndSaveNote = () => {
-    // Guarded logic is already safe
-    if (!isNewNote && note.id) {
-      const currentTitle = noteTitle;
-      const currentContent = editor?.getHTML() || '';
-      
-      if (currentTitle !== lastSavedTitleRef.current || currentContent !== lastSavedContentRef.current) {
-        noteActions.updateNote(note.id, { 
-          title: currentTitle, 
-          content: currentContent 
-        }).then((result) => {
-          if (result.success && result.note) {
-            lastSavedTitleRef.current = currentTitle;
-            lastSavedContentRef.current = currentContent;
-          }
-        });
-      }
-    }
-  };
-
-  useEffect(() => {
-    // Guarded logic is already safe
-    if (!isNewNote && note.id) {
-      saveIntervalRef.current = setInterval(() => {
-        checkAndSaveNote();
-      }, 10000); // 10 seconds
-    }
-    
-    return () => {
-      if (saveIntervalRef.current) clearInterval(saveIntervalRef.current);
-      if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
-    };
-  }, [note.id, isNewNote]);
-
-  // Update refs and state when the note prop changes (e.g., navigating between notes)
   useEffect(() => {
     setNoteTitle(note?.title || 'Untitled Note');
-    lastSavedTitleRef.current = note?.title || 'Untitled Note';
-    lastSavedContentRef.current = note?.content || '';
-  }, [note?.id]); // Use optional chaining in dependency array
-
-  // Update editor content when note changes
-  useEffect(() => {
-    if (editor && note && !isNewNote) {
+    if (editor) {
       const newContent = note.content || '';
       if (newContent !== editor.getHTML()) {
-        editor.commands.setContent(newContent, { emitUpdate: false }); // false to avoid firing onUpdate
+        editor.commands.setContent(newContent, { emitUpdate: false });
       }
-    } else if (editor && !note) {
-      editor.commands.clearContent();
     }
-  }, [note?.id, note?.content, editor, isNewNote]);
-
-  useEffect(() => {
-    return () => {
-      if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
-      if (saveIntervalRef.current) clearInterval(saveIntervalRef.current);
-      if ((window as any).updateTitleTimeout) clearTimeout((window as any).updateTitleTimeout);
-    };
-  }, []);
+    setIsDirty(false);
+  }, [note?.id, note?.title, note?.content, editor, isNewNote]);
 
   const handleTitleChange = (newTitle: string) => {
     setNoteTitle(newTitle);
-    
-    if ((window as any).updateTitleTimeout) {
-      clearTimeout((window as any).updateTitleTimeout);
+    if (!isNewNote) {
+      setIsDirty(true);
     }
-    
-    (window as any).updateTitleTimeout = setTimeout(() => {
-      // Guarded logic is already safe
-      if (!isNewNote && note.id) {
-        checkAndSaveNote();
-      }
-    }, 1000);
+  };
+
+  const handleSaveNote = async () => {
+    if (!note.id || !isDirty) return;
+
+    setIsSaving(true);
+    const result = await noteActions.updateNote(note.id, {
+      title: noteTitle,
+      content: editor?.getHTML() || '',
+    });
+
+    if (result.success) {
+      setIsDirty(false);
+    }
+    setIsSaving(false);
   };
 
   const handleSaveNewNote = async () => {
@@ -177,14 +105,13 @@ const NoteEditor: React.FC<NoteEditorProps> = ({
   };
 
   const handleConfirmDelete = () => {
-    // CRITICAL: Add a guard to prevent deleting a note without an ID
     if (note.id) {
       noteActions.moveNoteToTrash(note.id);
       router.push('/notes');
       setIsDeleteModalOpen(false);
     } else {
       console.error("Attempted to delete a note without an ID.");
-      setIsDeleteModalOpen(false); // Still close the modal
+      setIsDeleteModalOpen(false);
     }
   };
 
@@ -194,11 +121,12 @@ const NoteEditor: React.FC<NoteEditorProps> = ({
         <EditorComponents.EditorHeader
           noteTitle={noteTitle}
           isNewNote={isNewNote}
-          noteId={note?.id} // Use optional chaining
+          noteId={note?.id}
           onChangeTitle={handleTitleChange}
-          onSaveNote={handleSaveNewNote}
+          onSaveNote={isNewNote ? handleSaveNewNote : handleSaveNote}
           onDeleteNote={() => setIsDeleteModalOpen(true)}
-          onTitleSave={checkAndSaveNote}
+          isDirty={isDirty}
+          isSaving={isSaving}
         />
         
         <div className="flex-shrink-0">
@@ -218,7 +146,6 @@ const NoteEditor: React.FC<NoteEditorProps> = ({
           onClose={() => setIsDeleteModalOpen(false)}
           onConfirm={handleConfirmDelete}
           title={t('scratchpad.deleteModalTitle')}
-          // Use optional chaining and a fallback for the message
           message={t('scratchpad.deleteModalMessage', { noteTitle: note?.title || 'this note' })}
           confirmText={t('scratchpad.deleteModalConfirm')}
         />
