@@ -1,0 +1,11 @@
+export { default as StarterKit } from '@tiptap/starter-kit';
+export { default as Underline } from '@tiptap/extension-underline';
+export { TextStyle } from '@tiptap/extension-text-style';
+export { Color } from '@tiptap/extension-color';
+export { default as Strike } from '@tiptap/extension-strike';
+export { default as Highlight } from '@tiptap/extension-highlight';
+export { default as Blockquote } from '@tiptap/extension-blockquote';
+export { default as CodeBlock } from '@tiptap/extension-code-block';
+export { default as HorizontalRule } from '@tiptap/extension-horizontal-rule';
+export { default as TaskList } from '@tiptap/extension-task-list';
+export { default as TaskItem } from '@tiptap/extension-task-item';
