@@ -1,7 +1,8 @@
 // /src/app/[lng]/layout.tsx
 
-import I18nProvider from '@/lib/i18n/I18nProvider';
-import React from 'react';
+import { SearchCommand } from "@/features/search/components/SearchCommand/SearchCommand";
+import I18nProvider from "@/lib/i18n/I18nProvider";
+import React from "react";
 
 // This comment explicitly says: "I know there's a type error here because of the
 // Next.js canary version, and I'm intentionally ignoring it for now."
@@ -17,6 +18,7 @@ export default async function LngLayout({
 }) {
   return (
     <I18nProvider lng={params.lng}>
+      <SearchCommand />
       {children}
     </I18nProvider>
   );

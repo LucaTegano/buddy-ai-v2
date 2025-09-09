@@ -1,5 +1,10 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@custom-variant dark (&:is(.dark *));
 
+/* 
+  This @theme block now only contains mappings for YOUR custom variables.
+*/
 @theme {
   /* Background colors */
   --color-primary: var(--bg-primary);
@@ -36,7 +41,42 @@
   --color-feedback-error-bg-subtle: var(--feedback-error-bg-subtle);
   --color-feedback-error-bg-subtle-hover: var(--feedback-error-bg-subtle-hover);
   --color-bg-accent-unread: var(--bg-accent-unread);
-
+/* Prefixed Shadcn/UI Variables */
+ --radius-scn-sm: calc(var(--scn-radius) - 4px);
+  --radius-scn-md: calc(var(--scn-radius) - 2px);
+  --radius-scn-lg: var(--scn-radius);
+  --radius-scn-xl: calc(var(--scn-radius) + 4px);
+  --color-scn-background: var(--scn-background);
+  --color-scn-foreground: var(--scn-foreground);
+  --color-scn-card: var(--scn-card);
+  --color-scn-card-foreground: var(--scn-card-foreground);
+  --color-scn-popover: var(--scn-popover);
+  --color-scn-popover-foreground: var(--scn-popover-foreground);
+  --color-scn-primary: var(--scn-primary);
+  --color-scn-primary-foreground: var(--scn-primary-foreground);
+  --color-scn-secondary: var(--scn-secondary);
+  --color-scn-secondary-foreground: var(--scn-secondary-foreground);
+  --color-scn-muted: var(--scn-muted);
+  --color-scn-muted-foreground: var(--scn-muted-foreground);
+  --color-scn-accent: var(--scn-accent);
+  --color-scn-accent-foreground: var(--scn-accent-foreground);
+  --color-scn-destructive: var(--scn-destructive);
+  --color-scn-border: var(--scn-border);
+  --color-scn-input: var(--scn-input);
+  --color-scn-ring: var(--scn-ring);
+  --color-scn-chart-1: var(--scn-chart-1);
+  --color-scn-chart-2: var(--scn-chart-2);
+  --color-scn-chart-3: var(--scn-chart-3);
+  --color-scn-chart-4: var(--scn-chart-4);
+  --color-scn-chart-5: var(--scn-chart-5);
+  --color-scn-sidebar: var(--scn-sidebar);
+  --color-scn-sidebar-foreground: var(--scn-sidebar-foreground);
+  --color-scn-sidebar-primary: var(--scn-sidebar-primary);
+  --color-scn-sidebar-primary-foreground: var(--scn-sidebar-primary-foreground);
+  --color-scn-sidebar-accent: var(--scn-sidebar-accent);
+  --color-scn-sidebar-accent-foreground: var(--scn-sidebar-accent-foreground);
+  --color-scn-sidebar-border: var(--scn-sidebar-border);
+  --color-scn-sidebar-ring: var(--scn-sidebar-ring);
 }
 
 /* Light Mode (Default) */
@@ -45,7 +85,7 @@
   --bg-secondary: #cdcdcd;
   --bg-surface: #FFFFFF;
   --bg-hover: #F1F5F9;
-  --bg-accent: #e5e7eb; /* cool-gray-200 */
+  --bg-accent: #e5e7eb;
   --border-subtle: #dee4ea;
   --text-primary: #1E293B;
   --text-secondary: #64748B;
@@ -65,27 +105,54 @@
   --feedback-success: #22C55E;
   --feedback-warning: #F59E0B;
   --feedback-error: #ff0000;
-  --feedback-success-hover: #059669; /* Darker green for hover */
-  --feedback-error-text: #B91C1C;    /* Strong red for text */
-  --feedback-error-bg-subtle: #f56c6c; /* Light red for background */
-  --feedback-error-bg-subtle-hover: #f51b1b; /* Slightly darker light red for hover */
-  --bg-accent-unread: #E0F2F1; /* A more subtle unread color */
+  --feedback-success-hover: #059669;
+  --feedback-error-text: #B91C1C;
+  --feedback-error-bg-subtle: #f56c6c;
+  --feedback-error-bg-subtle-hover: #f51b1b;
+  --bg-accent-unread: #E0F2F1;
   --shadow-subtle: rgba(226, 232, 240, 0.5);
-  
-  /* Toast colors */
-  --toast-success-border: var(--feedback-success);
-  --toast-error-border: var(--feedback-error);
-  --toast-warning-border: var(--feedback-warning);
+/* Prefixed Shadcn/UI Variables */
+  --scn-radius: 0.625rem;
+  --scn-background: oklch(1 0 0);
+  --scn-foreground: oklch(0.145 0 0);
+  --scn-card: oklch(1 0 0);
+  --scn-card-foreground: oklch(0.145 0 0);
+  --scn-popover: oklch(1 0 0);
+  --scn-popover-foreground: oklch(0.145 0 0);
+  --scn-primary: oklch(0.205 0 0);
+  --scn-primary-foreground: oklch(0.985 0 0);
+  --scn-secondary: oklch(0.97 0 0);
+  --scn-secondary-foreground: oklch(0.205 0 0);
+  --scn-muted: oklch(0.97 0 0);
+  --scn-muted-foreground: oklch(0.556 0 0);
+  --scn-accent: oklch(0.97 0 0);
+  --scn-accent-foreground: oklch(0.205 0 0);
+  --scn-destructive: oklch(0.577 0.245 27.325);
+  --scn-border: oklch(0.922 0 0);
+  --scn-input: oklch(0.922 0 0);
+  --scn-ring: oklch(0.708 0 0);
+  --scn-chart-1: oklch(0.646 0.222 41.116);
+  --scn-chart-2: oklch(0.6 0.118 184.704);
+  --scn-chart-3: oklch(0.398 0.07 227.392);
+  --scn-chart-4: oklch(0.828 0.189 84.429);
+  --scn-chart-5: oklch(0.769 0.188 70.08);
+  --scn-sidebar: oklch(0.985 0 0);
+  --scn-sidebar-foreground: oklch(0.145 0 0);
+  --scn-sidebar-primary: oklch(0.205 0 0);
+  --scn-sidebar-primary-foreground: oklch(0.985 0 0);
+  --scn-sidebar-accent: oklch(0.97 0 0);
+  --scn-sidebar-accent-foreground: oklch(0.205 0 0);
+  --scn-sidebar-border: oklch(0.922 0 0);
+  --scn-sidebar-ring: oklch(0.708 0 0);
 }
 
 /* Dark Mode */
-/* Apply this class to your <html> or <body> tag */
 .dark {
   --bg-primary: #101010;
   --bg-secondary: #1d1d1d;
   --bg-surface: #000000;
   --bg-hover: #374151;
-  --bg-accent: #282e3a; /* cool-gray-700 */
+  --bg-accent: #282e3a;
   --border-subtle: #121417;
   --text-primary: #ffffff;
   --text-secondary: #9CA3AF;
@@ -105,18 +172,45 @@
   --feedback-success: #00b542;
   --feedback-warning: #FBBF24;
   --feedback-error: #ff0000;
-  --feedback-success-hover: #027b1a; /* Lighter green for hover */
-  --feedback-error-text: #f96666;    /* Light red for text */
-  --feedback-error-bg-subtle: rgb(155, 2, 2); /* Transparent red */
-  --feedback-error-bg-subtle-hover: rgb(243, 2, 2); /* More opaque red */
-  --bg-accent-unread: rgba(52, 211, 153, 0.1); /* Subtle transparent green */
-  
+  --feedback-success-hover: #027b1a;
+  --feedback-error-text: #f96666;
+  --feedback-error-bg-subtle: rgb(155, 2, 2);
+  --feedback-error-bg-subtle-hover: rgb(243, 2, 2);
+  --bg-accent-unread: rgba(52, 211, 153, 0.1);
+
   --shadow-subtle: rgba(0, 0, 0, 0.2);
-  
-  /* Toast colors */
-  --toast-success-border: var(--feedback-success);
-  --toast-error-border: var(--feedback-error);
-  --toast-warning-border: var(--feedback-warning);
+/* Prefixed Shadcn/UI Variables */
+  --scn-background: oklch(0.145 0 0);
+  --scn-foreground: oklch(0.985 0 0);
+  --scn-card: oklch(0.205 0 0);
+  --scn-card-foreground: oklch(0.985 0 0);
+  --scn-popover: oklch(0.205 0 0);
+  --scn-popover-foreground: oklch(0.985 0 0);
+  --scn-primary: oklch(0.922 0 0);
+  --scn-primary-foreground: oklch(0.205 0 0);
+  --scn-secondary: oklch(0.269 0 0);
+  --scn-secondary-foreground: oklch(0.985 0 0);
+  --scn-muted: oklch(0.269 0 0);
+  --scn-muted-foreground: oklch(0.708 0 0);
+  --scn-accent: oklch(0.269 0 0);
+  --scn-accent-foreground: oklch(0.985 0 0);
+  --scn-destructive: oklch(0.704 0.191 22.216);
+  --scn-border: oklch(1 0 0 / 10%);
+  --scn-input: oklch(1 0 0 / 15%);
+  --scn-ring: oklch(0.556 0 0);
+  --scn-chart-1: oklch(0.488 0.243 264.376);
+  --scn-chart-2: oklch(0.696 0.17 162.48);
+  --scn-chart-3: oklch(0.769 0.188 70.08);
+  --scn-chart-4: oklch(0.627 0.265 303.9);
+  --scn-chart-5: oklch(0.645 0.246 16.439);
+  --scn-sidebar: oklch(0.205 0 0);
+  --scn-sidebar-foreground: oklch(0.985 0 0);
+  --scn-sidebar-primary: oklch(0.488 0.243 264.376);
+  --scn-sidebar-primary-foreground: oklch(0.985 0 0);
+  --scn-sidebar-accent: oklch(0.269 0 0);
+  --scn-sidebar-accent-foreground: oklch(0.985 0 0);
+  --scn-sidebar-border: oklch(1 0 0 / 10%);
+  --scn-sidebar-ring: oklch(0.556 0 0);
 }
 
 /* Custom styles for sonner toasts */
@@ -150,6 +244,11 @@
   min-width: 300px !important;
 }
 
-button{
+button {
   cursor: pointer;
 }
+
+/* 
+  NOTE: The shadcn-specific '@theme inline' block has been removed.
+  It should only exist in your new 'shadcn-theme.css' file.
+*/

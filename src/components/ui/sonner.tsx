@@ -10,20 +10,12 @@ const Toaster = ({ ...props }: ToasterProps) => {
     <Sonner
       theme={theme as ToasterProps["theme"]}
       className="toaster group"
-      toastOptions={{
-        classNames: {
-          toast: "group toast group-[.toaster]:bg-bg-surface group-[.toaster]:text-text-primary group-[.toaster]:border-border-subtle group-[.toaster]:shadow-lg",
-          description: "group-[.toast]:text-text-secondary",
-          actionButton: "group-[.toast]:bg-brand-primary group-[.toast]:text-white",
-          cancelButton: "group-[.toast]:bg-bg-hover group-[.toast]:text-text-secondary",
-          success: "group-[.toaster]:bg-bg-surface group-[.toaster]:text-text-primary group-[.toaster]:border-feedback-success",
-          error: "group-[.toaster]:bg-bg-surface group-[.toaster]:text-text-primary group-[.toaster]:border-feedback-error",
-          warning: "group-[.toaster]:bg-bg-surface group-[.toaster]:text-text-primary group-[.toaster]:border-feedback-warning",
-        },
-        style: {
-          "--normal-bg": "var(--bg-surface)",
-          "--normal-text": "var(--text-primary)",
-          "--normal-border": "var(--border-subtle)",
+      // The CSS variables here must be updated to use the 'scn-' prefix.
+      style={
+        {
+          "--normal-bg": "var(--scn-popover)",
+          "--normal-text": "var(--scn-popover-foreground)",
+          "--normal-border": "var(--scn-border)",
           "--success-bg": "var(--bg-surface)",
           "--success-text": "var(--text-primary)",
           "--success-border": "var(--feedback-success)",
@@ -33,8 +25,8 @@ const Toaster = ({ ...props }: ToasterProps) => {
           "--warning-bg": "var(--bg-surface)",
           "--warning-text": "var(--text-primary)",
           "--warning-border": "var(--feedback-warning)",
-        } as React.CSSProperties,
-      }}
+        } as React.CSSProperties
+      }
       {...props}
     />
   )

@@ -13,32 +13,27 @@ import {
   TrashIcon 
 } from '@/shared/components/icons';
 import NavItem from '@/shared/layout/sidebar/NavItem';
+import { useCommandSearch } from '@/lib/hooks/use-command-search';
 
 interface SidebarNavigationProps {
-  onSearchClick: () => void;
   onNewNoteClick: () => void;
 }
 
 const SidebarNavigation: React.FC<SidebarNavigationProps> = ({ 
-  onSearchClick, 
   onNewNoteClick 
 }) => {
   const { t } = useTranslation();
   const { isSidebarOpen } = useUIStore();
   const pathname = usePathname();
   const router = useRouter();
+  const { onOpen } = useCommandSearch();
 
   const isRouteActive = (routePath: string) => {
   const pathWithoutLang = pathname.replace(/^\/[a-z]{2}/, '');
-
-  if (routePath === '/search') {
-    return pathWithoutLang === '/search';
-  }
   
   return pathWithoutLang.startsWith(routePath);
 };
 
-const isSearchActive = isRouteActive('/search');
 const isHomeActive = isRouteActive('/home');
 const isNotesActive = isRouteActive('/note');
 const isGroupsActive = isRouteActive('/groups') || isRouteActive('/group');
@@ -59,15 +54,11 @@ const isTrashActive = isRouteActive('/trash');
         </div>
       )}
       <button 
-        onClick={onSearchClick}
-        className={`flex w-full items-center p-3 my-1 rounded-lg text-text-primary transition-colors duration-200 ${
-          isSearchActive ? 'bg-brand-subtle font-semibold' : 'hover:bg-hover'
-        }`}
+        onClick={onOpen}
+        className={`flex w-full items-center p-3 my-1 rounded-lg text-text-primary transition-colors duration-200 hover:bg-hover`}
       >
         <MagnifyingGlassIcon 
-          className={`w-6 h-6 flex-shrink-0 ${
-            isSearchActive ? 'text-brand-primary' : 'text-text-secondary'
-          }`} 
+          className={`w-6 h-6 flex-shrink-0 text-text-secondary`} 
         />
         <span className={`overflow-hidden transition-all whitespace-nowrap ${isSidebarOpen ? 'w-40 ml-4' : 'w-0'}`}>
           {t('sidebar.search')}

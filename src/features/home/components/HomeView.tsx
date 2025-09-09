@@ -80,8 +80,8 @@ export default function HomeView() {
           <HomeLoadingSkeleton />
         ) : (
           <>
-            <section className="mb-10">
-              {notes.length > 0 ? (
+            <section className="mb-10 max-w-5xl">
+              {notes.length > 0  ? (
                 <Carousel title={t('home.recentNotes')}>
                   {notes.map(note => <NoteCard key={note.id} note={note} />)}
                 </Carousel>
