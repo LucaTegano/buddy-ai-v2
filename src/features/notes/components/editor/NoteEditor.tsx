@@ -42,9 +42,25 @@ const NoteEditor: React.FC<NoteEditorProps> = ({
   const editor = useEditor({
     immediatelyRender: false, 
     extensions: [
-      TiptapExtensions.StarterKit, TiptapExtensions.Underline, TiptapExtensions.TextStyle, TiptapExtensions.Color, TiptapExtensions.Strike,
+      TiptapExtensions.StarterKit.configure({
+        // Disable extensions that we're adding explicitly to avoid duplicates
+        underline: false,
+        strike: false,
+        blockquote: false,
+        codeBlock: false,
+        horizontalRule: false,
+        taskList: false,
+        taskItem: false,
+      }),
+      TiptapExtensions.Underline, 
+      TiptapExtensions.TextStyle, 
+      TiptapExtensions.Color, 
+      TiptapExtensions.Strike,
       TiptapExtensions.Highlight.configure({ multicolor: true }),
-      TiptapExtensions.Blockquote, TiptapExtensions.CodeBlock, TiptapExtensions.HorizontalRule, TiptapExtensions.TaskList,
+      TiptapExtensions.Blockquote, 
+      TiptapExtensions.CodeBlock, 
+      TiptapExtensions.HorizontalRule, 
+      TiptapExtensions.TaskList,
       TiptapExtensions.TaskItem.configure({ nested: true }),
     ],
     content: note?.content || '',
@@ -53,23 +69,45 @@ const NoteEditor: React.FC<NoteEditorProps> = ({
         class: 'tiptap prose dark:prose-invert prose-sm sm:prose-base m-5 focus:outline-none w-full max-w-none',
       },
     },
-    onUpdate: () => {
-      if (!isNewNote) {
-        setIsDirty(true);
-      }
+    onUpdate: ({ editor }) => {
+      // Update the dirty state when content changes
+      const currentContent = editor.getHTML();
+      const isContentDirty = currentContent !== lastSavedContent;
+      setIsDirty(isContentDirty);
     },
   });
 
+  const [lastSavedContent, setLastSavedContent] = useState(note?.content || '');
+  
   useEffect(() => {
     setNoteTitle(note?.title || 'Untitled Note');
+    
+    // Update last saved content when note changes
+    if (note?.content !== undefined) {
+      setLastSavedContent(note.content || '');
+    }
+    
     if (editor) {
       const newContent = note.content || '';
-      if (newContent !== editor.getHTML()) {
+      const currentContent = editor.getHTML();
+      
+      // Only update editor content if it's different
+      if (newContent !== currentContent) {
         editor.commands.setContent(newContent, { emitUpdate: false });
+        // Reset dirty state when loading a note
+        setIsDirty(false);
       }
     }
-    setIsDirty(false);
-  }, [note?.id, note?.title, note?.content, editor, isNewNote]);
+  }, [note?.id, note?.title, note?.content, editor]);
+
+  useEffect(() => {
+    // Update the dirty state when the editor content changes
+    if (editor) {
+      const currentContent = editor.getHTML();
+      const isContentDirty = currentContent !== lastSavedContent;
+      setIsDirty(isContentDirty);
+    }
+  }, [editor, lastSavedContent]);
 
   const handleTitleChange = (newTitle: string) => {
     setNoteTitle(newTitle);
@@ -81,13 +119,17 @@ const NoteEditor: React.FC<NoteEditorProps> = ({
   const handleSaveNote = async () => {
     if (!note.id || !isDirty) return;
 
+    const contentToSave = editor?.getHTML() || '';
+    
     setIsSaving(true);
     const result = await noteActions.updateNote(note.id, {
       title: noteTitle,
-      content: editor?.getHTML() || '',
+      content: contentToSave,
     });
 
     if (result.success) {
+      // Update the last saved content to match what we just saved
+      setLastSavedContent(contentToSave);
       setIsDirty(false);
     }
     setIsSaving(false);
@@ -95,12 +137,18 @@ const NoteEditor: React.FC<NoteEditorProps> = ({
 
   const handleSaveNewNote = async () => {
     if (isNewNote && onCreateNote) {
+      const contentToSave = editor?.getHTML() || '';
+      
       await onCreateNote({
         title: noteTitle,
-        content: editor?.getHTML() || '',
+        content: contentToSave,
         tags: note.tags || [],
         isCollaborative: note.isCollaborative || false,
       });
+      
+      // Update the last saved content after creating a new note
+      setLastSavedContent(contentToSave);
+      setIsDirty(false);
     }
   };
 

@@ -73,8 +73,8 @@ class NotesService {
     }
     
     try {
-      console.log('Making request to:', NOTES_ENDPOINTS.UPDATE(id));
-      const response = await apiClient.get<any>(NOTES_ENDPOINTS.UPDATE(id));
+      console.log('Making request to:', NOTES_ENDPOINTS.GET_BY_ID(id));
+      const response = await apiClient.get<any>(NOTES_ENDPOINTS.GET_BY_ID(id));
       console.log('Received note response:', response.data);
       
       // Check if response data exists before mapping
@@ -125,17 +125,12 @@ class NotesService {
       // Log the actual request being made
       console.log('Making POST request to:', NOTES_ENDPOINTS.CREATE);
       
-      // Log cookies and headers before making request
-      console.log('Document cookies:', document.cookie);
-      const csrfToken = document.cookie
-        .split('; ')
-        .find(row => row.startsWith('XSRF-TOKEN='))
-        ?.split('=')[1];
-      console.log('CSRF Token from cookie:', csrfToken);
-      
       const response = await apiClient.post<any>(NOTES_ENDPOINTS.CREATE, backendNote);
       console.log('Received create note response:', response.data);
-      return backendNoteDetailToFrontendNote(response.data);
+      if (response.data) {
+        return backendNoteDetailToFrontendNote(response.data);
+      }
+      return null;
     } catch (error: any) {
       console.error('Error creating note:', error);
       console.error('Error response:', error.response);
@@ -145,7 +140,7 @@ class NotesService {
     }
   }
 
-  async updateNote(id: string, note: any): Promise<void> {
+  async updateNote(id: string, note: any): Promise<any> {
     console.log(`Updating note ${id} with data:`, note);
     
     // Check authentication before proceeding
@@ -169,7 +164,15 @@ class NotesService {
     console.log(`Sending backend note data for note ${id}:`, backendNote);
     try {
       console.log('Making PATCH request to:', NOTES_ENDPOINTS.UPDATE(id));
-      await apiClient.patch<any>(NOTES_ENDPOINTS.UPDATE(id), backendNote);
+      const response = await apiClient.patch<any>(NOTES_ENDPOINTS.UPDATE(id), backendNote);
+      console.log('Received update note response:', response.data);
+      
+      // Return the updated note data from the server
+      if (response.data) {
+        return backendNoteDetailToFrontendNote(response.data);
+      }
+      
+      return null;
     } catch (error: any) {
       console.error(`Error updating note ${id}:`, error);
       throw handleNoteOperationError(error, 'update');

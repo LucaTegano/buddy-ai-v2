@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNotesStore } from '@/features/notes/store/notes.store';
 import { noteActions } from '@/features/notes/actions/note.actions';
 import NoteEditor from './NoteEditor';
@@ -8,20 +8,36 @@ import { useAuthStore } from '@/features/auth/store/auth.store';
 import NoteDetailSkeleton from './NoteDetailSkeleton';
 
 export default function NotePage({ noteId }: { noteId: string }) {
-  const { notes, isLoading } = useNotesStore();
+  const { notes, isLoading, getNoteById } = useNotesStore();
   const { isChatPanelOpen, toggleChatPanel } = useChatStore();
   const { isAuthenticated, isCheckingAuth } = useAuthStore();
-  const note = notes.find(n => n.id === noteId);
+  const [note, setNote] = useState<any>(null);
+  const [isNoteLoading, setIsNoteLoading] = useState(false);
 
   useEffect(() => {
     // Only load notes if the user is authenticated and not currently checking auth
     if (noteId && isAuthenticated && !isCheckingAuth) {
-      noteActions.loadNotes();
+      const loadNote = async () => {
+        setIsNoteLoading(true);
+        try {
+          // Always fetch the full note data to ensure content is present
+          const fetchedNote = await getNoteById(noteId);
+          if (fetchedNote) {
+            setNote(fetchedNote);
+          }
+        } catch (error) {
+          console.error('Error loading note:', error);
+        } finally {
+          setIsNoteLoading(false);
+        }
+      };
+      
+      loadNote();
     }
-  }, [noteId, isAuthenticated, isCheckingAuth]);
+  }, [noteId, isAuthenticated, isCheckingAuth, getNoteById]);
 
   // Show loading state while checking auth or notes
-  if (isCheckingAuth || isLoading) {
+  if (isCheckingAuth || isLoading || isNoteLoading) {
     return <NoteDetailSkeleton />;
   }
 
@@ -34,8 +50,8 @@ export default function NotePage({ noteId }: { noteId: string }) {
     );
   }
 
-  // Show note not found if we've loaded notes and this one doesn't exist
-  if (!note && notes.length > 0) {
+  // Show note not found if we couldn't load the note
+  if (!note) {
     return (
       <div className="flex items-center justify-center h-full">
         <div className="text-text-primary">Note not found</div>
@@ -44,20 +60,11 @@ export default function NotePage({ noteId }: { noteId: string }) {
   }
 
   // If we have the note, show it
-  if (note) {
-    return (
-      <NoteEditor 
-        note={note} 
-        isChatPanelOpen={isChatPanelOpen} 
-        toggleChatPanel={toggleChatPanel} 
-      />
-    );
-  }
-
-  // Fallback case - this shouldn't happen if auth is working properly
   return (
-    <div className="flex items-center justify-center h-full">
-      <div className="text-text-primary">Note not found</div>
-    </div>
+    <NoteEditor 
+      note={note} 
+      isChatPanelOpen={isChatPanelOpen} 
+      toggleChatPanel={toggleChatPanel} 
+    />
   );
 }

@@ -22,6 +22,19 @@ export const useNotesStore = create<NotesState>((set, get) => ({
     }
   },
   
+  getNoteById: async (id: string) => {
+    try {
+      const note = await notesService.getNoteById(id);
+      return note;
+    } catch (error: any) {
+      const errorMessage = error instanceof NoteOperationError 
+        ? error.message 
+        : error.message || 'Failed to load note';
+      set({ error: errorMessage });
+      return null;
+    }
+  },
+  
   createNote: async (note: any) => {
     try {
       console.log('Sending note creation request with data:', note);
@@ -56,13 +69,27 @@ export const useNotesStore = create<NotesState>((set, get) => ({
   updateNote: async (noteId: string, updates: any) => {
     try {
       console.log(`Sending note update request for note ${noteId} with data:`, updates);
-      await notesService.updateNote(noteId, updates);
-      set(state => ({
-        notes: state.notes.map(note => 
-          note.id === noteId ? { ...note, ...updates } : note
-        )
-      }));
-      return { ...get().notes.find(n => n.id === noteId) };
+      const updatedNote = await notesService.updateNote(noteId, updates);
+      
+      console.log(`Updating note ${noteId} in store with:`, updatedNote);
+      
+      // Update the note in the store with the data returned from the server
+      if (updatedNote) {
+        set(state => ({
+          notes: state.notes.map(note => 
+            note.id === noteId ? updatedNote : note
+          )
+        }));
+        return updatedNote;
+      } else {
+        // If no data returned, update with local data
+        set(state => ({
+          notes: state.notes.map(note => 
+            note.id === noteId ? { ...note, ...updates } : note
+          )
+        }));
+        return { ...get().notes.find(n => n.id === noteId), ...updates };
+      }
     } catch (error: any) {
       console.error('Error in updateNote:', error);
       const errorMessage = error instanceof NoteOperationError 

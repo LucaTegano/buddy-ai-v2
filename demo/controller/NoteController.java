@@ -35,9 +35,9 @@ public class NoteController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> updateNote(@PathVariable Long id, @RequestBody Note note, @AuthenticationPrincipal UserDetails userDetails) {
-        noteService.updateNote(id, note, userDetails.getUsername());
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Note> updateNote(@PathVariable Long id, @RequestBody Note note, @AuthenticationPrincipal UserDetails userDetails) {
+        Note updatedNote = noteService.updateNote(id, note, userDetails.getUsername());
+        return ResponseEntity.ok(updatedNote);
     }
 
     @DeleteMapping("/{id}")
