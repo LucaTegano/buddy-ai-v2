@@ -206,6 +206,7 @@ export const en = {
     note89: "Note 89",
     previous30Days: "Previous 30 days",
     note33: "Note33",
+    latestNotes: "Latest Notes",
     settings: "Settings",
     profile: "Profile",
     shortcutProfile: "⌘P",

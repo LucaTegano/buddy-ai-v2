@@ -4,7 +4,7 @@ export default function MainLayoutSkeleton() {
   return (
     <div className="flex">
       {/* Sidebar Skeleton */}
-      <div className="w-60 p-4 border-r">
+      <div className="w-30 p-4 ">
         <Skeleton className="h-8 w-3/4 mb-8" />
         <div className="space-y-4">
           <Skeleton className="h-8 w-full" />

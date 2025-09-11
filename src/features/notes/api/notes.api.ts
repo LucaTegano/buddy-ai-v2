@@ -5,6 +5,7 @@ console.log('API Base URL:', API_BASE_URL);
 export const NOTES_ENDPOINTS = {
   BASE: `${API_BASE_URL}/note`,
   GET_ALL: `${API_BASE_URL}/note`,
+  GET_RECENT: `${API_BASE_URL}/note/recent`,
   GET_BY_ID: (id: string) => `${API_BASE_URL}/note/${id}`,
   CREATE: `${API_BASE_URL}/note`,
   UPDATE: (id: string) => `${API_BASE_URL}/note/${id}`,

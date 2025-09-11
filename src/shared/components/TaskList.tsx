@@ -14,6 +14,7 @@ import {
   startEditing,
   cancelEditing
 } from '../actions/tasks.actions';
+import { useUIStore } from '@/shared/store/ui.store';
 
 const TaskList: React.FC<TaskListProps> = ({ title, tasks: initialTasks, members = [], isGroupTask = false, groupId, groupName }) => {
   const [tasks, setTasks] = useState(initialTasks);
@@ -22,10 +23,20 @@ const TaskList: React.FC<TaskListProps> = ({ title, tasks: initialTasks, members
   const [editText, setEditText] = useState('');
   const [newTaskText, setNewTaskText] = useState('');
   const editInputRef = useRef<HTMLInputElement>(null);
+  const newTaskInputRef = useRef<HTMLInputElement>(null);
+  const focusTaskInput = useUIStore(state => state.focusTaskInput);
+  const setFocusTaskInput = useUIStore(state => state.setFocusTaskInput);
 
   useEffect(() => {
     setTasks(initialTasks);
   }, [initialTasks]);
+
+  useEffect(() => {
+    if (focusTaskInput && newTaskInputRef.current) {
+      newTaskInputRef.current.focus();
+      setFocusTaskInput(false); // Reset the flag
+    }
+  }, [focusTaskInput, setFocusTaskInput]);
 
   return (
     <div className="mb-8">
@@ -33,6 +44,7 @@ const TaskList: React.FC<TaskListProps> = ({ title, tasks: initialTasks, members
       
       <div className="mb-3 flex">
         <input
+          ref={newTaskInputRef}
           type="text"
           value={newTaskText}
           onChange={(e) => setNewTaskText(e.target.value)}

@@ -8,6 +8,7 @@ export const useUIStore = create<UIStore>((set) => ({
   isUserMenuOpen: false,
   isSearchView: false,
   searchQuery: '',
+  focusTaskInput: false,
   
   setIsSidebarOpen: (isOpen) => set({ isSidebarOpen: isOpen }),
   toggleSidebar: () => set((state) => ({ isSidebarOpen: !state.isSidebarOpen })),
@@ -15,4 +16,5 @@ export const useUIStore = create<UIStore>((set) => ({
   toggleUserMenu: () => set((state) => ({ isUserMenuOpen: !state.isUserMenuOpen })),
   setIsSearchView: (isSearch) => set({ isSearchView: isSearch }),
   setSearchQuery: (query) => set({ searchQuery: query }),
+  setFocusTaskInput: (focus) => set({ focusTaskInput: focus }),
 }));

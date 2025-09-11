@@ -21,8 +21,7 @@ function Command({
     <CommandPrimitive
       data-slot="command"
       className={cn(
-        // Prefixed: bg-scn-popover, text-scn-popover-foreground, rounded-scn-md
-        "min-h-[500px] bg-scn-popover text-scn-popover-foreground flex h-full w-full flex-col overflow-hidden rounded-scn-md",
+        "max-h-[450px] bg-scn-popover text-scn-popover-foreground flex h-full w-full flex-col overflow-hidden p-3",
         className
       )}
       {...props}
@@ -50,7 +49,14 @@ function CommandDialog({
         <DialogDescription>{description}</DialogDescription>
       </DialogHeader>
       <DialogContent
-        className={cn("overflow-hidden p-0 spotlight-backdrop sm:max-w-3xl", className)}
+        className={cn(
+          "overflow-hidden p-0 spotlight-backdrop sm:max-w-3xl",
+          // ADDED: Make the dialog more rounded
+          "rounded-2xl",
+          // ADDED: Move the close button ('X') to the top right
+          "[&>button]:top-7",
+          className
+        )}
         showCloseButton={showCloseButton}
       >
         <Command
@@ -79,7 +85,7 @@ function CommandInput({
       className="flex h-14 items-center gap-3 border-b border-scn-border/50 px-4"
     >
       {/* Prefixed: text-muted-foreground -> text-scn-muted-foreground */}
-      <SearchIcon className="size-4 shrink-0 text-scn-muted-foreground/70" />
+      {/* <SearchIcon className="size-5 shrink-0 text-scn-muted-foreground/70" /> */}
       <CommandPrimitive.Input
         data-slot="command-input"
         className={cn(

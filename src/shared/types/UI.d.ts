@@ -3,6 +3,7 @@ export interface UIState {
   isUserMenuOpen: boolean;
   isSearchView: boolean;
   searchQuery: string;
+  focusTaskInput: boolean;
 }
 
 export interface UIActions {
@@ -12,6 +13,7 @@ export interface UIActions {
   toggleUserMenu: () => void;
   setIsSearchView: (isSearch: boolean) => void;
   setSearchQuery: (query: string) => void;
+  setFocusTaskInput: (focus: boolean) => void;
 }
 
 export interface UserMenuProps {
