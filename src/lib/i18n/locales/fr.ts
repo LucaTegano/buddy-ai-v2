@@ -32,6 +32,13 @@ export const fr = {
     invalidSignupData: "Données d'inscription invalides. Veuillez vérifier vos informations et réessayer.",
     networkError: "Impossible de se connecter au serveur. Veuillez vous assurer que le backend est en cours d'exécution et accessible.",
     accessForbidden: "Accès interdit. Veuillez vous assurer que vous avez l'autorisation d'accéder à cette ressource.",
+    lostVerification: "Vous avez perdu votre e-mail de vérification ? ",
+    verifyEmail: "Vérifier l'e-mail",
+    emailRequiredForVerification: "Une adresse e-mail est requise pour envoyer un code de vérification.",
+    verificationEmailSent: "E-mail de vérification envoyé avec succès !",
+    errorSendingVerification: "Une erreur s'est produite lors de l'envoi de l'e-mail de vérification.",
+    signupSuccess: "Inscription réussie ! Redirection en cours...",
+    loginSuccess: "Connexion réussie ! Redirection en cours..."
   },
   header: {
     title: "Study Buddy AI",
@@ -260,6 +267,7 @@ export const fr = {
     verify: "Vérifier le compte",
     verifying: "Vérification en cours...",
     resend: "Renvoyer le code",
+    didNotReceive: "Vous n'avez pas reçu le code ?",
     success: "Compte vérifié avec succès ! Redirection en cours...",
     codeResent: "Code de vérification renvoyé avec succès !",
     error: "La vérification a échoué",

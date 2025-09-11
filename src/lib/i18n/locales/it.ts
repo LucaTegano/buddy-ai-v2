@@ -32,6 +32,13 @@ export const it = {
     invalidSignupData: "Dati di registrazione non validi. Controlla le informazioni e riprova.",
     networkError: "Impossibile connettersi al server. Controlla la connessione internet e riprova.",
     accessForbidden: "Accesso vietato. Assicurati di avere i permessi per accedere a questa risorsa.",
+    lostVerification: "Hai perso l'email di verifica? ",
+    verifyEmail: "Verifica Email",
+    emailRequiredForVerification: "È necessaria un'email per inviare un codice di verifica.",
+    verificationEmailSent: "Email di verifica inviata con successo!",
+    errorSendingVerification: "Si è verificato un errore durante l'invio dell'email di verifica.",
+    signupSuccess: "Registrazione avvenuta con successo! Reindirizzamento in corso...",
+    loginSuccess: "Accesso effettuato con successo! Reindirizzamento in corso..."
   },
   header: {
     title: "Study Buddy AI",
@@ -260,6 +267,7 @@ export const it = {
     verify: "Verifica Account",
     verifying: "Verifica in corso...",
     resend: "Invia nuovamente il codice",
+    didNotReceive: "Non hai ricevuto il codice?",
     success: "Account verificato con successo! Reindirizzamento in corso...",
     codeResent: "Codice di verifica inviato nuovamente con successo!",
     error: "Verifica non riuscita",

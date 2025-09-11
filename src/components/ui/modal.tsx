@@ -19,9 +19,9 @@ interface ModalProps {
   description?: string;
 }
 
-const Modal: React.FC<ModalProps> = ({ 
-  isOpen, 
-  onClose, 
+const Modal: React.FC<ModalProps> = ({
+  isOpen,
+  onClose,
   children,
   title,
   description

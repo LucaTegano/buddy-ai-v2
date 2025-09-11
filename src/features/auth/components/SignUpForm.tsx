@@ -7,7 +7,7 @@
   import AuthInput from './AuthInput'; // Import our new component
 
   const SignupForm = () => {
-    const { formData, loading, error, handleInputChange, handleSubmit, t } = useSignupForm();
+    const { formData, loading, error, handleInputChange, handleSubmit, handleResendVerification, t } = useSignupForm();
 
     return (
       <form onSubmit={handleSubmit}>
@@ -81,6 +81,18 @@
           >
             Log in
           </Link>
+        </div>
+
+        <div className="mt-4 text-center text-sm">
+          <span className="text-text-secondary">{t('login.lostVerification')}</span>
+          <button 
+            type="button" 
+            onClick={handleResendVerification}
+            disabled={loading}
+            className="font-medium text-brand-primary hover:text-brand-hover hover:underline focus:outline-none disabled:opacity-50"
+          >
+            {t('login.verifyEmail')}
+          </button>
         </div>
       </form>
     );

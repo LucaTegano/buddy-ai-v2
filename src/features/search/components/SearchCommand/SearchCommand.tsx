@@ -45,8 +45,8 @@ export function SearchCommand() {
     // The changes below will make the content inside larger, giving it a bigger feel.
     <CommandDialog open={isOpen} onOpenChange={onClose}>
       {/* Make the input taller and the font larger */}
-      <CommandInput 
-        placeholder={t('search.placeholder')} 
+      <CommandInput
+        placeholder={t('search.placeholder')}
         className="h-14 text-base"
       />
       <CommandList>

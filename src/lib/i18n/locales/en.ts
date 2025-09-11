@@ -32,6 +32,13 @@ export const en = {
     invalidSignupData: "Invalid signup data. Please check your information and try again.",
     networkError: "Unable to connect to the server. Please ensure the backend is running and accessible.",
     accessForbidden: "Access forbidden. Please ensure you have permission to access this resource.",
+    lostVerification: "Lost your verification email? ",
+    verifyEmail: "Verify Email",
+    emailRequiredForVerification: "An email is required to send a verification code.",
+    verificationEmailSent: "Verification email sent successfully!",
+    errorSendingVerification: "An error occurred while sending the verification email.",
+    signupSuccess: "Signed up successfully! Redirecting...",
+    loginSuccess: "Logged in successfully! Redirecting..."
   },
   header: {
     title: "Study Buddy AI",
@@ -260,6 +267,7 @@ export const en = {
     verify: "Verify Account",
     verifying: "Verifying...",
     resend: "Resend Code",
+    didNotReceive: "Didn't receive the code?",
     success: "Account verified successfully! Redirecting...",
     codeResent: "Verification code resent successfully!",
     error: "Verification failed",

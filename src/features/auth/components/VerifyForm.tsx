@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 // <-- 1. Importa il router da next/navigation
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
 import AuthButton from './AuthButton';
 import authService from '../services/auth.service';
 
@@ -24,7 +25,6 @@ const VerifyForm = () => {
   const [code, setCode] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
   
   useEffect(() => {
     setEmail(searchParams.get('email'));
@@ -40,7 +40,6 @@ const VerifyForm = () => {
 
     setLoading(true);
     setError(null);
-    setSuccess(null);
 
     const cleanCode = extractDigits(code);
 
@@ -52,7 +51,7 @@ const VerifyForm = () => {
 
     try {
       await authService.verify({ email, verificationCode: cleanCode });
-      setSuccess(t('verification.success', 'Il tuo account è stato verificato con successo!'));
+      toast.success(t('verification.success', 'Il tuo account è stato verificato con successo!'));
 
       // <-- 3. Esegui il redirect dopo un breve ritardo
       // Aggiungiamo un ritardo in modo che l'utente possa vedere il messaggio di successo.
@@ -64,11 +63,17 @@ const VerifyForm = () => {
       console.error('Verification error:', err);
       const errorMessage = err instanceof Error ? err.message : String(err);
       if (errorMessage.includes('404') || errorMessage.includes('not found')) {
-        setError(t('verification.codeNotFound', 'Codice di verifica non trovato. Controlla il codice e riprova.'));
+        const errorMsg = t('verification.codeNotFound', 'Codice di verifica non trovato. Controlla il codice e riprova.');
+        setError(errorMsg);
+        toast.error(errorMsg);
       } else if (errorMessage.includes('expired')) {
-        setError(t('verification.codeExpired', 'Il codice di verifica è scaduto. Richiedine uno nuovo.'));
+        const errorMsg = t('verification.codeExpired', 'Il codice di verifica è scaduto. Richiedine uno nuovo.');
+        setError(errorMsg);
+        toast.error(errorMsg);
       } else {
-        setError(t('verification.error', 'Si è verificato un errore imprevisto.'));
+        const errorMsg = t('verification.error', 'Si è verificato un errore imprevisto.');
+        setError(errorMsg);
+        toast.error(errorMsg);
       }
     }
     setLoading(false);
@@ -81,7 +86,6 @@ const VerifyForm = () => {
     
     setLoading(true);
     setError(null);
-    setSuccess(null);
     setCode('');
 
     try {
@@ -89,7 +93,9 @@ const VerifyForm = () => {
       setSuccess(t('verification.codeResent', 'Un nuovo codice di verifica è stato inviato alla tua email.'));
     } catch (err: unknown) {
       console.error('Resend error:', err);
-      setError(t('verification.resendError', 'Impossibile inviare nuovamente il codice. Riprova più tardi.'));
+      const errorMsg = t('verification.resendError', 'Impossibile inviare nuovamente il codice. Riprova più tardi.');
+      setError(errorMsg);
+      toast.error(errorMsg);
     } finally {
       setLoading(false);
     }
@@ -140,12 +146,6 @@ const VerifyForm = () => {
             </InputOTPGroup>
           </InputOTP>
         </div>
-        
-        {success && (
-          <div className="my-4 p-3 bg-success-subtle text-success rounded-md text-sm text-center">
-            {success}
-          </div>
-        )}
         
         {error && (
           <div className="my-4 p-3 bg-error-subtle text-error rounded-md text-sm text-center">
