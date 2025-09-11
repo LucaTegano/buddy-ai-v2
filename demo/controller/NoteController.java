@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.NoteListItemDto;
+import com.example.demo.dto.RecentNotesDto;
 import com.example.demo.model.Note;
 import com.example.demo.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,11 @@ public class NoteController {
     @GetMapping
     public List<NoteListItemDto> getAllMyNotes(@AuthenticationPrincipal UserDetails userDetails) {
         return noteService.getNoteListItemsForUser(userDetails.getUsername());
+    }
+
+    @GetMapping("/recent")
+    public RecentNotesDto getRecentNotes(@AuthenticationPrincipal UserDetails userDetails) {
+        return noteService.getRecentNotesForUser(userDetails.getUsername());
     }
 
     @GetMapping("/{id}")

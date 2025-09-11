@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,8 +8,11 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -77,6 +81,15 @@ public class Note {
         // The owner (1) + the number of collaborators
         return 1 + (collaborators != null ? collaborators.size() : 0);
     }
+
+  @OneToMany(
+        mappedBy = "note", 
+        cascade = CascadeType.ALL, 
+        orphanRemoval = true
+    )
+    @JsonManagedReference
+    @OrderBy("createdAt ASC") 
+    private List<AiChatMessage> aiChatHistory = new ArrayList<>();
     
     // --- Helper Methods ---
 
