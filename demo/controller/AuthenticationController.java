@@ -31,7 +31,8 @@ public class AuthenticationController {
     public ResponseEntity<?> register(@RequestBody RegisterUserDto registerUserDto) {
         try {
             authenticationService.signup(registerUserDto);
-            return ResponseEntity.ok(java.util.Map.of("message", "User registered successfully. Please check your email for verification code."));
+            return ResponseEntity.ok(java.util.Map.of("message",
+                    "User registered successfully. Please check your email for verification code."));
         } catch (RuntimeException e) {
             if (e.getMessage().contains("not verified")) {
                 return ResponseEntity.status(HttpStatus.CONFLICT).body(java.util.Map.of("message", e.getMessage()));
@@ -49,9 +50,11 @@ public class AuthenticationController {
             LoginResponse loginResponse = new LoginResponse(jwtToken, expirationTime);
             return ResponseEntity.ok(loginResponse);
         } catch (DisabledException e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(java.util.Map.of("message", "Account not verified. Please verify your email."));
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(java.util.Map.of("message", "Account not verified. Please verify your email."));
         } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(java.util.Map.of("message", "Invalid credentials."));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(java.util.Map.of("message", "Invalid credentials."));
         }
     }
 

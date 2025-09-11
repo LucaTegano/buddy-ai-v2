@@ -180,17 +180,22 @@ export const it = {
     title: "Cestino",
     empty: "Svuota Cestino",
     emptyTitle: "Il cestino è vuoto",
-    emptyMessage: "Le note eliminate appariranno qui.",
-    itemsWarning: "Gli elementi nel Cestino vengono eliminati definitivamente. Questa azione non può essere annullata.",
-    deletedItem: "Elemento eliminato",
+    emptyDescription: "Le note eliminate appariranno qui.",
+    itemsWarning: "Gli elementi nel Cestino vengono eliminati definitivamente dopo 30 giorni o quando svuoti il cestino. Questa azione non può essere annullata.",
     restore: "Ripristina",
-    deletePermanently: "Elimina definitivamente",
+    delete: "Elimina",
     deleteModalTitle: "Eliminare la nota definitivamente?",
     deleteModalMessage: "Questa nota sarà eliminata definitivamente e non potrai più ripristinarla. Sei sicuro?",
     deleteModalConfirm: "Elimina",
     emptyModalTitle: "Svuotare il Cestino?",
     emptyModalMessage: "Sei sicuro di voler eliminare definitivamente tutti i {{count}} elementi dal tuo cestino? Questa azione non può essere annullata.",
     emptyModalConfirm: "Svuota Cestino",
+    noteRestored: "Nota ripristinata con successo",
+    noteDeleted: "Nota eliminata definitivamente",
+    trashEmptied: "Cestino svuotato con successo",
+    restoreFailed: "Impossibile ripristinare la nota",
+    deleteFailed: "Impossibile eliminare la nota",
+    emptyFailed: "Impossibile svuotare il cestino"
   },
   search: {
     title: "Risultati della Ricerca",
@@ -211,6 +216,7 @@ export const it = {
     profile: "Profilo",
     shortcutProfile: "⌘P",
     shortcutSettings: "⌘S",
+    results: "Risultati della Ricerca"
   },
   modal: {
     cancel: "Annulla",
@@ -256,9 +262,10 @@ export const it = {
     empty: "La tua casella di posta è vuota.",
   },
   general: {
-    fullscreen: "Schermo Intero",
+    fullscreen: "Schermo intero",
     exit: "Esci",
     goBack: "Indietro",
+    invalidDate: "Data non valida",
   },
   verification: {
     title: "Verifica il tuo account",

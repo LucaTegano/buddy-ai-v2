@@ -180,17 +180,22 @@ export const en = {
     title: "Trash",
     empty: "Empty Trash",
     emptyTitle: "Trash is empty",
-    emptyMessage: "Deleted notes will appear here.",
-    itemsWarning: "Items in Trash are permanently deleted. This action cannot be undone.",
-    deletedItem: "Deleted item",
+    emptyDescription: "Deleted notes will appear here.",
+    itemsWarning: "Items in Trash are permanently deleted after 30 days or when you empty the trash. This action cannot be undone.",
     restore: "Restore",
-    deletePermanently: "Delete permanently",
+    delete: "Delete",
     deleteModalTitle: "Delete note permanently?",
     deleteModalMessage: "This note will be permanently deleted and you won't be able to restore it. Are you sure?",
     deleteModalConfirm: "Delete",
     emptyModalTitle: "Empty Trash?",
     emptyModalMessage: "Are you sure you want to permanently delete all {{count}} items from your trash? This action cannot be undone.",
     emptyModalConfirm: "Empty Trash",
+    noteRestored: "Note restored successfully",
+    noteDeleted: "Note deleted permanently",
+    trashEmptied: "Trash emptied successfully",
+    restoreFailed: "Failed to restore note",
+    deleteFailed: "Failed to delete note",
+    emptyFailed: "Failed to empty trash"
   },
   search: {
     title: "Search Results",
@@ -211,6 +216,7 @@ export const en = {
     profile: "Profile",
     shortcutProfile: "⌘P",
     shortcutSettings: "⌘S",
+    results: "Search Results"
   },
   modal: {
     cancel: "Cancel",
@@ -259,6 +265,7 @@ export const en = {
     fullscreen: "Fullscreen",
     exit: "Exit",
     goBack: "Back",
+    invalidDate: "Invalid date",
   },
   verification: {
     title: "Verify Your Account",
