@@ -195,7 +195,8 @@ export const fr = {
     trashEmptied: "Corbeille vidée avec succès",
     restoreFailed: "Échec de la restauration de la note",
     deleteFailed: "Échec de la suppression de la note",
-    emptyFailed: "Échec du vidage de la corbeille"
+    emptyFailed: "Échec du vidage de la corbeille",
+    emptyTrashButton: "Vider la corbeille"
   },
   search: {
     title: "Résultats de recherche",

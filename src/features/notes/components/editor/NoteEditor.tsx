@@ -154,8 +154,7 @@ const NoteEditor: React.FC<NoteEditorProps> = ({
 
   const handleConfirmDelete = () => {
     if (note.id) {
-      noteActions.moveNoteToTrash(note.id);
-      router.push('/notes');
+      noteActions.moveNoteToTrash(note.id, router);
       setIsDeleteModalOpen(false);
     } else {
       console.error("Attempted to delete a note without an ID.");

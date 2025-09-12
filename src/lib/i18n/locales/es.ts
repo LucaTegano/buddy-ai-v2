@@ -195,7 +195,8 @@ export const es = {
     trashEmptied: "Papelera vaciada con éxito",
     restoreFailed: "Error al restaurar la nota",
     deleteFailed: "Error al eliminar la nota",
-    emptyFailed: "Error al vaciar la papelera"
+    emptyFailed: "Error al vaciar la papelera",
+    emptyTrashButton: "Vaciar papelera"
   },
   search: {
     title: "Resultados de búsqueda",

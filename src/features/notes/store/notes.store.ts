@@ -100,9 +100,10 @@ export const useNotesStore = create<NotesState>((set, get) => ({
     }
   },
   
+  
   deleteNote: async (noteId: string) => {
     try {
-      await notesService.deleteNote(noteId);
+      await notesService.moveNoteToTrash(noteId);
       set(state => ({
         notes: state.notes.filter(note => note.id !== noteId)
       }));
@@ -114,12 +115,13 @@ export const useNotesStore = create<NotesState>((set, get) => ({
     }
   },
   
-  moveNoteToTrash: async (noteId: string) => {
+  moveNoteToTrash: async (noteId: string, router: any) => {
     try {
       await notesService.moveNoteToTrash(noteId);
       set(state => ({
         notes: state.notes.filter(note => note.id !== noteId)
       }));
+      router.push('/note');
     } catch (error: any) {
       const errorMessage = error instanceof NoteOperationError 
         ? error.message 

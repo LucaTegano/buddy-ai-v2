@@ -78,9 +78,9 @@ export const noteActions = {
     }
   },
 
-  moveNoteToTrash: async (noteId: string) => {
+  moveNoteToTrash: async (noteId: string, router: any) => {
     try {
-      await useNotesStore.getState().moveNoteToTrash(noteId);
+      await useNotesStore.getState().moveNoteToTrash(noteId, router);
       toast.success('Note moved to trash.');
       return { success: true };
     } catch (error: unknown) {

@@ -195,7 +195,8 @@ export const hi = {
     trashEmptied: "कचरा सफलतापूर्वक खाली किया गया",
     restoreFailed: "नोट पुनर्स्थापित करने में विफल",
     deleteFailed: "नोट हटाने में विफल",
-    emptyFailed: "कचरा खाली करने में विफल"
+    emptyFailed: "कचरा खाली करने में विफल",
+    emptyTrashButton: "कचरा खाली करें"
   },
   search: {
     title: "खोज परिणाम",

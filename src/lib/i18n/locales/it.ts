@@ -195,7 +195,8 @@ export const it = {
     trashEmptied: "Cestino svuotato con successo",
     restoreFailed: "Impossibile ripristinare la nota",
     deleteFailed: "Impossibile eliminare la nota",
-    emptyFailed: "Impossibile svuotare il cestino"
+    emptyFailed: "Impossibile svuotare il cestino",
+    emptyTrashButton: "Svuota Cestino"
   },
   search: {
     title: "Risultati della Ricerca",

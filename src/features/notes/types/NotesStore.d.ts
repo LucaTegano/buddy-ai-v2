@@ -11,6 +11,6 @@ export interface NotesState {
   createNote: (note: Partial<Note>) => Promise<Note | null>;
   updateNote: (noteId: string, updates: Partial<Note>) => Promise<Note | null>;
   deleteNote: (noteId: string) => Promise<void>;
-  moveNoteToTrash: (noteId: string) => Promise<void>;
+  moveNoteToTrash: (noteId: string, router: any) => Promise<void>;
   setActiveNoteId: (noteId: string | null) => void;
 }

@@ -1,4 +1,4 @@
-"use client"
+ "use client"
 import React, { useRef, useState, Children, isValidElement } from 'react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@/shared/components/icons';
 

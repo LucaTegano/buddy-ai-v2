@@ -195,7 +195,8 @@ export const zh = {
     trashEmptied: "垃圾桶清空成功",
     restoreFailed: "笔记恢复失败",
     deleteFailed: "笔记删除失败",
-    emptyFailed: "垃圾桶清空失败"
+    emptyFailed: "垃圾桶清空失败",
+    emptyTrashButton: "清空垃圾桶"
   },
   search: {
     title: "搜索结果",

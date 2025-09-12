@@ -195,7 +195,8 @@ export const en = {
     trashEmptied: "Trash emptied successfully",
     restoreFailed: "Failed to restore note",
     deleteFailed: "Failed to delete note",
-    emptyFailed: "Failed to empty trash"
+    emptyFailed: "Failed to empty trash",
+    emptyTrashButton: "Empty Trash"
   },
   search: {
     title: "Search Results",

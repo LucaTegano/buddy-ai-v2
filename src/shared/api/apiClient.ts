@@ -47,6 +47,7 @@ const apiClient = axios.create({
 apiClient.interceptors.request.use(
   (config) => {
     const token = getJwtToken();
+    console.log('token',token)
     if (token) {
       // Add the Authorization header to the request
       config.headers['Authorization'] = `Bearer ${token}`;

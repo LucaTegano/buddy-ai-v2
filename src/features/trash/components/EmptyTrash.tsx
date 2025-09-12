@@ -8,7 +8,7 @@ export default function EmptyTrash() {
 
   return (
     <div className="flex flex-col items-center justify-center py-12 text-center">
-      <Trash2 className="h-16 w-16 text-gray-400 mb-4" />
+      <Trash2 className="h-16 w-16 text-text-disabled mb-4" />
       <h3 className="text-lg font-medium text-text-primary mb-2">
         {t('trash.emptyTitle')}
       </h3>

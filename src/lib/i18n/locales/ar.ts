@@ -195,7 +195,8 @@ export const ar = {
     trashEmptied: "تم إفراغ سلة المهملات بنجاح",
     restoreFailed: "فشل في استعادة الملاحظة",
     deleteFailed: "فشل في حذف الملاحظة",
-    emptyFailed: "فشل في إفراغ سلة المهملات"
+    emptyFailed: "فشل في إفراغ سلة المهملات",
+    emptyTrashButton: "إفراغ سلة المهملات"
   },
   search: {
     title: "نتائج البحث",
