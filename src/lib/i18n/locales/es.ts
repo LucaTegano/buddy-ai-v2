@@ -204,19 +204,20 @@ export const es = {
     resultsFound_plural: "Se encontraron {{count}} resultados para \"{{query}}\"",
     noResults: "No se encontraron notas.",
     placeholder: "Escribe un comando o busca...",
-    empty: "No se encontraron resultados.",
+    empty: "Empieza a escribir para buscar...",
     newNote: "Nueva nota",
     newTask: "Nueva tarea",
     previous7Days: "Últimos 7 días",
-    note89: "Nota 89",
+
     previous30Days: "Últimos 30 días",
-    note33: "Nota33",
+
     latestNotes: "Notas recientes",
     settings: "Configuración",
     profile: "Perfil",
     shortcutProfile: "⌘P",
     shortcutSettings: "⌘S",
-    results: "Resultados de búsqueda"
+    results: "Resultados de búsqueda",
+    searching: "Buscando..."
   },
   modal: {
     cancel: "Cancelar",

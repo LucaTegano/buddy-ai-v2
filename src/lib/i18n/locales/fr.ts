@@ -204,11 +204,10 @@ export const fr = {
     resultsFound_plural: "{{count}} résultats trouvés pour \"{{query}}\"",
     noResults: "Aucune note trouvée.",
     placeholder: "Tapez une commande ou recherchez...",
-    empty: "Aucun résultat trouvé.",
+    empty: "Commencez à taper pour rechercher...",
     newNote: "Nouvelle note",
     newTask: "Nouvelle tâche",
     previous7Days: "7 derniers jours",
-    note89: "Note 89",
     previous30Days: "30 derniers jours",
     note33: "Note33",
     latestNotes: "Dernières notes",
@@ -216,7 +215,8 @@ export const fr = {
     profile: "Profil",
     shortcutProfile: "⌘P",
     shortcutSettings: "⌘S",
-    results: "Résultats de recherche"
+    results: "Résultats de recherche",
+    searching: "Recherche en cours..."
   },
   modal: {
     cancel: "Annuler",

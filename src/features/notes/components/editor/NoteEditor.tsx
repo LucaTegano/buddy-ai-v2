@@ -49,8 +49,8 @@ const NoteEditor: React.FC<NoteEditorProps> = ({
         blockquote: false,
         codeBlock: false,
         horizontalRule: false,
-        taskList: false,
-        taskItem: false,
+        //taskList: false,
+        //taskItem: false,
       }),
       TiptapExtensions.Underline, 
       TiptapExtensions.TextStyle, 
@@ -66,7 +66,7 @@ const NoteEditor: React.FC<NoteEditorProps> = ({
     content: note?.content || '',
     editorProps: {
       attributes: {
-        class: 'tiptap prose dark:prose-invert prose-sm sm:prose-base m-5 focus:outline-none w-full max-w-none',
+        class: 'tiptap prose dark:prose-invert prose-sm sm:prose-base m-5 focus:outline-none w-full max-w-6xl', // Increased from max-w-4xl to max-w-6xl for 50% more width
       },
     },
     onUpdate: ({ editor }) => {

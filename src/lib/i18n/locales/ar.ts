@@ -204,19 +204,18 @@ export const ar = {
     resultsFound_plural: "تم العثور على {{count}} نتائج لـ \"{{query}}\"",
     noResults: "لم يتم العثور على ملاحظات.",
     placeholder: "اكتب أمرًا أو ابحث...",
-    empty: "لم يتم العثور على نتائج.",
+    empty: "ابدأ الكتابة للبحث...",
     newNote: "ملاحظة جديدة",
     newTask: "مهمة جديدة",
     previous7Days: "الأيام 7 السابقة",
-    note89: "ملاحظة 89",
     previous30Days: "الأيام 30 السابقة",
-    note33: "ملاحظة33",
     latestNotes: "أحدث الملاحظات",
     settings: "الإعدادات",
     profile: "الملف الشخصي",
     shortcutProfile: "⌘P",
     shortcutSettings: "⌘S",
-    results: "نتائج البحث"
+    results: "نتائج البحث",
+    searching: "جارٍ البحث..."
   },
   modal: {
     cancel: "إلغاء",

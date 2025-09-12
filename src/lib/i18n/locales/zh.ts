@@ -204,19 +204,18 @@ export const zh = {
     resultsFound_plural: "找到 {{count}} 个与\"{{query}}\"相关的结果",
     noResults: "未找到笔记。",
     placeholder: "输入命令或搜索...",
-    empty: "未找到结果。",
+    empty: "开始输入进行搜索...",
     newNote: "新笔记",
     newTask: "新任务",
     previous7Days: "最近7天",
-    note89: "笔记89",
     previous30Days: "最近30天",
-    note33: "笔记33",
     latestNotes: "最新笔记",
     settings: "设置",
     profile: "个人资料",
     shortcutProfile: "⌘P",
     shortcutSettings: "⌘S",
-    results: "搜索结果"
+    results: "搜索结果",
+    searching: "搜索中..."
   },
   modal: {
     cancel: "取消",

@@ -39,7 +39,7 @@ public class AuthenticationService {
             throw new RuntimeException("Username already exists");
         }
 
-        Optional<User> optionalUser = userRepository.findByEmail(input.getEmail());
+        Optional<User> optionalUser = userRepository.findByUsername(input.getUsername());
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             if (user.isEnabled()) {
@@ -50,7 +50,8 @@ public class AuthenticationService {
                 user.setVerificationCodeExpiresAt(LocalDateTime.now().plusMinutes(5));
                 sendVerificationEmail(user);
                 userRepository.save(user);
-                throw new RuntimeException("This email is already registered but not verified. A new verification email has been sent.");
+                throw new RuntimeException(
+                        "This email is already registered but not verified. A new verification email has been sent.");
             }
         }
 

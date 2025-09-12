@@ -1,240 +1,138 @@
-// Notes Service
+// Notes Service (Simplified)
 import apiClient from '@/shared/api/apiClient';
 import { NOTES_ENDPOINTS } from '@/features/notes/api/notes.api';
-import { backendNoteListItemToFrontendNote, backendNoteDetailToFrontendNote, frontendNoteToBackendNote } from '@/features/notes/utils/noteMapper';
+import {
+  backendNoteListItemToFrontendNote,
+  backendNoteDetailToFrontendNote,
+  frontendNoteToBackendNote,
+} from '@/features/notes/utils/noteMapper';
 import TokenManager from '@/features/auth/utils/tokenManager';
 import { handleNoteOperationError } from '@/features/notes/utils/errorHandler';
 
+// A type alias for the functions that make API calls
+type ApiRequest<T> = () => Promise<{ data: T }>;
+
 class NotesService {
-  private checkAuthStatus(): boolean {
-    // Check if we have an auth token
+  /**
+   * A generic, private method to handle all authenticated API requests.
+   * It centralizes authentication checks, request execution, and error handling.
+   *
+   * @param operation - A string describing the action for logging (e.g., "fetch all notes").
+   * @param requestFn - The function that returns the API client call promise.
+   * @param options - Configuration for handling success and auth errors.
+   * @returns The processed data or a default value on non-throwing auth errors.
+   */
+  private async _executeRequest<T, R>(
+    operation: string,
+    requestFn: ApiRequest<T>,
+    options: {
+      onSuccess: (data: T) => R;
+      onAuthError?: 'throw' | 'returnDefault';
+      defaultReturnValue?: R;
+    }
+  ): Promise<R> {
+    const { onAuthError = 'throw', defaultReturnValue = null as any, onSuccess } = options;
+
+    // 1. Centralized Authentication Check
     const token = typeof window !== 'undefined' ? localStorage.getItem('authToken') : null;
-    console.log('Checking auth status - Token:', token ? 'Present' : 'Missing');
-    
-    if (!token) {
-      console.error('No authentication token found. User may not be logged in.');
-      return false;
+    const isAuthValid = token ? await TokenManager.ensureValidToken() : false;
+
+    if (!isAuthValid) {
+      const errorMessage = `Authentication failed for operation: ${operation}.`;
+      console.warn(`[NotesService] ${errorMessage}`);
+      if (onAuthError === 'throw') {
+        throw handleNoteOperationError(new Error('User is not authenticated. Please log in.'), operation);
+      }
+      return defaultReturnValue;
     }
-    
-    return true;
+
+    // 2. Centralized Request Execution and Error Handling
+    try {
+      console.log(`[NotesService] Executing: ${operation}`);
+      const response = await requestFn();
+      return onSuccess(response.data);
+    } catch (error: any) {
+      // Gracefully handle 401 Unauthorized errors from the API if configured to do so
+      if (error.response?.status === 401 && onAuthError === 'returnDefault') {
+        console.warn(`[NotesService] Auth error during ${operation}. Returning default.`);
+        return defaultReturnValue;
+      }
+      // For all other errors, use the central error handler to re-throw
+      throw handleNoteOperationError(error, operation);
+    }
   }
-  
+
+  // --- Public API Methods ---
+
   async getAllNotes(): Promise<any[]> {
-    console.log('Fetching all notes');
-    
-    // Check authentication before proceeding
-    if (!this.checkAuthStatus()) {
-      throw handleNoteOperationError(
-        new Error('User is not authenticated. Please log in first.'),
-        'fetch all notes'
-      );
-    }
-    
-    // Ensure we have a valid token
-    const isValid = await TokenManager.ensureValidToken();
-    if (!isValid) {
-      throw handleNoteOperationError(
-        new Error('Authentication token is invalid or expired.'),
-        'fetch all notes'
-      );
-    }
-    
-    try {
-      console.log('Making request to:', NOTES_ENDPOINTS.GET_ALL);
-      const response = await apiClient.get<any[]>(NOTES_ENDPOINTS.GET_ALL);
-      console.log('Received notes response:', response.data);
-      return response.data.map(backendNoteListItemToFrontendNote);
-    } catch (error: any) {
-      console.error('Error fetching notes:', error);
-      console.error('Error response:', error.response);
-      console.error('Error request:', error.request);
-      throw handleNoteOperationError(error, 'fetch all notes');
-    }
+    return this._executeRequest('fetch all notes',
+      () => apiClient.get<any[]>(NOTES_ENDPOINTS.GET_ALL),
+      {
+        onSuccess: (data) => (data || []).map(backendNoteListItemToFrontendNote),
+        defaultReturnValue: [],
+      }
+    );
   }
 
-  async getNoteById(id: string): Promise<any> {
-    console.log(`Fetching note by ID: ${id}`);
-    
-    // Check authentication before proceeding
-    if (!this.checkAuthStatus()) {
-      throw handleNoteOperationError(
-        new Error('User is not authenticated. Please log in first.'),
-        'fetch'
-      );
+  async searchNotes(query: string): Promise<any[]> {
+    if (!query?.trim()) {
+      return [];
     }
-    
-    // Ensure we have a valid token
-    const isValid = await TokenManager.ensureValidToken();
-    if (!isValid) {
-      throw handleNoteOperationError(
-        new Error('Authentication token is invalid or expired.'),
-        'fetch'
-      );
-    }
-    
-    try {
-      console.log('Making request to:', NOTES_ENDPOINTS.GET_BY_ID(id));
-      const response = await apiClient.get<any>(NOTES_ENDPOINTS.GET_BY_ID(id));
-      console.log('Received note response:', response.data);
-      
-      // Check if response data exists before mapping
-      if (!response.data) {
-        console.error(`Get note by ID response data is undefined or null for note ${id}`);
-        throw new Error('Received empty response from server when fetching note');
+    const encodedQuery = encodeURIComponent(query.trim());
+    const url = `${NOTES_ENDPOINTS.SEARCH}?query=${encodedQuery}`;
+
+    return this._executeRequest('search notes',
+      () => apiClient.get<any[]>(url),
+      {
+        onSuccess: (data) => (data || []).map(backendNoteListItemToFrontendNote),
+        onAuthError: 'returnDefault', // Returns default value on auth error instead of throwing
+        defaultReturnValue: [],
       }
-      
-      const mappedNote = backendNoteDetailToFrontendNote(response.data);
-      if (!mappedNote) {
-        console.error('Failed to map backend note to frontend note');
-        throw new Error('Failed to process note data from server');
-      }
-      
-      return mappedNote;
-    } catch (error: any) {
-      console.error(`Error fetching note ${id}:`, error);
-      throw handleNoteOperationError(error, 'fetch');
-    }
+    );
   }
 
-  async createNote(note: any): Promise<any> {
-    console.log('Creating note with data:', note);
-    
-    // Check authentication before proceeding
-    if (!this.checkAuthStatus()) {
-      throw handleNoteOperationError(
-        new Error('User is not authenticated. Please log in first.'),
-        'create'
-      );
-    }
-    
-    // Ensure we have a valid token
-    const isValid = await TokenManager.ensureValidToken();
-    if (!isValid) {
-      throw handleNoteOperationError(
-        new Error('Authentication token is invalid or expired.'),
-        'create'
-      );
-    }
-    
+  async getNoteById(id: string): Promise<any | null> {
+    return this._executeRequest('fetch note by id',
+      () => apiClient.get<any>(NOTES_ENDPOINTS.GET_BY_ID(id)),
+      {
+        onSuccess: (data) => {
+          if (!data) {
+            console.error(`Note data for id ${id} is empty.`);
+            throw new Error('Received empty response from server when fetching note');
+          }
+          return backendNoteDetailToFrontendNote(data);
+        },
+      }
+    );
+  }
+
+  async createNote(note: any): Promise<any | null> {
     const backendNote = frontendNoteToBackendNote(note);
-    console.log('Sending backend note data:', backendNote);
-    try {
-      console.log('Using endpoint:', NOTES_ENDPOINTS.CREATE);
-      console.log('API Base URL:', process.env.NEXT_PUBLIC_API_BASE_URL);
-      
-      // Log the actual request being made
-      console.log('Making POST request to:', NOTES_ENDPOINTS.CREATE);
-      
-      const response = await apiClient.post<any>(NOTES_ENDPOINTS.CREATE, backendNote);
-      console.log('Received create note response:', response.data);
-      if (response.data) {
-        return backendNoteDetailToFrontendNote(response.data);
+    return this._executeRequest('create note',
+      () => apiClient.post<any>(NOTES_ENDPOINTS.CREATE, backendNote),
+      {
+        onSuccess: (data) => (data ? backendNoteDetailToFrontendNote(data) : null),
       }
-      return null;
-    } catch (error: any) {
-      console.error('Error creating note:', error);
-      console.error('Error response:', error.response);
-      console.error('Error request:', error.request);
-      console.error('Error config:', error.config);
-      throw handleNoteOperationError(error, 'create');
-    }
+    );
   }
 
-  async updateNote(id: string, note: any): Promise<any> {
-    console.log(`Updating note ${id} with data:`, note);
-    
-    // Check authentication before proceeding
-    if (!this.checkAuthStatus()) {
-      throw handleNoteOperationError(
-        new Error('User is not authenticated. Please log in first.'),
-        'update'
-      );
-    }
-    
-    // Ensure we have a valid token
-    const isValid = await TokenManager.ensureValidToken();
-    if (!isValid) {
-      throw handleNoteOperationError(
-        new Error('Authentication token is invalid or expired.'),
-        'update'
-      );
-    }
-    
+  async updateNote(id: string, note: any): Promise<any | null> {
     const backendNote = frontendNoteToBackendNote(note);
-    console.log(`Sending backend note data for note ${id}:`, backendNote);
-    try {
-      console.log('Making PATCH request to:', NOTES_ENDPOINTS.UPDATE(id));
-      const response = await apiClient.patch<any>(NOTES_ENDPOINTS.UPDATE(id), backendNote);
-      console.log('Received update note response:', response.data);
-      
-      // Return the updated note data from the server
-      if (response.data) {
-        return backendNoteDetailToFrontendNote(response.data);
+    return this._executeRequest('update note',
+      () => apiClient.patch<any>(NOTES_ENDPOINTS.UPDATE(id), backendNote),
+      {
+        onSuccess: (data) => (data ? backendNoteDetailToFrontendNote(data) : null),
       }
-      
-      return null;
-    } catch (error: any) {
-      console.error(`Error updating note ${id}:`, error);
-      throw handleNoteOperationError(error, 'update');
-    }
+    );
   }
 
-  async deleteNote(id: string): Promise<void> {
-    console.log(`Deleting note ${id}`);
-    
-    // Check authentication before proceeding
-    if (!this.checkAuthStatus()) {
-      throw handleNoteOperationError(
-        new Error('User is not authenticated. Please log in first.'),
-        'delete'
-      );
-    }
-    
-    // Ensure we have a valid token
-    const isValid = await TokenManager.ensureValidToken();
-    if (!isValid) {
-      throw handleNoteOperationError(
-        new Error('Authentication token is invalid or expired.'),
-        'delete'
-      );
-    }
-    
-    try {
-      console.log('Making DELETE request to:', NOTES_ENDPOINTS.DELETE(id));
-      await apiClient.delete(NOTES_ENDPOINTS.DELETE(id));
-    } catch (error: any) {
-      console.error(`Error deleting note ${id}:`, error);
-      throw handleNoteOperationError(error, 'delete');
-    }
-  }
-
-  async moveNoteToTrash(id: string): Promise<any> {
-    console.log(`Moving note ${id} to trash`);
-    
-    // Check authentication before proceeding
-    if (!this.checkAuthStatus()) {
-      throw handleNoteOperationError(
-        new Error('User is not authenticated. Please log in first.'),
-        'move to trash'
-      );
-    }
-    
-    // Ensure we have a valid token
-    const isValid = await TokenManager.ensureValidToken();
-    if (!isValid) {
-      throw handleNoteOperationError(
-        new Error('Authentication token is invalid or expired.'),
-        'move to trash'
-      );
-    }
-    
-    try {
-      console.log('Making POST request to:', NOTES_ENDPOINTS.MOVE_TO_TRASH(id));
-      return await apiClient.post(NOTES_ENDPOINTS.MOVE_TO_TRASH(id));
-    } catch (error: any) {
-      console.error(`Error moving note ${id} to trash:`, error);
-      throw handleNoteOperationError(error, 'move to trash');
-    }
+  async moveNoteToTrash(id: string): Promise<void> {
+    await this._executeRequest('move note to trash',
+      () => apiClient.post(NOTES_ENDPOINTS.MOVE_TO_TRASH(id)),
+      {
+        onSuccess: (data) => data, // Pass through whatever the API returns
+      }
+    );
   }
 }
 

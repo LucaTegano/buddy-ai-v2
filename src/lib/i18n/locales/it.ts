@@ -208,15 +208,14 @@ export const it = {
     newNote: "Nuova Nota",
     newTask: "Nuovo Compito",
     previous7Days: "Ultimi 7 giorni",
-    note89: "Nota 89",
     previous30Days: "Ultimi 30 giorni",
-    note33: "Nota33",
     latestNotes: "Ultime Note",
     settings: "Impostazioni",
     profile: "Profilo",
     shortcutProfile: "⌘P",
     shortcutSettings: "⌘S",
-    results: "Risultati della Ricerca"
+    results: "Risultati della Ricerca",
+    searching: "Cercando..."
   },
   modal: {
     cancel: "Annulla",

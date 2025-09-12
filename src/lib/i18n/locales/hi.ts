@@ -204,19 +204,19 @@ export const hi = {
     resultsFound_plural: "\"{{query}}\" के लिए {{count}} परिणाम मिले",
     noResults: "कोई नोट नहीं मिला।",
     placeholder: "एक आदेश टाइप करें या खोजें...",
-    empty: "कोई परिणाम नहीं मिला।",
+    empty: "खोजने के लिए टाइप करना प्रारंभ करें...",
     newNote: "नया नोट",
     newTask: "नया कार्य",
     previous7Days: "पिछले 7 दिन",
     note89: "नोट 89",
     previous30Days: "पिछले 30 दिन",
-    note33: "नोट33",
     latestNotes: "नवीनतम नोट्स",
     settings: "सेटिंग्स",
     profile: "प्रोफ़ाइल",
     shortcutProfile: "⌘P",
     shortcutSettings: "⌘S",
-    results: "खोज परिणाम"
+    results: "खोज परिणाम",
+    searching: "खोज जारी है..."
   },
   modal: {
     cancel: "रद्द करें",

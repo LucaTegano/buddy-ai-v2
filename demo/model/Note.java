@@ -8,7 +8,6 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -58,13 +57,8 @@ public class Note {
      * The set of users who can collaborate on this note.
      */
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "note_collaborators",
-            joinColumns = @JoinColumn(name = "note_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
+    @JoinTable(name = "note_collaborators", joinColumns = @JoinColumn(name = "note_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> collaborators = new HashSet<>();
-
 
     // --- Derived (Calculated) Data ---
 
@@ -82,15 +76,11 @@ public class Note {
         return 1 + (collaborators != null ? collaborators.size() : 0);
     }
 
-  @OneToMany(
-        mappedBy = "note", 
-        cascade = CascadeType.ALL, 
-        orphanRemoval = true
-    )
+    @OneToMany(mappedBy = "note", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    @OrderBy("createdAt ASC") 
+    @OrderBy("createdAt ASC")
     private List<AiChatMessage> aiChatHistory = new ArrayList<>();
-    
+
     // --- Helper Methods ---
 
     public void addCollaborator(User user) {

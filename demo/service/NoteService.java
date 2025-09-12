@@ -5,6 +5,8 @@ import com.example.demo.dto.RecentNotesDto;
 import com.example.demo.model.Note;
 import com.example.demo.model.User;
 import com.example.demo.repository.NoteRepository;
+
+import org.checkerframework.checker.units.qual.t;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,10 +50,59 @@ public class NoteService {
     }
 
     /**
+     * Search notes by title or content for a specific user
+     * @param query The search query
+     * @param username The username of the user
+     * @return A list of NoteListItemDto matching the search query
+     */
+    @Transactional(readOnly = true)
+    public List<NoteListItemDto> searchNotesForUser(String query, String username) {
+        User user = userService.getUserByUsername(username);
+        // Get all notes for the user
+        List<Note> notes = noteRepository.findByOwner_IdOrderByLastActivityDesc(user.getId());
+        
+        System.out.println("Found " + notes.size() + " notes for user: " + username);
+        
+        // Handle null or empty query
+        if (query == null || query.trim().isEmpty()) {
+            System.out.println("Empty query, returning empty results");
+            return new ArrayList<>();
+        }
+        
+        System.out.println("Searching for query: " + query);
+        
+        // Filter notes based on query (case insensitive)
+        List<NoteListItemDto> results = notes.stream()
+                .filter(note -> {
+                    boolean matches = (note.getTitle() != null && note.getTitle().toLowerCase().contains(query.toLowerCase())) ||
+                            (note.getContent() != null && note.getContent().toLowerCase().contains(query.toLowerCase()));
+                    if (matches) {
+                        System.out.println("Found matching note: " + note.getTitle());
+                    }
+                    return matches;
+                })
+                .limit(20) // Limit to 20 results for performance
+                .map(note -> {
+                    NoteListItemDto dto = new NoteListItemDto();
+                    dto.setId(note.getId());
+                    dto.setTitle(note.getTitle());
+                    dto.setLastActivity(note.getLastActivity());
+                    dto.setFormattedDate(formatDate(note.getLastActivity()));
+                    return dto;
+                })
+                .collect(Collectors.toList());
+        
+        System.out.println("Returning " + results.size() + " search results");
+        return results;
+    }
+
+    /**
      * Get recent notes categorized by time periods
      * Returns only the first 3 most recent notes for each category
-     * Notes from the previous 7 days are prioritized (won't appear in previous 30 days)
-     * If there are no notes in previous 7 days and previous 30 days, returns latest 5 notes
+     * Notes from the previous 7 days are prioritized (won't appear in previous 30
+     * days)
+     * If there are no notes in previous 7 days and previous 30 days, returns latest
+     * 5 notes
      */
     @Transactional(readOnly = true)
     public RecentNotesDto getRecentNotesForUser(String username) {
@@ -71,28 +122,28 @@ public class NoteService {
                 .map(this::mapToNoteListItemDto)
                 .collect(Collectors.toList());
 
-        // For previous 30 days, we only want notes that are older than 7 days but within 30 days
+        // For previous 30 days, we only want notes that are older than 7 days but
+        // within 30 days
         List<NoteListItemDto> previous30DaysNotes = notes.stream()
-                .filter(note -> note.getLastActivity().isAfter(thirtyDaysAgo) && 
-                               note.getLastActivity().isBefore(sevenDaysAgo))
+                .filter(note -> note.getLastActivity().isAfter(thirtyDaysAgo) &&
+                        note.getLastActivity().isBefore(sevenDaysAgo))
                 .limit(3)
                 .map(this::mapToNoteListItemDto)
                 .collect(Collectors.toList());
 
-        // If there are no recent notes in previous 7 days and previous 30 days, get latest 5 notes
-        List<NoteListItemDto> latestNotes = null;
-        if (previous7DaysNotes.isEmpty() && previous30DaysNotes.isEmpty()) {
-            latestNotes = notes.stream()
-                    .limit(5)
-                    .map(this::mapToNoteListItemDto)
-                    .collect(Collectors.toList());
-        }
+        // Show the latest notes in general if they are coverd by previous categories
+        // they are not included here but otherwise they are included
+        List<NoteListItemDto> latestNotes = notes.stream()
+                .filter(note -> note.getLastActivity().isBefore(thirtyDaysAgo))
+                .limit(5)
+                .map(this::mapToNoteListItemDto)
+                .collect(Collectors.toList());
 
         RecentNotesDto result = new RecentNotesDto();
         result.setPrevious7Days(previous7DaysNotes);
         result.setPrevious30Days(previous30DaysNotes);
         result.setLatestNotes(latestNotes);
-        
+
         return result;
     }
 
