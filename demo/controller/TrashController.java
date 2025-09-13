@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.trash.TrashDto;
-import com.example.demo.service.trash.TrashService;
+import com.example.demo.dto.TrashDto;
+import com.example.demo.service.TrashService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -49,7 +49,8 @@ public class TrashController {
      * Permanently delete a note from trash
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> permanentlyDelete(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<?> permanentlyDelete(@PathVariable Long id,
+            @AuthenticationPrincipal UserDetails userDetails) {
         trashService.permanentlyDelete(id, userDetails.getUsername());
         return ResponseEntity.ok().build();
     }

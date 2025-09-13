@@ -6,13 +6,14 @@ import com.example.demo.model.Note;
 import com.example.demo.model.User;
 import com.example.demo.repository.NoteRepository;
 
-import org.checkerframework.checker.units.qual.t;
+//import org.checkerframework.checker.units.qual.t;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,7 +52,8 @@ public class NoteService {
 
     /**
      * Search notes by title or content for a specific user
-     * @param query The search query
+     * 
+     * @param query    The search query
      * @param username The username of the user
      * @return A list of NoteListItemDto matching the search query
      */
@@ -60,28 +62,14 @@ public class NoteService {
         User user = userService.getUserByUsername(username);
         // Get all notes for the user
         List<Note> notes = noteRepository.findByOwner_IdOrderByLastActivityDesc(user.getId());
-        
-        System.out.println("Found " + notes.size() + " notes for user: " + username);
-        
+
         // Handle null or empty query
         if (query == null || query.trim().isEmpty()) {
-            System.out.println("Empty query, returning empty results");
             return new ArrayList<>();
         }
-        
-        System.out.println("Searching for query: " + query);
-        
-        // Filter notes based on query (case insensitive)
-        List<NoteListItemDto> results = notes.stream()
-                .filter(note -> {
-                    boolean matches = (note.getTitle() != null && note.getTitle().toLowerCase().contains(query.toLowerCase())) ||
-                            (note.getContent() != null && note.getContent().toLowerCase().contains(query.toLowerCase()));
-                    if (matches) {
-                        System.out.println("Found matching note: " + note.getTitle());
-                    }
-                    return matches;
-                })
-                .limit(20) // Limit to 20 results for performance
+        return notes.stream()
+                .filter(note -> (note.getTitle().toLowerCase().contains(query.toLowerCase())))
+                .limit(5) // Limit to 5 results for performance
                 .map(note -> {
                     NoteListItemDto dto = new NoteListItemDto();
                     dto.setId(note.getId());
@@ -91,9 +79,6 @@ public class NoteService {
                     return dto;
                 })
                 .collect(Collectors.toList());
-        
-        System.out.println("Returning " + results.size() + " search results");
-        return results;
     }
 
     /**

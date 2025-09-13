@@ -17,19 +17,10 @@ const NoteCard: React.FC<NoteCardProps> = ({ note }) => {
         if (note.formattedDate) {
             return note.formattedDate;
         }
+        return "Now";
         
         // Fallback to formatting updatedAt if formattedDate is not available
-        if (!note.updatedAt) {
-            return 'Unknown date';
-        }
         
-        const dateObj = note.updatedAt instanceof Date ? note.updatedAt : new Date(note.updatedAt);
-        
-        if (!(dateObj instanceof Date) || isNaN(dateObj.getTime())) {
-            return 'Unknown date';
-        }
-        
-        return dateObj.toLocaleDateString();
     };
 
     return (
@@ -45,12 +36,6 @@ const NoteCard: React.FC<NoteCardProps> = ({ note }) => {
             </div>
             <div className="text-xs text-text-secondary space-y-2">
                 <p>{t('noteCard.lastEdited')} <span className="font-medium text-text-primary">{displayDate()}</span></p>
-                {note.participantCount > 1 && (
-                    <div className="flex items-center gap-1.5">
-                        <UsersIcon className="w-4 h-4" />
-                        <span>{t('noteCard.participants', { count: note.participantCount })}</span>
-                    </div>
-                )}
             </div>
         </Link>
     );

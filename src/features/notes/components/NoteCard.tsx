@@ -18,18 +18,7 @@ const NoteCard: React.FC<NoteCardProps> = ({ note }) => {
             return note.formattedDate;
         }
         
-        // Fallback to formatting updatedAt if formattedDate is not available
-        if (!note.updatedAt) {
-            return 'Unknown date';
-        }
-        
-        const dateObj = note.updatedAt instanceof Date ? note.updatedAt : new Date(note.updatedAt);
-        
-        if (!(dateObj instanceof Date) || isNaN(dateObj.getTime())) {
-            return 'Unknown date';
-        }
-        
-        return dateObj.toLocaleDateString();
+        return "Now";
     };
 
     return (
