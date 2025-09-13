@@ -78,6 +78,10 @@ export const zh = {
     participants: "{{count}} 个参与者",
     participants_plural: "{{count}} 个参与者",
   },
+  groupCard: {
+    members: "{{count}} 个成员",
+    members_plural: "{{count}} 个成员",
+  },
   projectCard: {
     progress: "进度",
     lastActivity: "最后活动：",

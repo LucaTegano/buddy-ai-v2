@@ -78,6 +78,10 @@ export const hi = {
     participants: "{{count}} प्रतिभागी",
     participants_plural: "{{count}} प्रतिभागी",
   },
+  groupCard: {
+    members: "{{count}} सदस्य",
+    members_plural: "{{count}} सदस्य",
+  },
   projectCard: {
     progress: "प्रगति",
     lastActivity: "अंतिम गतिविधि:",

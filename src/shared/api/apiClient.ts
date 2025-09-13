@@ -47,10 +47,12 @@ const apiClient = axios.create({
 apiClient.interceptors.request.use(
   (config) => {
     const token = getJwtToken();
-    console.log('token',token)
+    console.log('Token being used:', token ? 'Present' : 'Missing');
     if (token) {
       // Add the Authorization header to the request
       config.headers['Authorization'] = `Bearer ${token}`;
+    } else {
+      console.warn('No authentication token found for request');
     }
     return config;
   },
@@ -64,10 +66,13 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
   // Any status code that lie within the range of 2xx cause this function to trigger
   (response) => {
+    console.log('API Response:', response.status, response.config.url);
     return response;
   },
   // Any status codes that falls outside the range of 2xx cause this function to trigger
   (error) => {
+    console.error('API Error:', error.response?.status, error.response?.config?.url, error.message);
+    
     // Check if the error is a 401 Unauthorized response
     if (error.response && error.response.status === 401) {
       // This is where you would typically handle token expiration.

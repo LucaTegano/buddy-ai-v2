@@ -12,12 +12,15 @@ export default async function LngLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: {
+  params: Promise<{
     lng: string;
-  };
+  }>;
 }) {
+  // Await the params before accessing lng
+  const { lng } = await params;
+  
   return (
-    <I18nProvider lng={params.lng}>
+    <I18nProvider lng={lng}>
       <SearchCommand />
       {children}
     </I18nProvider>

@@ -78,6 +78,10 @@ export const fr = {
     participants: "{{count}} participant",
     participants_plural: "{{count}} participants",
   },
+  groupCard: {
+    members: "{{count}} membre",
+    members_plural: "{{count}} membres",
+  },
   projectCard: {
     progress: "Progression",
     lastActivity: "Dernière activité :",

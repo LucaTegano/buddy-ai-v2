@@ -1,11 +1,13 @@
 import { GroupTask } from '../../../shared/types/Task';
+import { Note } from '@/features/notes/types/Note';
+
 export interface Group {
   id: string;
   name: string;
   subject: string;
   members: GroupMember[];
   messages: GroupMessage[];
-  files: GroupFile[];
+  files: Note[];
   tasks: GroupTask[];
 }
 export interface GroupMember {
@@ -19,14 +21,5 @@ export interface GroupMessage {
   senderId: string;
   text: string;
   timestamp: string;
-}
-
-export interface GroupFile {
-  id: string;
-  name: string;
-  type: 'PDF' | 'Word' | 'Image' | 'Other';
-  size: string;
-  uploadedBy: string;
-  date: string;
 }
 

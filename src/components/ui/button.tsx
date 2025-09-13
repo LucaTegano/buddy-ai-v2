@@ -13,7 +13,7 @@ const buttonVariants = cva(
       variant: {
         // Default variant using scn-prefixed colors
         default:
-          "bg-scn-primary text-scn-primary-foreground shadow-xs hover:bg-scn-primary/90",
+          "bg-brand-subtle-2 text-bg-primary shadow-xs hover:bg-brand-subtle-2/80",
         // Destructive variant using scn-prefixed colors
         destructive:
           "bg-scn-destructive text-white shadow-xs hover:bg-scn-destructive/90 focus-visible:ring-scn-destructive/20 dark:focus-visible:ring-scn-destructive/40 dark:bg-scn-destructive/60",
