@@ -45,20 +45,20 @@ export default function CreateGroupDialog({ trigger }: CreateGroupDialogProps) {
       <DialogTrigger asChild>
         {trigger || <Button>Create Group</Button>}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] bg-surface">
         <DialogHeader>
           <DialogTitle>Create New Group</DialogTitle>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
+            <Label htmlFor="name" className="text-right text-text-secondary">
               Group Name
             </Label>
             <Input
               id="name"
               value={newGroupName}
               onChange={(e) => setNewGroupName(e.target.value)}
-              className="col-span-3"
+              className="col-span-3 bg-surface border-border-subtle focus:ring-brand-primary"
               placeholder="Enter group name"
             />
           </div>
@@ -67,7 +67,9 @@ export default function CreateGroupDialog({ trigger }: CreateGroupDialogProps) {
           <Button variant="outline" onClick={() => setIsOpen(false)}>
             Cancel
           </Button>
-          <Button onClick={handleCreateGroup}>Create</Button>
+          <Button onClick={handleCreateGroup} className="bg-brand-primary hover:bg-brand-hover">
+            Create
+          </Button>
         </div>
       </DialogContent>
     </Dialog>

@@ -1,8 +1,7 @@
 "use client"
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useGroupsStore } from '@/features/groups/store/groups.store';
 import { groupActions } from '@/features/groups/actions/group.actions';
-import { Group } from '@/features/groups/types/Group';
 import GroupDetailView from './GroupDetailView';
 import { Button } from "@/components/ui/button";
 import { useRouter } from 'next/navigation';
@@ -37,9 +36,9 @@ export default function GroupsView() {
   }
 
   return (
-    <div className="p-6">
+    <div className="p-6 bg-primary">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Study Groups</h1>
+        <h1 className="text-2xl font-bold text-text-primary">Study Groups</h1>
         <CreateGroupDialog />
       </div>
 
@@ -51,7 +50,7 @@ export default function GroupsView() {
 
       {groups.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-gray-500">No groups found. Create your first group to get started!</p>
+          <p className="text-text-secondary">No groups found. Create your first group to get started!</p>
           <div className="mt-4">
             <CreateGroupDialog trigger={<Button>Create Your First Group</Button>} />
           </div>

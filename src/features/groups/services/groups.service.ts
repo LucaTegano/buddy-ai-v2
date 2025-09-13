@@ -2,7 +2,8 @@
 import apiClient from '@/shared/api/apiClient';
 import { GROUPS_ENDPOINTS } from '@/features/groups/api/groups.api';
 import TokenManager from '@/features/auth/utils/tokenManager';
-import { Group } from '@/features/groups/types/Group';
+import { Group, GroupMember } from '@/features/groups/types/Group';
+import { GroupTask } from '@/shared/types/Task';
 
 class GroupsService {
   /**
@@ -34,9 +35,9 @@ class GroupsService {
       const response = await apiClient.get<Group[]>(GROUPS_ENDPOINTS.GET_ALL);
       console.log('Groups response:', response.status, response.data);
       return response.data || [];
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error fetching groups:', error);
-      if (error.response?.status === 401) {
+      if (error instanceof Error && (error as any).response?.status === 401) {
         throw new Error('Authentication failed. Please log in again.');
       }
       throw error;
@@ -110,13 +111,13 @@ class GroupsService {
     }
   }
 
-  async getGroupTasks(groupId: string): Promise<any[]> {
+  async getGroupTasks(groupId: string): Promise<GroupTask[]> {
     if (!(await this.isAuthenticated())) {
       throw new Error('User is not authenticated');
     }
     
     try {
-      const response = await apiClient.get<any[]>(GROUPS_ENDPOINTS.TASKS(groupId));
+      const response = await apiClient.get<GroupTask[]>(GROUPS_ENDPOINTS.TASKS(groupId));
       return response.data || [];
     } catch (error: any) {
       console.error('Error fetching group tasks:', error);
@@ -127,13 +128,13 @@ class GroupsService {
     }
   }
 
-  async createGroupTask(groupId: string, taskText: string): Promise<any | null> {
+  async createGroupTask(groupId: string, taskText: string): Promise<GroupTask | null> {
     if (!(await this.isAuthenticated())) {
       throw new Error('User is not authenticated');
     }
     
     try {
-      const response = await apiClient.post<any>(GROUPS_ENDPOINTS.TASKS(groupId), { text: taskText });
+      const response = await apiClient.post<GroupTask>(GROUPS_ENDPOINTS.TASKS(groupId), { text: taskText });
       return response.data || null;
     } catch (error: any) {
       console.error('Error creating group task:', error);
@@ -144,13 +145,13 @@ class GroupsService {
     }
   }
 
-  async updateGroupTask(groupId: string, taskId: string, taskText: string, completed: boolean): Promise<any | null> {
+  async updateGroupTask(groupId: string, taskId: string, taskText: string, completed: boolean): Promise<GroupTask | null> {
     if (!(await this.isAuthenticated())) {
       throw new Error('User is not authenticated');
     }
     
     try {
-      const response = await apiClient.put<any>(`${GROUPS_ENDPOINTS.TASKS(groupId)}/${taskId}`, { text: taskText, completed });
+      const response = await apiClient.put<GroupTask>(`${GROUPS_ENDPOINTS.TASKS(groupId)}/${taskId}`, { text: taskText, completed });
       return response.data || null;
     } catch (error: any) {
       console.error('Error updating group task:', error);
@@ -177,17 +178,17 @@ class GroupsService {
     }
   }
 
-  async getGroupMembers(groupId: string): Promise<any[]> {
+  async getGroupMembers(groupId: string): Promise<GroupMember[]> {
     if (!(await this.isAuthenticated())) {
       throw new Error('User is not authenticated');
     }
     
     try {
-      const response = await apiClient.get<any[]>(GROUPS_ENDPOINTS.MEMBERS(groupId));
+      const response = await apiClient.get<GroupMember[]>(GROUPS_ENDPOINTS.MEMBERS(groupId));
       return response.data || [];
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error fetching group members:', error);
-      if (error.response?.status === 401) {
+      if (error instanceof Error && (error as any).response?.status === 401) {
         throw new Error('Authentication failed. Please log in again.');
       }
       throw error;

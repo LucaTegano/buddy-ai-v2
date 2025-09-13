@@ -1,8 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/navigation';
-import { 
-  SparklesIcon, 
+import {  
   Cog6ToothIcon, 
   ArrowRightOnRectangleIcon 
 } from '@/shared/components/icons';
@@ -47,13 +46,6 @@ const UserMenu: React.FC<UserMenuProps> = ({
       </div>
       <button 
         onClick={onCustomize} 
-        className="w-full text-left flex items-center gap-3 px-3 py-2 text-sm text-text-primary hover:bg-hover rounded-md transition-colors"
-      >
-        <SparklesIcon className="w-5 h-5 text-brand-primary" />
-        {t('sidebar.customizeAI')}
-      </button>
-      <button 
-        onClick={() => router.push('/general-settings')} 
         className="w-full text-left flex items-center gap-3 px-3 py-2 text-sm text-text-primary hover:bg-hover rounded-md transition-colors"
       >
         <Cog6ToothIcon className="w-5 h-5" />
