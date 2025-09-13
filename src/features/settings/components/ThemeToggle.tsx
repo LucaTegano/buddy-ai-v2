@@ -1,10 +1,21 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react'; // Import useState and useEffect
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'next-themes';
 
 const ThemeToggle: React.FC = () => {
     const { t } = useTranslation();
     const { theme, setTheme } = useTheme();
+    const [mounted, setMounted] = useState(false);
+
+    // useEffect only runs on the client, so we can safely show the UI
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    // Until the component is mounted, we'll return null to avoid hydration mismatch
+    if (!mounted) {
+        return null;
+    }
 
     const toggleTheme = () => {
         setTheme(theme === 'light' ? 'dark' : 'light');

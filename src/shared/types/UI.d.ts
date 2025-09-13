@@ -18,7 +18,6 @@ export interface UIActions {
 
 export interface UserMenuProps {
   user: { username: string; email: string; picture: string };
-  onCustomize: () => void;
   onSettings: () => void;
   onLogout: () => void;
   onClose: () => void;

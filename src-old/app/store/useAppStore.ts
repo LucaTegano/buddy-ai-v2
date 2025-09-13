@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { User, Note, Project, Group, Personality, PersonalTask, GroupTask } from '@/app/models/types';
+import { User, Note, Project, Group, Personality, PersonalTask } from '../models/types';
 import notesService from '../services/notesService';
 import groupsService from '../services/groupsService';
 import tasksService from '../services/tasksService';
@@ -53,8 +53,6 @@ interface AppState {
   closePrivacyPolicy: () => void;
   openSettings: () => void;
   closeSettings: () => void;
-  openCustomizeAI: () => void;
-  closeCustomizeAI: () => void;
   setActiveView: (view: ActiveView) => void;
   setActiveNoteId: (id: string | null) => void;
   setActiveGroupId: (id: string | null) => void;
@@ -184,10 +182,8 @@ export const useAppStore = create<AppState>((set, get) => ({
   closeTos: () => set({ showTos: false }),
   openPrivacyPolicy: () => set({ showPrivacyPolicy: true, showSettings: false }),
   closePrivacyPolicy: () => set({ showPrivacyPolicy: false }),
-  openSettings: () => set({ showSettings: true, showCustomizeAI: false }),
+  openSettings: () => set({ showSettings: true,}),
   closeSettings: () => set({ showSettings: false }),
-  openCustomizeAI: () => set({ showCustomizeAI: true, showSettings: false }),
-  closeCustomizeAI: () => set({ showCustomizeAI: false }),
   setActiveView: (view: ActiveView) => {
     set(state => ({
       activeView: view,

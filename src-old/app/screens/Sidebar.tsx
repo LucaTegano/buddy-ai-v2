@@ -1,9 +1,8 @@
 "use client"
 import React, { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { HomeIcon, DocumentDuplicateIcon, UsersIcon, Cog6ToothIcon, ArrowRightOnRectangleIcon, ChevronDoubleLeftIcon, SparklesIcon, TrashIcon, MagnifyingGlassIcon, XMarkIcon, InboxIcon, PlusIcon } from '@/app/components/icons';
+import { HomeIcon, DocumentDuplicateIcon, UsersIcon, Cog6ToothIcon, ArrowRightOnRectangleIcon, ChevronDoubleLeftIcon, SparklesIcon, TrashIcon, MagnifyingGlassIcon, XMarkIcon, InboxIcon, PlusIcon } from '@/shared/components/icons';
 import { useAppStore } from '../store/useAppStore';
-import { User } from '../models/types';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 
@@ -14,43 +13,6 @@ const NavItem = ({ icon, text, active, isOpen, href }: { icon: React.ReactNode, 
     </Link>
 );
 
-const UserMenu = ({ user, onCustomize, onSettings, onLogout, onClose }: { user: User; onCustomize: () => void; onSettings: () => void, onLogout: () => void, onClose: () => void }) => {
-    const { t } = useTranslation();
-    const menuRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-                onClose();
-            }
-        };
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, [onClose]);
-
-    return (
-        <div ref={menuRef} className="absolute bottom-20 left-3 w-60 bg-surface rounded-lg shadow-2xl border border-border-subtle p-2 z-10 animate-in fade-in zoom-in-95 duration-200">
-            <div className="px-3 py-2 border-b border-border-subtle mb-2">
-                <p className="text-sm font-semibold text-text-primary truncate" title={user.name}>{user.name}</p>
-                <p className="text-xs text-text-secondary truncate" title={user.email}>{user.email}</p>
-            </div>
-             <button onClick={onCustomize} className="w-full text-left flex items-center gap-3 px-3 py-2 text-sm text-text-primary hover:bg-hover rounded-md transition-colors">
-                <SparklesIcon className="w-5 h-5 text-brand-primary"/>
-                {t('sidebar.customizeAI')}
-            </button>
-             <button onClick={onSettings} className="w-full text-left flex items-center gap-3 px-3 py-2 text-sm text-text-primary hover:bg-hover rounded-md transition-colors">
-                <Cog6ToothIcon className="w-5 h-5"/>
-                {t('sidebar.settings')}
-            </button>
-            <button onClick={onLogout} className="w-full text-left flex items-center gap-3 px-3 py-2 text-sm text-text-primary hover:bg-hover rounded-md transition-colors">
-                <ArrowRightOnRectangleIcon className="w-5 h-5"/>
-                {t('sidebar.signOut')}
-            </button>
-        </div>
-    );
-};
 
 const SearchInput = () => {
     const { t } = useTranslation();
@@ -92,7 +54,7 @@ const SearchInput = () => {
 
 const Sidebar: React.FC = () => {
     const { t } = useTranslation();
-    const { user, isSidebarOpen, setIsSidebarOpen, logout, openSettings, openCustomizeAI } = useAppStore();
+    const { user, isSidebarOpen, setIsSidebarOpen, logout, openSettings } = useAppStore();
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
     const pathname = usePathname();
     const router = useRouter();
@@ -188,8 +150,6 @@ const Sidebar: React.FC = () => {
             )}
             
             <div className="flex-grow"></div> {/* Spacer to push user menu to the bottom */}
-
-            {isUserMenuOpen && <UserMenu user={user} onCustomize={() => { openCustomizeAI(); setIsUserMenuOpen(false); }} onSettings={() => { openSettings(); setIsUserMenuOpen(false); }} onLogout={logout} onClose={() => setIsUserMenuOpen(false)} />}
             
             <div className="p-3 border-t border-border-subtle">
                  <div

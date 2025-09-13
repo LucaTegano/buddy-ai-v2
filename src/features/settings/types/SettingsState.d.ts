@@ -1,7 +1,7 @@
 import { Personality } from "./Personality";
 
 export type Theme = 'light' | 'dark';
-export type ActiveModal = 'settings' | 'tos' | 'privacy' | 'customizeAI' | null;
+export type ActiveModal = 'settings' | null;
 
 export interface SettingsState {
   activeModal: ActiveModal;

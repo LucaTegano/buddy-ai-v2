@@ -232,7 +232,7 @@ export function SearchCommand() {
             <CommandItem
               className="py-3 text-base"
               onSelect={() => {
-                router.push('/general-settings');
+                router.push('/settings');
                 handleClose();
               }}
             >

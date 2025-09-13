@@ -1,8 +1,8 @@
-// app/general-settings/layout.tsx
+// app/settings/layout.tsx
 import React from "react";
 
 // This layout receives the page content (children) and the modal content (modal)
-export default function GeneralSettingsLayout({
+export default function SettingsLayout({
   children,
   modal,
 }: {

@@ -90,7 +90,7 @@ const VerifyForm = () => {
 
     try {
       await authService.resendVerification(email);
-      setSuccess(t('verification.codeResent', 'Un nuovo codice di verifica è stato inviato alla tua email.'));
+      toast.success(t('verification.codeResent', 'Un nuovo codice di verifica è stato inviato alla tua email.'));
     } catch (err: unknown) {
       console.error('Resend error:', err);
       const errorMsg = t('verification.resendError', 'Impossibile inviare nuovamente il codice. Riprova più tardi.');

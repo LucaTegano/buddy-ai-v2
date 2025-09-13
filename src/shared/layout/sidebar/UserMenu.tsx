@@ -9,7 +9,6 @@ import { UserMenuProps } from '@/shared/types/UI';
 
 const UserMenu: React.FC<UserMenuProps> = ({ 
   user, 
-  onCustomize, 
   onSettings, 
   onLogout, 
   onClose 
@@ -45,7 +44,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
         </p>
       </div>
       <button 
-        onClick={onCustomize} 
+        onClick={onSettings} 
         className="w-full text-left flex items-center gap-3 px-3 py-2 text-sm text-text-primary hover:bg-hover rounded-md transition-colors"
       >
         <Cog6ToothIcon className="w-5 h-5" />

@@ -20,7 +20,6 @@ const Sidebar: React.FC = () => {
     handleUserMenuToggle,
     handleAsideClick,
     openSettings,
-    openCustomizeAI,
     logout
   } = useSidebarActions();
   
@@ -54,7 +53,6 @@ const Sidebar: React.FC = () => {
       {isUserMenuOpen && (
         <UserMenu 
           user={user} 
-          onCustomize={openCustomizeAI}
           onSettings={openSettings} 
           onLogout={logout} 
           onClose={() => useUIStore.getState().setIsUserMenuOpen(false)} 

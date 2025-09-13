@@ -1,5 +1,6 @@
 import { useUIStore } from '@/shared/store/ui.store';
 import { useAuthStore } from '@/features/auth/store/auth.store';
+import { useRouter } from 'next/navigation';
 
 // Actions for sidebar functionality
 export const useSidebarActions = () => {
@@ -13,6 +14,7 @@ export const useSidebarActions = () => {
   } = useUIStore();
   
   const { logout } = useAuthStore();
+  const router = useRouter();
 
   const handleUserMenuToggle = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -26,14 +28,10 @@ export const useSidebarActions = () => {
   };
 
   const openSettings = () => {
-    console.log('Open settings');
+    router.push('/settings');
     setIsUserMenuOpen(false);
   };
 
-  const openCustomizeAI = () => {
-    console.log('Open customize AI');
-    setIsUserMenuOpen(false);
-  };
 
   return {
     isSidebarOpen,
@@ -44,7 +42,6 @@ export const useSidebarActions = () => {
     handleUserMenuToggle,
     handleAsideClick,
     openSettings,
-    openCustomizeAI,
     logout
   };
 };

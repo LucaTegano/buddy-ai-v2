@@ -25,7 +25,7 @@ export const useSearchShortcuts = (onClose: () => void) => {
   // Cmd/Ctrl + S - Navigate to general settings
   const navigateToSettings = (e: KeyboardEvent) => {
     e.preventDefault();
-    router.push('/general-settings');
+    router.push('/settings');
     onClose();
   };
 
