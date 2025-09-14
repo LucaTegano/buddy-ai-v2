@@ -58,6 +58,7 @@ export const en = {
     newNote: "New Note",
     personalTasks: "Personal Tasks",
     groupTasksTitle: "Collaborative Tasks",
+    TermsAndPolicies: "Terms & Policies",
   },
   home: {
     welcome: "Welcome back, {{name}}!",
@@ -78,6 +79,10 @@ export const en = {
     participants: "{{count}} participant",
     participants_plural: "{{count}} participants",
   },
+  noteList:{
+    note: "Notes",
+    newNote: "New Note",
+  },
   groupCard: {
     members: "{{count}} member",
     members_plural: "{{count}} members",
@@ -87,10 +92,19 @@ export const en = {
     lastActivity: "Last activity:",
   },
   settings: {
+    theme: {
+      label: "Theme",
+      system: "System",
+      light: "Light",
+      dark: "Dark"
+    },
+    language: {
+      label: "Language",
+      auto: "Automatic Detection"
+    },
     title: "Settings",
     goBack: "Go back",
     appearance: "Appearance",
-    theme: "Theme",
     light: "Light",
     dark: "Dark",
     legal: "Legal",
@@ -98,6 +112,8 @@ export const en = {
     privacyLink: "Privacy Policy",
     tosContent: "1. Introduction\nWelcome to Study Buddy AI (\"we,\" \"our,\" \"us\"). These Terms of Service (\"Terms\") govern your use of our application and services. By accessing or using our service, you agree to be bound by these Terms. This is a mock document for demonstration purposes and holds no legal weight.\n\n2. Use of Service\nStudy Buddy AI is provided for educational and personal use only. You agree not to use the service for any illegal or unauthorized purpose. You are responsible for any content you provide and your interactions with the AI. We reserve the right to suspend or terminate your access to the service at any time, without notice, for conduct that we believe violates these Terms.\n\n3. User Content\nYou retain ownership of the notes and content you create (\"User Content\"). By using the service, you grant us a non-exclusive, worldwide, royalty-free license to use, reproduce, and display your User Content solely for the purpose of operating and providing the service to you. We do not claim any ownership rights over your data.\n\n4. Disclaimers\nThe service is provided on an \"as is\" and \"as available\" basis. While we strive to provide accurate and helpful information, the AI-generated content may contain errors or inaccuracies. We do not warrant that the service will be uninterrupted, error-free, or secure. You should not rely on the AI for critical advice and should always verify important information.\n\n5. Limitation of Liability\nTo the fullest extent permitted by law, Study Buddy AI shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly, or any loss of data, use, goodwill, or other intangible losses, resulting from your access to or use of or inability to access or use the service.",
     privacyContent: "1. Information We Collect\nWhen you sign in with Google, we collect basic profile information necessary for the app's functionality, such as your name and profile picture. We also temporarily process the content you provide to the chat and scratchpad to deliver the AI-powered features. This is a mock document for demonstration purposes; no actual data is collected or stored long-term.\n\n2. How We Use Information\nThe information collected is used solely to provide and improve the service. Your name and picture personalize your user experience. The text you input is sent to the Gemini API to generate responses and perform actions like summarizing or proofreading. We do not use your data for advertising or any other purpose.\n\n3. Data Sharing and Storage\nWe do not share your personal information with third parties, except as required to provide the service (e.g., sending prompts to the Google Gemini API). Your chat history and scratchpad content are maintained only for the duration of your session and are not stored permanently on our servers.\n\n4. Data Security\nWe take reasonable measures to protect the information you provide. However, no electronic transmission or storage is 100% secure. We cannot guarantee the absolute security of your data.\n\n5. Changes to This Policy\nWe may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page. You are advised to review this Privacy Policy periodically for any changes.",
+    general:"General",
+    customization:"Customization",
   },
   customizeAI: {
     title: "Customize BuddyAI",

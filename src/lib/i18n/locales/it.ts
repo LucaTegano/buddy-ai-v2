@@ -58,6 +58,7 @@ export const it = {
     newNote: "Nuova Nota",
     personalTasks: "Compiti Personali",
     groupTasksTitle: "Compiti Collaborativi",
+    TermsAndPolicies: "Termini e Politiche",
   },
   home: {
     welcome: "Bentornato, {{name}}!",
@@ -78,6 +79,10 @@ export const it = {
     participants: "{{count}} partecipante",
     participants_plural: "{{count}} partecipanti",
   },
+  noteList:{
+    note: "Note",
+    newNote: "Nuova Nota",
+  },
   groupCard: {
     members: "{{count}} membro",
     members_plural: "{{count}} membri",
@@ -87,10 +92,22 @@ export const it = {
     lastActivity: "Ultima attività:",
   },
   settings: {
+    general:"Generale",
+    customization:"Personalizzazione",
+    theme: {
+      label: "Tema",
+      system: "Sistema",
+      light: "Chiaro",
+      dark: "Scuro"
+    },
+    language: {
+      label: "Lingua",
+      auto: "Rilevamento automatico"
+    },
+
     title: "Impostazioni",
     goBack: "Torna indietro",
     appearance: "Aspetto",
-    theme: "Tema",
     light: "Chiaro",
     dark: "Scuro",
     legal: "Legale",

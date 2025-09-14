@@ -5,6 +5,7 @@ import {
   Cog6ToothIcon, 
   ArrowRightOnRectangleIcon 
 } from '@/shared/components/icons';
+import { FileText } from 'lucide-react';
 import { UserMenuProps } from '@/shared/types/UI';
 
 const UserMenu: React.FC<UserMenuProps> = ({ 
@@ -43,8 +44,15 @@ const UserMenu: React.FC<UserMenuProps> = ({
           {user.email}
         </p>
       </div>
+        <button 
+        onClick={() => router.push('/policies')} 
+        className="w-full text-left flex items-center gap-3 px-3 py-2 text-sm text-text-primary hover:bg-hover rounded-md transition-colors"
+      >
+        <FileText className="w-5 h-5" />
+        {t('sidebar.TermsAndPolicies')}
+      </button>
       <button 
-        onClick={onSettings} 
+        onClick={onSettings}
         className="w-full text-left flex items-center gap-3 px-3 py-2 text-sm text-text-primary hover:bg-hover rounded-md transition-colors"
       >
         <Cog6ToothIcon className="w-5 h-5" />

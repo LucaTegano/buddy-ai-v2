@@ -55,9 +55,10 @@ export const fr = {
     signOut: "Se déconnecter",
     userRole: "Étudiant",
     searchNotesPlaceholder: "Tapez et appuyez sur Entrée...",
-    newNote: "Nouvelle note",
+    newNote: "Nouvelle Note",
     personalTasks: "Tâches personnelles",
     groupTasksTitle: "Tâches collaboratives",
+    TermsAndPolicies: "Conditions et Politiques",
   },
   home: {
     welcome: "Bon retour, {{name}} !",
@@ -78,6 +79,10 @@ export const fr = {
     participants: "{{count}} participant",
     participants_plural: "{{count}} participants",
   },
+  noteList:{
+    note: "Notes",
+    newNote: "Nouvelle Note",
+  },
   groupCard: {
     members: "{{count}} membre",
     members_plural: "{{count}} membres",
@@ -87,10 +92,19 @@ export const fr = {
     lastActivity: "Dernière activité :",
   },
   settings: {
+    theme: {
+      label: "Thème",
+      system: "Système",
+      light: "Clair",
+      dark: "Sombre"
+    },
+    language: {
+      label: "Langue",
+      auto: "Détection automatique"
+    },
     title: "Paramètres",
     goBack: "Retour",
     appearance: "Apparence",
-    theme: "Thème",
     light: "Clair",
     dark: "Sombre",
     legal: "Légal",
@@ -98,6 +112,8 @@ export const fr = {
     privacyLink: "Politique de confidentialité",
     tosContent: "1. Introduction\nBienvenue chez Study Buddy AI (« nous », « notre », « nos »). Les présentes Conditions d'utilisation (« Conditions ») régissent votre utilisation de notre application et de nos services. En accédant ou en utilisant notre service, vous acceptez d'être lié par ces Conditions. Il s'agit d'un document fictif à des fins de démonstration et n'a aucune valeur juridique.\n\n2. Utilisation du service\nStudy Buddy AI est fourni uniquement pour un usage éducatif et personnel. Vous acceptez de ne pas utiliser le service à des fins illégales ou non autorisées. Vous êtes responsable de tout contenu que vous fournissez et de vos interactions avec l'IA. Nous nous réservons le droit de suspendre ou de résilier votre accès au service à tout moment, sans préavis, pour un comportement que nous estimons contraire aux présentes Conditions.\n\n3. Contenu de l'utilisateur\nVous conservez la propriété des notes et du contenu que vous créez (« Contenu de l'utilisateur »). En utilisant le service, vous nous accordez une licence non exclusive, mondiale et libre de droits pour utiliser, reproduire et afficher votre Contenu de l'utilisateur uniquement dans le but d'exploiter et de vous fournir le service. Nous ne revendiquons aucun droit de propriété sur vos données.\n\n4. Avertissements\nLe service est fourni « tel quel » et « selon disponibilité ». Bien que nous nous efforcions de fournir des informations précises et utiles, le contenu généré par l'IA peut contenir des erreurs ou des imprécisions. Nous ne garantissons pas que le service sera ininterrompu, exempt d'erreurs ou sécurisé. Vous ne devez pas vous fier à l'IA pour des conseils cruciaux et vous devez toujours vérifier les informations importantes.\n\n5. Limitation de responsabilité\nDans la mesure maximale permise par la loi, Study Buddy AI ne pourra être tenu responsable des dommages indirects, accessoires, spéciaux, consécutifs ou punitifs, ni d'aucune perte de profits ou de revenus, qu'ils soient encourus directement ou indirectement, ni d'aucune perte de données, d'utilisation, de goodwill ou d'autres pertes immatérielles, résultant de votre accès ou de votre utilisation, ou de votre incapacité d'accès ou d'utilisation du service.",
     privacyContent: "1. Informations que nous collectons\nLorsque vous vous connectez avec Google, nous collectons les informations de base du profil nécessaires au fonctionnement de l'application, telles que votre nom et votre photo de profil. Nous traitons également temporairement le contenu que vous fournissez au chat et au bloc-notes pour fournir les fonctionnalités basées sur l'IA. Ceci est un document fictif à des fins de démonstration ; aucune donnée réelle n'est collectée ou stockée à long terme.\n\n2. Comment nous utilisons les informations\nLes informations collectées sont utilisées uniquement pour fournir et améliorer le service. Votre nom et votre photo personnalisent votre expérience utilisateur. Le texte que vous saisissez est envoyé à l'API Gemini pour générer des réponses et effectuer des actions telles que résumer ou corriger. Nous n'utilisons pas vos données à des fins publicitaires ou à toute autre fin.\n\n3. Partage et stockage des données\nNous ne partageons pas vos informations personnelles avec des tiers, sauf si cela est nécessaire pour fournir le service (par exemple, envoyer des requêtes à l'API Google Gemini). Votre historique de chat et le contenu du bloc-notes sont conservés uniquement pendant la durée de votre session et ne sont pas stockés de manière permanente sur nos serveurs.\n\n4. Sécurité des données\nNous prenons des mesures raisonnables pour protéger les informations que vous fournissez. Cependant, aucune transmission ou stockage électronique n'est sécurisé à 100 %. Nous ne pouvons garantir la sécurité absolue de vos données.\n\n5. Modifications de cette politique\nNous pouvons mettre à jour cette Politique de confidentialité de temps à autre. Nous vous informerons de tout changement en publiant la nouvelle Politique de confidentialité sur cette page. Nous vous conseillons de consulter périodiquement cette Politique de confidentialité pour tout changement.",
+    general:"Général",
+    customization:"Personnalisation",
   },
   customizeAI: {
     title: "Personnaliser BuddyAI",
