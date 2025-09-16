@@ -202,7 +202,9 @@ const NoteEditor: React.FC<NoteEditorProps> = ({
         <>
           <Resizer onMouseDown={handleMouseDownOnResizer} />
           <div className="flex-shrink-0" style={{ height: chatPanelHeight }}>
-            <ChatPanel noteId={note.id} />
+            {note?.id && (
+            <ChatPanel noteId={parseInt(note.id, 10)} />
+            )}
           </div>
         </>
       )}
