@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { noteActions } from '@/features/notes/actions/note.actions';
 import { Note } from '@/features/notes/types/Note';
 
@@ -21,7 +21,7 @@ export const useNoteAutoSave = (note: Partial<Note>, options: AutoSaveOptions = 
     noteRef.current = note;
   }, [note]);
 
-  const saveNote = async () => {
+  const saveNote = useCallback(async () => {
     if (!noteRef.current || !noteRef.current.id) {
       console.warn('Attempted to save note, but note or note.id is missing');
       return;
@@ -53,9 +53,9 @@ export const useNoteAutoSave = (note: Partial<Note>, options: AutoSaveOptions = 
     } finally {
       setIsSaving(false);
     }
-  };
+  }, [onSave, onError]);
 
-  const startAutoSave = () => {
+  const startAutoSave = useCallback(() => {
     if (saveTimeoutRef.current) {
       clearTimeout(saveTimeoutRef.current);
     }
@@ -64,14 +64,14 @@ export const useNoteAutoSave = (note: Partial<Note>, options: AutoSaveOptions = 
       await saveNote();
       startAutoSave(); // Restart the cycle
     }, interval);
-  };
+  }, [interval, saveNote]);
 
-  const stopAutoSave = () => {
+  const stopAutoSave = useCallback(() => {
     if (saveTimeoutRef.current) {
       clearTimeout(saveTimeoutRef.current);
       saveTimeoutRef.current = null;
     }
-  };
+  }, []);
 
   // Start auto-save when note has an ID and content
   useEffect(() => {
@@ -82,7 +82,7 @@ export const useNoteAutoSave = (note: Partial<Note>, options: AutoSaveOptions = 
     return () => {
       stopAutoSave();
     };
-  }, [note?.id, interval, startAutoSave]);
+  }, [note?.id, startAutoSave, stopAutoSave]);
 
   return {
     isSaving,

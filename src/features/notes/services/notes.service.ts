@@ -2,6 +2,7 @@
 import apiClient from '@/shared/api/apiClient';
 import { NOTES_ENDPOINTS } from '@/features/notes/api/notes.api';
 import {
+  BackendNote,
   backendNoteListItemToFrontendNote,
   backendNoteDetailToFrontendNote,
   frontendNoteToBackendNote,
@@ -68,7 +69,7 @@ class NotesService {
 
   async getAllNotes(): Promise<Note[]> {
     return this._executeRequest('fetch all notes',
-      () => apiClient.get<Note[]>(NOTES_ENDPOINTS.GET_ALL),
+      () => apiClient.get<BackendNote[]>(NOTES_ENDPOINTS.GET_ALL),
       {
         onSuccess: (data) => (data || []).map(backendNoteListItemToFrontendNote),
         defaultReturnValue: [],
@@ -84,7 +85,7 @@ class NotesService {
     const url = `${NOTES_ENDPOINTS.SEARCH}?query=${encodedQuery}`;
 
     return this._executeRequest('search notes',
-      () => apiClient.get<Note[]>(url),
+      () => apiClient.get<BackendNote[]>(url),
       {
         onSuccess: (data) => (data || []).map(backendNoteListItemToFrontendNote),
         onAuthError: 'returnDefault', // Returns default value on auth error instead of throwing
@@ -95,7 +96,7 @@ class NotesService {
 
   async getNoteById(id: string): Promise<Note | null> {
     return this._executeRequest('fetch note by id',
-      () => apiClient.get<Note>(NOTES_ENDPOINTS.GET_BY_ID(id)),
+      () => apiClient.get<BackendNote>(NOTES_ENDPOINTS.GET_BY_ID(id)),
       {
         onSuccess: (data) => {
           if (!data) {
@@ -111,7 +112,7 @@ class NotesService {
   async createNote(note: Partial<Note>): Promise<Note | null> {
     const backendNote = frontendNoteToBackendNote(note);
     return this._executeRequest('create note',
-      () => apiClient.post<Note>(NOTES_ENDPOINTS.CREATE, backendNote),
+      () => apiClient.post<BackendNote>(NOTES_ENDPOINTS.CREATE, backendNote),
       {
         onSuccess: (data) => (data ? backendNoteDetailToFrontendNote(data) : null),
       }
@@ -121,7 +122,7 @@ class NotesService {
   async updateNote(id: string, note: Partial<Note>): Promise<Note | null> {
     const backendNote = frontendNoteToBackendNote(note);
     return this._executeRequest('update note',
-      () => apiClient.patch<Note>(NOTES_ENDPOINTS.UPDATE(id), backendNote),
+      () => apiClient.patch<BackendNote>(NOTES_ENDPOINTS.UPDATE(id), backendNote),
       {
         onSuccess: (data) => (data ? backendNoteDetailToFrontendNote(data) : null),
       }

@@ -91,4 +91,5 @@ class GroupsTasksService {
   }
 }
 
-export default new GroupsTasksService();
+const groupsTasksService = new GroupsTasksService();
+export default groupsTasksService;

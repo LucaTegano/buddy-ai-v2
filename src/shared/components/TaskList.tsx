@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { PersonalTask, GroupTask, GroupMember, TaskListProps } from '../types/Task';
+import { GroupTask, TaskListProps } from '../types/Task';
 import { CheckCircle, Circle, Trash2, Edit, Save, X, Plus } from 'lucide-react';
+import Image from 'next/image';
 import { 
   getAssignee,
   handleToggleCompletion,
@@ -139,11 +140,13 @@ const TaskList: React.FC<TaskListProps> = ({ title, tasks: initialTasks, members
                     )}
                     
                     {assignee && (
-                      <img 
+                      <Image 
                         src={assignee.picture} 
                         alt={assignee.name} 
                         title={`Assigned to ${assignee.name}`} 
-                        className="w-7 h-7 rounded-full" 
+                        width={28}
+                        height={28}
+                        className="rounded-full" 
                       />
                     )}
                     

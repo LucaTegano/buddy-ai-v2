@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Note } from '@/features/notes/types/Note';
-import { DocumentTextIcon, UsersIcon } from '@/shared/components/icons';
+import { DocumentTextIcon } from '@/shared/components/icons';
 import Link from 'next/link';
 
 interface NoteCardProps {

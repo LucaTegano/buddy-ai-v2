@@ -1,4 +1,4 @@
-import { createInstance, i18n } from 'i18next';
+import { createInstance } from 'i18next';
 import { initReactI18next } from 'react-i18next/initReactI18next';
 import { getOptions } from './config';
 

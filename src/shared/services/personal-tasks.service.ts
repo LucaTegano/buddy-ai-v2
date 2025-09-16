@@ -39,4 +39,5 @@ class TasksPersonalService {
 }
 
 
-export default new TasksPersonalService();
+const tasksPersonalService = new TasksPersonalService();
+export default tasksPersonalService;

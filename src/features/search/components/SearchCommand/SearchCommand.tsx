@@ -29,6 +29,7 @@ import { useSearchShortcuts } from './shortcuts';
 import recentNotesService from '@/features/notes/services/recent-notes.service';
 import { NoteListItem } from '@/features/notes/types/RecentNotes';
 import notesService from '@/features/notes/services/notes.service';
+import { noteToNoteListItem } from '@/features/notes/utils/noteMapper';
 
 // Simple debounce hook
 function useDebounce<T>(value: T, delay: number): T {
@@ -107,7 +108,9 @@ export function SearchCommand() {
         const results = await notesService.searchNotes(query);
         if (active) {
           console.log('Search results:', results);
-          setSearchResults(results);
+          // Map Note[] to NoteListItem[]
+          const mappedResults = results.map(noteToNoteListItem);
+          setSearchResults(mappedResults);
         }
       } catch (error) {
         console.error('Failed to search notes:', error);

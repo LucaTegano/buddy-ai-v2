@@ -1,4 +1,5 @@
 import { Note } from '@/features/notes/types/Note';
+import { NoteListItem } from '@/features/notes/types/RecentNotes';
 
 export interface BackendNote {
   id: number;
@@ -14,7 +15,7 @@ export interface BackendNote {
 }
 
 // Convert backend note list item to frontend note
-export function backendNoteListItemToFrontendNote(backendNote: BackendNote): Partial<Note> {
+export function backendNoteListItemToFrontendNote(backendNote: BackendNote): Note {
   return {
     id: backendNote.id.toString(), // Convert number to string
     title: backendNote.title,
@@ -24,7 +25,10 @@ export function backendNoteListItemToFrontendNote(backendNote: BackendNote): Par
     content: '',
     tags: [],
     isCollaborative: false,
-    participantCount: 1
+    participantCount: 1,
+    createdAt: new Date(), // Default value
+    updatedAt: new Date(), // Default value
+    lastEdited: undefined, // Optional field
   };
 }
 
@@ -50,5 +54,15 @@ export function frontendNoteToBackendNote(frontendNote: Partial<Note>): Partial<
     tags: frontendNote.tags || [],
     collaborative: frontendNote.isCollaborative,
     // Note: id, createdAt, updatedAt, and participantCount are managed by backend
+  };
+}
+
+// Convert frontend note to NoteListItem for search results
+export function noteToNoteListItem(note: Note): NoteListItem {
+  return {
+    id: note.id,
+    title: note.title,
+    lastActivity: note.lastActivity || new Date().toISOString(), // Provide default if undefined
+    formattedDate: note.formattedDate || new Date().toLocaleDateString(), // Provide default if undefined
   };
 }

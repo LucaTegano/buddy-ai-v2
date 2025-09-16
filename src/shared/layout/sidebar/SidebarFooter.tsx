@@ -1,7 +1,8 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { useUIStore } from '@/shared/store/ui.store';
 import Image from 'next/image';
+import defaultAvatar from '../../../../public/default-avatar.jpg';
+
 
 interface SidebarFooterProps {
   user: { username: string; email:string; picture: string };
@@ -14,7 +15,6 @@ const SidebarFooter: React.FC<SidebarFooterProps> = ({
   onUserMenuToggle, 
   isUserMenuOpen 
 }) => {
-  const { t } = useTranslation();
   const { isSidebarOpen } = useUIStore();
 
   return (
@@ -28,7 +28,7 @@ const SidebarFooter: React.FC<SidebarFooterProps> = ({
       >
         <div className="relative group flex-shrink-0">
           <Image 
-            src={user.picture} 
+            src={user.picture || defaultAvatar} 
             alt={user.username} 
             className="w-10 h-10 rounded-full object-cover border-2 border-brand-primary/50" 
           />

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import {noteActions} from '@/features/notes/actions/note.actions';
 import { useUIStore } from '@/shared/store/ui.store';
 import { 
@@ -8,24 +8,15 @@ import {
   PlusIcon,
   HomeIcon, 
   DocumentDuplicateIcon, 
-  UsersIcon, 
-  InboxIcon, 
   TrashIcon 
 } from '@/shared/components/icons';
 import NavItem from '@/shared/layout/sidebar/NavItem';
 import { useCommandSearch } from '@/lib/hooks/use-command-search';
 
-interface SidebarNavigationProps {
-  onNewNoteClick: () => void;
-}
-
-const SidebarNavigation: React.FC<SidebarNavigationProps> = ({ 
-  onNewNoteClick 
-}) => {
+const SidebarNavigation: React.FC = () => {
   const { t } = useTranslation();
   const { isSidebarOpen } = useUIStore();
   const pathname = usePathname();
-  const router = useRouter();
   const { onOpen } = useCommandSearch();
 
   const isRouteActive = (routePath: string) => {

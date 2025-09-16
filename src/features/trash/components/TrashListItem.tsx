@@ -1,6 +1,5 @@
 
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { TrashItem } from '@/features/trash/types';
 import { Button } from '@/components/ui/button';
 import { useTrashStore } from '@/features/trash/store/trash.store';

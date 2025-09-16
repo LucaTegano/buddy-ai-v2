@@ -36,7 +36,7 @@ export const useGroupsTasksStore = create<GroupsTasksState>((set, get) => ({
 
   addGroupTask: async (groupId: string, groupName: string, text: string) => {
     try {
-      const newTask = await groupsTasksService.addGroupTask(groupName, { text, completed: false });
+      const newTask = await groupsTasksService.createGroupTask(groupName, { text, completed: false });
       set(state => ({
         groups: state.groups.map(group =>
           group.id === groupId
@@ -74,7 +74,7 @@ export const useGroupsTasksStore = create<GroupsTasksState>((set, get) => ({
       const taskToUpdate = group.tasks.find(task => task.id === taskId);
       if (!taskToUpdate) return;
       
-      const updatedTask = await groupsTasksService.updateGroupTask(taskId, groupName, { 
+      await groupsTasksService.updateGroupTask(taskId, groupName, { 
         ...taskToUpdate, 
         text: newText 
       });

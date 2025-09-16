@@ -1,6 +1,7 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import { getOptions, resources, supportedLngs, fallbackLng } from './config';
+import { getOptions } from './config';
+import type { TOptions } from 'i18next';
 
 // Create a global i18n instance that can be used outside of React components
 const i18nInstance = i18n.createInstance();
@@ -18,6 +19,6 @@ export const changeLanguage = (lng: string) => {
 };
 
 // Function to get translated text
-export const t = (key: string, options?: any) => {
+export const t = (key: string, options?: TOptions) => {
   return i18nInstance.t(key, options);
 };

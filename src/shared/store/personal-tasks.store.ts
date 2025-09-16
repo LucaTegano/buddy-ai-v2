@@ -71,7 +71,7 @@ export const useTaskStore = create<TaskState>((set, get) => ({
       const taskToUpdate = get().personalTasks.find(task => task.id === taskId);
       if (!taskToUpdate) return;
 
-      const updatedTask = await tasksService.updatePersonalTask(taskId, { ...taskToUpdate, text: newText });
+      await tasksService.updatePersonalTask(taskId, { ...taskToUpdate, text: newText });
       set(state => ({
         personalTasks: state.personalTasks.map(task =>
           task.id === taskId ? { ...task, text: newText } : task

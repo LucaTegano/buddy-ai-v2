@@ -6,6 +6,7 @@ const TOAST_CONFIG = {
     success: 3000,
     error: 5000,
     warning: 4000,
+    info: 4000,
     default: 4000
   },
   classNames: {
@@ -15,7 +16,6 @@ const TOAST_CONFIG = {
 
 // Type definitions
 type ToastType = 'success' | 'error' | 'warning' | 'info';
-type ToastMessageType = 'default' | 'taskAdded' | 'taskRemoved' | 'taskUpdated' | 'taskStatusUpdated' | 'failedToLoadTasks' | 'failedToAddTask' | 'failedToRemoveTask' | 'failedToUpdateTask' | 'failedToUpdateTaskStatus';
 
 /**
  * Shows a toast notification with the specified message and type

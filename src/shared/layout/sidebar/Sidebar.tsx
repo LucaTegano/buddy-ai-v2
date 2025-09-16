@@ -1,8 +1,7 @@
 "use client";
 
 import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { useRouter } from 'next/navigation';
+//import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/features/auth/store/auth.store';
 import { useUIStore } from '@/shared/store/ui.store';
 import { useSidebarActions } from '@/shared/actions/sidebar.actions';
@@ -12,7 +11,6 @@ import SidebarFooter from '@/shared/layout/sidebar/SidebarFooter';
 import UserMenu from '@/shared/layout/sidebar/UserMenu';
 
 const Sidebar: React.FC = () => {
-  const { t } = useTranslation();
   const { user } = useAuthStore();
   const { isSidebarOpen, setIsSidebarOpen } = useUIStore();
   const { 
@@ -23,13 +21,9 @@ const Sidebar: React.FC = () => {
     logout
   } = useSidebarActions();
   
-  const router = useRouter();
+  //const router = useRouter();
   
   if (!user) return null;
-
-  const handleNewNoteClick = () => {
-    router.push('/note/new');
-  };
 
   const handleToggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -45,7 +39,6 @@ const Sidebar: React.FC = () => {
       <SidebarHeader onToggle={handleToggleSidebar} />
       
       <SidebarNavigation 
-        onNewNoteClick={handleNewNoteClick}
       />
       
       <div className="flex-grow"></div>
