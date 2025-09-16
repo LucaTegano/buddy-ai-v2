@@ -1,6 +1,6 @@
 // src/features/chat/components/ChatPanel.tsx
 "use client"
-import React, { useState, useRef, useEffect, KeyboardEvent } from 'react';
+import React, { useState, useRef, useEffect, KeyboardEvent, RefObject } from 'react';
 import { useChatStore } from '../store/chat.store';
 import { ChatPanelProps } from '@/features/chat/types/AiChat';
 import { useAutoScroll, useAutoResizeTextarea } from '@/lib/hooks';
@@ -14,8 +14,8 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ noteId }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Custom hooks for side-effects
-  useAutoScroll(chatHistoryRef, [messages, isLoading]);
-  useAutoResizeTextarea(textareaRef, input);
+  useAutoScroll(chatHistoryRef as RefObject<HTMLElement>, [messages, isLoading]);
+  useAutoResizeTextarea(textareaRef as RefObject<HTMLTextAreaElement>, input);
 
   // Effect for initializing chat history
   useEffect(() => {
@@ -56,7 +56,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ noteId }) => {
         handleSubmit={handleSubmit}
         handleKeyDown={handleKeyDown}
         isLoading={isLoading}
-        textareaRef={textareaRef}
+        textareaRef={textareaRef as RefObject<HTMLTextAreaElement>}
       />
     </div>
   );
