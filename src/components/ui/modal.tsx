@@ -7,8 +7,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
-  DialogClose,
 } from "@/components/ui/dialog"
 
 interface ModalProps {
