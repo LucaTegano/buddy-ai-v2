@@ -36,8 +36,8 @@ const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
 
 const isHomeActive = isRouteActive('/home');
 const isNotesActive = isRouteActive('/note');
-const isGroupsActive = isRouteActive('/groups') || isRouteActive('/group');
-const isInboxActive = isRouteActive('/inbox');
+//const isGroupsActive = isRouteActive('/groups') || isRouteActive('/group');
+//const isInboxActive = isRouteActive('/inbox');
 const isTrashActive = isRouteActive('/trash');
 
   return (
@@ -78,7 +78,7 @@ const isTrashActive = isRouteActive('/trash');
         active={isNotesActive}
         href="/note"
       />
-      <NavItem 
+      {/* <NavItem 
         icon={<UsersIcon className="w-6 h-6 flex-shrink-0 text-text-secondary" />} 
         text={t('sidebar.groups')}
         isOpen={isSidebarOpen}
@@ -91,7 +91,7 @@ const isTrashActive = isRouteActive('/trash');
         isOpen={isSidebarOpen}
         active={isInboxActive}
         href="/inbox"
-      />
+      /> */}
       <NavItem 
         icon={<TrashIcon className="w-6 h-6 flex-shrink-0 text-text-secondary" />} 
         text={t('sidebar.trash')}

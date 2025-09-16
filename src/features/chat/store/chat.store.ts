@@ -1,21 +1,12 @@
 import { create } from 'zustand';
+import { getChatHistory, sendMessage } from '@/features/chat/services/ai-chat.service';
+import { ChatState,AiChatMessageDto,ChatMessage } from '@/features/chat/types/AiChat';
+
 export enum MessageRole {
   USER = 'user',
   MODEL = 'model',
 }
-export interface ChatMessage {
-  role: MessageRole;
-  text: string;
-}
 
-interface ChatState {
-  messages: ChatMessage[];
-  isChatPanelOpen: boolean;
-  isLoading: boolean;
-  loadChatHistory: () => Promise<void>;
-  sendMessage: (message: string) => Promise<void>;
-  toggleChatPanel: () => void;
-}
 
 export const useChatStore = create<ChatState>((set, get) => ({
   messages: [
@@ -23,37 +14,45 @@ export const useChatStore = create<ChatState>((set, get) => ({
   ],
   isChatPanelOpen: true,
   isLoading: false,
-  
+  noteId: null,
+
+  setNoteId: (noteId: number) => set({ noteId }),
+
   toggleChatPanel: () => set((state) => ({ isChatPanelOpen: !state.isChatPanelOpen })),
-  
+
   loadChatHistory: async () => {
-    // For demo purposes, we'll use mock data
-    // In a real implementation, this would fetch from the backend
-    set({ messages: [
-      { role: MessageRole.MODEL, text: "Hello! I'm your Study Buddy. How can I help you learn today?" }
-    ] });
+    const { noteId } = get();
+    if (!noteId) return;
+
+    set({ isLoading: true });
+    try {
+      const history: AiChatMessageDto[] = await getChatHistory(noteId);
+      const formattedMessages: ChatMessage[] = history.map(msg => ({
+        role: msg.role.toLowerCase() as MessageRole,
+        text: msg.content,
+      }));
+      set({ messages: formattedMessages });
+    } catch (error) {
+      console.error(error);
+      set({ messages: [{ role: MessageRole.MODEL, text: "I'm sorry, I couldn't load the chat history." }] });
+    } finally {
+      set({ isLoading: false });
+    }
   },
-  
+
   sendMessage: async (message: string) => {
-    if (!message.trim()) return;
+    const { noteId } = get();
+    if (!message.trim() || !noteId) return;
 
     set({ isLoading: true });
     const newUserMessage: ChatMessage = { role: MessageRole.USER, text: message };
-    
-    const currentMessages = get().messages;
-    const updatedMessages = [...currentMessages, newUserMessage];
-    set({ messages: updatedMessages });
+    set(state => ({ messages: [...state.messages, newUserMessage] }));
 
     try {
-      // Simulate AI response delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Generate a mock AI response
-      const aiResponse = `I'm your Study Buddy AI assistant. You asked: "${message}". How can I help you with your studies today?`;
-      
+      const aiResponse: AiChatMessageDto = await sendMessage(noteId, message);
       const formattedAiMessage: ChatMessage = {
-        role: MessageRole.MODEL,
-        text: aiResponse,
+        role: aiResponse.role.toLowerCase() as MessageRole,
+        text: aiResponse.content,
       };
       set(state => ({ messages: [...state.messages, formattedAiMessage] }));
     } catch (error) {

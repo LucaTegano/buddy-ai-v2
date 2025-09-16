@@ -112,7 +112,7 @@ export function SettingsDialogContent({ className }: { className?: string }) {
         <aside className="w-[280px] bg-surface p-4 flex flex-col border-r border-border-subtle flex-shrink-0">
           <div className="h-10 flex items-start">
             <Button
-              onClick={() => router.back()}
+              onClick={() => router.push('/home')}
               variant="ghost"
               size="icon"
               className="text-text-secondary hover:text-text-primary hover:bg-secondary"

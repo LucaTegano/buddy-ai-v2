@@ -93,20 +93,22 @@ export default function HomeView() {
               )}
             </section>
 
+            {/*
             <section className="mb-10">
-              {/* For now, we'll show empty projects since we don't have a projects store yet */}
+              //For now, we'll show empty projects since we don't have a projects store yet 
               <>
                 <h2 className="text-xl font-bold text-text-primary mb-4">{t('home.collaborativeProjects')}</h2>
                 <EmptyProjects />
               </>
             </section>
+            */}
 
             <TaskList 
               groupName=''
               title={t('home.personalTasks', 'Personal Tasks')} 
               tasks={personalTasks} 
             />
-
+          {/*
             <section className="mb-6">
               <h2 className="text-xl font-bold text-brand-subtle-2 mb-8">{t('home.groupTasksTitle', 'Group Tasks')}</h2>
               {groupsWithTasks.length > 0 ? (
@@ -128,6 +130,7 @@ export default function HomeView() {
                 </div>
               )}
             </section>
+          */}
           </>
         )}
       </div>

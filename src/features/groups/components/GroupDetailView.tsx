@@ -16,7 +16,7 @@ interface GroupDetailViewProps {
 
 export default function GroupDetailView({ groupId, onBack }: GroupDetailViewProps) {
   const { groups } = useGroupsStore();
-  const [activeTab, setActiveTab] = useState<'tasks' | 'members'>('tasks');
+  const [activeTab, setActiveTab] = useState<'notes' | 'tasks' | 'members'>('notes');
   const [editingTask, setEditingTask] = useState<{ id: string; text: string } | null>(null);
   const [editText, setEditText] = useState('');
 
