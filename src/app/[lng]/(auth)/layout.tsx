@@ -64,14 +64,14 @@ export default function AuthLayout({
         <footer className="text-xs text-text-secondary mt-6 text-center">
           {t('login.tosAgreement')}{' '}
           <Link 
-              href="/privacy-policy"
+              href="/policies/terms-of-service"
               className="font-medium text-brand-primary hover:text-brand-hover underline focus:outline-none"
           >
               {t('login.tosLink')}
           </Link>
           {' '}{t('login.and')}{' '}
           <Link
-            href="/privacy-policy"
+            href="/policies/"
             className="font-medium text-brand-primary hover:text-brand-hover underline focus:outline-none"
           >
             {t('login.privacyLink')}
