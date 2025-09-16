@@ -1,2 +1,0 @@
-export const GEMINI_MODEL = 'gemini-2.5-flash';
-export const INITIAL_SCRATCHPAD_CONTENT = `<p>Welcome to your Collaborative Scratchpad!</p><p>This is a shared space for you and the AI to work together.</p><p><br></p><ul><li>Ask the AI to explain a concept in the chat, then click the 'Add to Notes' button on its response.</li><li>Write down your own notes and use the buttons below to have the AI help you.</li><li>Try asking the AI to write a draft for an essay, then refine it here.</li></ul><p><br></p><p>Let's start learning!</p>`;
