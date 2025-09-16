@@ -7,6 +7,7 @@ export interface Note {
   tags: string[];
   isCollaborative: boolean;
   lastEdited?: string;
+  lastActivity?: string;
   participantCount: number;
   content: string;
 }

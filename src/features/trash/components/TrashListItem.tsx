@@ -12,7 +12,7 @@ interface TrashListItemProps {
 }
 
 export default function TrashListItem({ item }: TrashListItemProps) {
-  const { t } = useTranslation();
+  
   const { restoreItem, deleteItem } = useTrashStore();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 

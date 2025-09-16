@@ -7,7 +7,9 @@ import {
   frontendNoteToBackendNote,
 } from '@/features/notes/utils/noteMapper';
 import TokenManager from '@/features/auth/utils/tokenManager';
+import { AxiosError } from 'axios';
 import { handleNoteOperationError } from '@/features/notes/utils/errorHandler';
+import { Note } from '@/features/notes/types/Note';
 
 // A type alias for the functions that make API calls
 type ApiRequest<T> = () => Promise<{ data: T }>;
@@ -31,7 +33,7 @@ class NotesService {
       defaultReturnValue?: R;
     }
   ): Promise<R> {
-    const { onAuthError = 'throw', defaultReturnValue = null as any, onSuccess } = options;
+    const { onAuthError = 'throw', defaultReturnValue = null, onSuccess } = options;
 
     // 1. Centralized Authentication Check
     const token = typeof window !== 'undefined' ? localStorage.getItem('authToken') : null;
@@ -43,7 +45,7 @@ class NotesService {
       if (onAuthError === 'throw') {
         throw handleNoteOperationError(new Error('User is not authenticated. Please log in.'), operation);
       }
-      return defaultReturnValue;
+      return defaultReturnValue as R;
     }
 
     // 2. Centralized Request Execution and Error Handling
@@ -51,22 +53,22 @@ class NotesService {
       console.log(`[NotesService] Executing: ${operation}`);
       const response = await requestFn();
       return onSuccess(response.data);
-    } catch (error: any) {
+    } catch (error) {
       // Gracefully handle 401 Unauthorized errors from the API if configured to do so
-      if (error.response?.status === 401 && onAuthError === 'returnDefault') {
+      if (error instanceof AxiosError && error.response?.status === 401 && onAuthError === 'returnDefault') {
         console.warn(`[NotesService] Auth error during ${operation}. Returning default.`);
-        return defaultReturnValue;
+        return defaultReturnValue as R;
       }
       // For all other errors, use the central error handler to re-throw
-      throw handleNoteOperationError(error, operation);
+      throw handleNoteOperationError(error as Error, operation);
     }
   }
 
   // --- Public API Methods ---
 
-  async getAllNotes(): Promise<any[]> {
+  async getAllNotes(): Promise<Note[]> {
     return this._executeRequest('fetch all notes',
-      () => apiClient.get<any[]>(NOTES_ENDPOINTS.GET_ALL),
+      () => apiClient.get<Note[]>(NOTES_ENDPOINTS.GET_ALL),
       {
         onSuccess: (data) => (data || []).map(backendNoteListItemToFrontendNote),
         defaultReturnValue: [],
@@ -74,7 +76,7 @@ class NotesService {
     );
   }
 
-  async searchNotes(query: string): Promise<any[]> {
+  async searchNotes(query: string): Promise<Note[]> {
     if (!query?.trim()) {
       return [];
     }
@@ -82,7 +84,7 @@ class NotesService {
     const url = `${NOTES_ENDPOINTS.SEARCH}?query=${encodedQuery}`;
 
     return this._executeRequest('search notes',
-      () => apiClient.get<any[]>(url),
+      () => apiClient.get<Note[]>(url),
       {
         onSuccess: (data) => (data || []).map(backendNoteListItemToFrontendNote),
         onAuthError: 'returnDefault', // Returns default value on auth error instead of throwing
@@ -91,9 +93,9 @@ class NotesService {
     );
   }
 
-  async getNoteById(id: string): Promise<any | null> {
+  async getNoteById(id: string): Promise<Note | null> {
     return this._executeRequest('fetch note by id',
-      () => apiClient.get<any>(NOTES_ENDPOINTS.GET_BY_ID(id)),
+      () => apiClient.get<Note>(NOTES_ENDPOINTS.GET_BY_ID(id)),
       {
         onSuccess: (data) => {
           if (!data) {
@@ -106,20 +108,20 @@ class NotesService {
     );
   }
 
-  async createNote(note: any): Promise<any | null> {
+  async createNote(note: Partial<Note>): Promise<Note | null> {
     const backendNote = frontendNoteToBackendNote(note);
     return this._executeRequest('create note',
-      () => apiClient.post<any>(NOTES_ENDPOINTS.CREATE, backendNote),
+      () => apiClient.post<Note>(NOTES_ENDPOINTS.CREATE, backendNote),
       {
         onSuccess: (data) => (data ? backendNoteDetailToFrontendNote(data) : null),
       }
     );
   }
 
-  async updateNote(id: string, note: any): Promise<any | null> {
+  async updateNote(id: string, note: Partial<Note>): Promise<Note | null> {
     const backendNote = frontendNoteToBackendNote(note);
     return this._executeRequest('update note',
-      () => apiClient.patch<any>(NOTES_ENDPOINTS.UPDATE(id), backendNote),
+      () => apiClient.patch<Note>(NOTES_ENDPOINTS.UPDATE(id), backendNote),
       {
         onSuccess: (data) => (data ? backendNoteDetailToFrontendNote(data) : null),
       }
@@ -130,10 +132,11 @@ class NotesService {
     await this._executeRequest('move note to trash',
       () => apiClient.post(NOTES_ENDPOINTS.MOVE_TO_TRASH(id)),
       {
-        onSuccess: (data) => data, // Pass through whatever the API returns
+        onSuccess: (data: void) => data, // Pass through whatever the API returns
       }
     );
   }
 }
 
-export default new NotesService();
+const notesService = new NotesService();
+export default notesService;

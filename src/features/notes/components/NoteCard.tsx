@@ -1,12 +1,12 @@
 "use client"
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { noteActions } from '../actions/note.actions';
 import { DocumentTextIcon, UsersIcon } from '@/shared/components/icons';
 import Link from 'next/link';
+import { Note } from '@/features/notes/types/Note';
 
 interface NoteCardProps {
-    note: any;
+    note: Note;
 }
 
 const NoteCard: React.FC<NoteCardProps> = ({ note }) => {

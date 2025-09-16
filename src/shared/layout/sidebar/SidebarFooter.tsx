@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useUIStore } from '@/shared/store/ui.store';
+import Image from 'next/image';
 
 interface SidebarFooterProps {
   user: { username: string; email:string; picture: string };
@@ -26,7 +27,7 @@ const SidebarFooter: React.FC<SidebarFooterProps> = ({
         aria-expanded={isUserMenuOpen}
       >
         <div className="relative group flex-shrink-0">
-          <img 
+          <Image 
             src={user.picture} 
             alt={user.username} 
             className="w-10 h-10 rounded-full object-cover border-2 border-brand-primary/50" 

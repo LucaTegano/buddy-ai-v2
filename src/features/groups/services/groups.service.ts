@@ -4,6 +4,8 @@ import { GROUPS_ENDPOINTS } from '@/features/groups/api/groups.api';
 import TokenManager from '@/features/auth/utils/tokenManager';
 import { Group, GroupMember } from '@/features/groups/types/Group';
 import { GroupTask } from '@/shared/types/Task';
+import axios from 'axios';
+import { Note } from '@/features/notes/types/Note';
 
 class GroupsService {
   /**
@@ -37,7 +39,7 @@ class GroupsService {
       return response.data || [];
     } catch (error: unknown) {
       console.error('Error fetching groups:', error);
-      if (error instanceof Error && (error as any).response?.status === 401) {
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
         throw new Error('Authentication failed. Please log in again.');
       }
       throw error;
@@ -52,9 +54,9 @@ class GroupsService {
     try {
       const response = await apiClient.get<Group>(`${GROUPS_ENDPOINTS.BASE}/${id}`);
       return response.data || null;
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error fetching group:', error);
-      if (error.response?.status === 401) {
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
         throw new Error('Authentication failed. Please log in again.');
       }
       throw error;
@@ -69,9 +71,9 @@ class GroupsService {
     try {
       const response = await apiClient.post<Group>(GROUPS_ENDPOINTS.CREATE, { name: group.name });
       return response.data || null;
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error creating group:', error);
-      if (error.response?.status === 401) {
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
         throw new Error('Authentication failed. Please log in again.');
       }
       throw error;
@@ -86,9 +88,9 @@ class GroupsService {
     try {
       const response = await apiClient.post<Group>(GROUPS_ENDPOINTS.JOIN(id));
       return response.data || null;
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error joining group:', error);
-      if (error.response?.status === 401) {
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
         throw new Error('Authentication failed. Please log in again.');
       }
       throw error;
@@ -102,9 +104,9 @@ class GroupsService {
     
     try {
       await apiClient.post<void>(GROUPS_ENDPOINTS.LEAVE(id));
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error leaving group:', error);
-      if (error.response?.status === 401) {
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
         throw new Error('Authentication failed. Please log in again.');
       }
       throw error;
@@ -119,9 +121,9 @@ class GroupsService {
     try {
       const response = await apiClient.get<GroupTask[]>(GROUPS_ENDPOINTS.TASKS(groupId));
       return response.data || [];
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error fetching group tasks:', error);
-      if (error.response?.status === 401) {
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
         throw new Error('Authentication failed. Please log in again.');
       }
       throw error;
@@ -136,9 +138,9 @@ class GroupsService {
     try {
       const response = await apiClient.post<GroupTask>(GROUPS_ENDPOINTS.TASKS(groupId), { text: taskText });
       return response.data || null;
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error creating group task:', error);
-      if (error.response?.status === 401) {
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
         throw new Error('Authentication failed. Please log in again.');
       }
       throw error;
@@ -153,9 +155,9 @@ class GroupsService {
     try {
       const response = await apiClient.put<GroupTask>(`${GROUPS_ENDPOINTS.TASKS(groupId)}/${taskId}`, { text: taskText, completed });
       return response.data || null;
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error updating group task:', error);
-      if (error.response?.status === 401) {
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
         throw new Error('Authentication failed. Please log in again.');
       }
       throw error;
@@ -169,9 +171,9 @@ class GroupsService {
     
     try {
       await apiClient.delete(`${GROUPS_ENDPOINTS.TASKS(groupId)}/${taskId}`);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error deleting group task:', error);
-      if (error.response?.status === 401) {
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
         throw new Error('Authentication failed. Please log in again.');
       }
       throw error;
@@ -188,24 +190,24 @@ class GroupsService {
       return response.data || [];
     } catch (error: unknown) {
       console.error('Error fetching group members:', error);
-      if (error instanceof Error && (error as any).response?.status === 401) {
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
         throw new Error('Authentication failed. Please log in again.');
       }
       throw error;
     }
   }
   
-  async getGroupFiles(groupId: string): Promise<any[]> {
+  async getGroupFiles(groupId: string): Promise<Note[]> {
     if (!(await this.isAuthenticated())) {
       throw new Error('User is not authenticated');
     }
     
     try {
-      const response = await apiClient.get<any[]>(GROUPS_ENDPOINTS.FILES(groupId));
+      const response = await apiClient.get<Note[]>(GROUPS_ENDPOINTS.FILES(groupId));
       return response.data || [];
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error fetching group files:', error);
-      if (error.response?.status === 401) {
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
         throw new Error('Authentication failed. Please log in again.');
       }
       throw error;
@@ -213,4 +215,5 @@ class GroupsService {
   }
 }
 
-export default new GroupsService();
+const groupsService = new GroupsService();
+export default groupsService;

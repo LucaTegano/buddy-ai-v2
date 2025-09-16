@@ -1,17 +1,17 @@
 "use client"
 import React, { useEffect, useState } from 'react';
 import { useNotesStore } from '@/features/notes/store/notes.store';
-import { noteActions } from '@/features/notes/actions/note.actions';
 import NoteEditor from './NoteEditor';
 import { useChatStore } from '@/features/chat/store/chat.store';
 import { useAuthStore } from '@/features/auth/store/auth.store';
 import NoteDetailSkeleton from './NoteDetailSkeleton';
+import { Note } from '@/features/notes/types/Note';
 
 export default function NotePage({ noteId }: { noteId: string }) {
-  const { notes, isLoading, getNoteById } = useNotesStore();
+  const { isLoading, getNoteById } = useNotesStore();
   const { isChatPanelOpen, toggleChatPanel } = useChatStore();
   const { isAuthenticated, isCheckingAuth } = useAuthStore();
-  const [note, setNote] = useState<any>(null);
+  const [note, setNote] = useState<Note | null>(null);
   const [isNoteLoading, setIsNoteLoading] = useState(false);
 
   useEffect(() => {

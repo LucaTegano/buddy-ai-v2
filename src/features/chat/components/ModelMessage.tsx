@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CopyIcon, Check, PlusIcon } from 'lucide-react';
+import { CopyIcon, Check,  } from 'lucide-react';
 
 interface ModelMessageProps {
   text: string;
@@ -39,8 +39,6 @@ export const ModelMessage: React.FC<ModelMessageProps> = ({ text }) => {
               <CopyIcon className="w-4 h-4" />
             )}
           </button>
-          {/* You can easily add more buttons here */}
-          {/* <button className="p-1.5 ...">...</button> */}
         </div>
       </div>
     </div>

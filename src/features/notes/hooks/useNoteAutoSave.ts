@@ -1,13 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 import { noteActions } from '@/features/notes/actions/note.actions';
+import { Note } from '@/features/notes/types/Note';
 
 interface AutoSaveOptions {
   interval?: number; // in milliseconds
-  onSave?: (note: any) => void;
-  onError?: (error: any) => void;
+  onSave?: (note: Note) => void;
+  onError?: (error: Error) => void;
 }
 
-export const useNoteAutoSave = (note: any, options: AutoSaveOptions = {}) => {
+export const useNoteAutoSave = (note: Partial<Note>, options: AutoSaveOptions = {}) => {
   const { interval = 5000, onSave, onError } = options; // Default to 5 seconds
   const [isSaving, setIsSaving] = useState(false);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
@@ -35,16 +36,20 @@ export const useNoteAutoSave = (note: any, options: AutoSaveOptions = {}) => {
       
       if (result.success) {
         setLastSaved(new Date());
-        onSave?.(result.note);
+        if (onSave && result.note) {
+          onSave(result.note);
+        }
         console.log('Note auto-saved successfully');
       } else {
         throw new Error(result.error || 'Failed to save note');
       }
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error auto-saving note:', err);
-      const errorMessage = err.response?.data?.message || err.message || 'Failed to auto-save note';
+      const errorMessage = err instanceof Error ? err.message : 'Failed to auto-save note';
       setError(errorMessage);
-      onError?.(err);
+      if (onError && err instanceof Error) {
+        onError(err);
+      }
     } finally {
       setIsSaving(false);
     }
@@ -77,7 +82,7 @@ export const useNoteAutoSave = (note: any, options: AutoSaveOptions = {}) => {
     return () => {
       stopAutoSave();
     };
-  }, [note?.id, interval]);
+  }, [note?.id, interval, startAutoSave]);
 
   return {
     isSaving,

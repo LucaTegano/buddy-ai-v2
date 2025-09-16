@@ -1,26 +1,29 @@
+import { AxiosError } from 'axios';
+
 // Error handling utilities for note operations
 export class NoteOperationError extends Error {
   constructor(
     message: string,
     public code: string,
-    public originalError?: any
+    public originalError?: Error
   ) {
     super(message);
     this.name = 'NoteOperationError';
   }
 }
 
-export const handleNoteOperationError = (error: any, operation: string): NoteOperationError => {
+export const handleNoteOperationError = (error: AxiosError | Error, operation: string): NoteOperationError => {
   console.error(`Error during note ${operation}:`, error);
   
   // Extract meaningful error message
   let errorMessage = `Failed to ${operation} note`;
   let errorCode = 'UNKNOWN_ERROR';
   
-  if (error.response) {
+  if ('isAxiosError' in error && error.isAxiosError) {
     // Server responded with error status
-    const status = error.response.status;
-    const data = error.response.data;
+    const axiosError = error as AxiosError;
+    const status = axiosError.response?.status;
+    const data = axiosError.response?.data as { message?: string; error?: string };
     
     switch (status) {
       case 401:
@@ -47,7 +50,7 @@ export const handleNoteOperationError = (error: any, operation: string): NoteOpe
         errorMessage = data?.message || data?.error || `Server error (${status})`;
         errorCode = `HTTP_${status}`;
     }
-  } else if (error.request) {
+  } else if ('request' in error) {
     // Request was made but no response received
     errorMessage = 'Network error. Please check your connection and try again.';
     errorCode = 'NETWORK_ERROR';
@@ -57,5 +60,5 @@ export const handleNoteOperationError = (error: any, operation: string): NoteOpe
     errorCode = 'CLIENT_ERROR';
   }
   
-  return new NoteOperationError(errorMessage, errorCode, error);
-};
+    return new NoteOperationError(errorMessage, errorCode, error);
+  }

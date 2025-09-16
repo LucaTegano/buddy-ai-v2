@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios';
 import apiClient from '@/shared/api/apiClient';
 import { NOTES_ENDPOINTS } from '@/features/notes/api/notes.api';
 import TokenManager from '@/features/auth/utils/tokenManager';
@@ -48,13 +49,16 @@ class RecentNotesService {
       const response = await apiClient.get<RecentNotesResult>(NOTES_ENDPOINTS.GET_RECENT);
       console.log('Received recent notes response:', response.data);
       return response.data;
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error fetching recent notes:', error);
-      console.error('Error response:', error.response);
-      console.error('Error request:', error.request);
-      throw handleNoteOperationError(error, 'fetch recent notes');
+      if (error instanceof AxiosError) {
+        console.error('Error response:', error.response);
+        console.error('Error request:', error.request);
+      }
+      throw handleNoteOperationError(error as Error, 'fetch recent notes');
     }
   }
 }
 
-export default new RecentNotesService();
+const recentNotesService = new RecentNotesService();
+export default recentNotesService;

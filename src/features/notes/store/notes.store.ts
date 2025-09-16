@@ -2,6 +2,8 @@ import { create } from 'zustand';
 import { NotesState } from '@/features/notes/types/NotesStore';
 import notesService from '@/features/notes/services/notes.service';
 import { NoteOperationError } from '@/features/notes/utils/errorHandler';
+import { Note } from '@/features/notes/types/Note';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 export const useNotesStore = create<NotesState>((set, get) => ({
   notes: [],
@@ -14,10 +16,10 @@ export const useNotesStore = create<NotesState>((set, get) => ({
     try {
       const notes = await notesService.getAllNotes();
       set({ notes, isLoading: false });
-    } catch (error: any) {
+    } catch (error) {
       const errorMessage = error instanceof NoteOperationError 
         ? error.message 
-        : error.message || 'Failed to load notes';
+        : error instanceof Error ? error.message : 'Failed to load notes';
       set({ error: errorMessage, isLoading: false });
     }
   },
@@ -26,16 +28,16 @@ export const useNotesStore = create<NotesState>((set, get) => ({
     try {
       const note = await notesService.getNoteById(id);
       return note;
-    } catch (error: any) {
+    } catch (error) {
       const errorMessage = error instanceof NoteOperationError 
         ? error.message 
-        : error.message || 'Failed to load note';
+        : error instanceof Error ? error.message : 'Failed to load note';
       set({ error: errorMessage });
       return null;
     }
   },
   
-  createNote: async (note: any) => {
+  createNote: async (note: Partial<Note>) => {
     try {
       console.log('Sending note creation request with data:', note);
       
@@ -56,17 +58,17 @@ export const useNotesStore = create<NotesState>((set, get) => ({
       } else {
         throw new NoteOperationError('Failed to create note', 'CREATE_FAILED');
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error in createNote:', error);
       const errorMessage = error instanceof NoteOperationError 
         ? error.message 
-        : error.message || 'Failed to create note';
+        : error instanceof Error ? error.message : 'Failed to create note';
       set({ error: errorMessage });
       return null;
     }
   },
   
-  updateNote: async (noteId: string, updates: any) => {
+  updateNote: async (noteId: string, updates: Partial<Note>) => {
     try {
       console.log(`Sending note update request for note ${noteId} with data:`, updates);
       const updatedNote = await notesService.updateNote(noteId, updates);
@@ -88,13 +90,14 @@ export const useNotesStore = create<NotesState>((set, get) => ({
             note.id === noteId ? { ...note, ...updates } : note
           )
         }));
-        return { ...get().notes.find(n => n.id === noteId), ...updates };
+        const currentNote = get().notes.find(n => n.id === noteId);
+        return currentNote ? { ...currentNote, ...updates } : null;
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error in updateNote:', error);
       const errorMessage = error instanceof NoteOperationError 
         ? error.message 
-        : error.message || 'Failed to update note';
+        : error instanceof Error ? error.message : 'Failed to update note';
       set({ error: errorMessage });
       return null;
     }
@@ -107,25 +110,25 @@ export const useNotesStore = create<NotesState>((set, get) => ({
       set(state => ({
         notes: state.notes.filter(note => note.id !== noteId)
       }));
-    } catch (error: any) {
+    } catch (error) {
       const errorMessage = error instanceof NoteOperationError 
         ? error.message 
-        : error.message || 'Failed to delete note';
+        : error instanceof Error ? error.message : 'Failed to delete note';
       set({ error: errorMessage });
     }
   },
   
-  moveNoteToTrash: async (noteId: string, router: any) => {
+  moveNoteToTrash: async (noteId: string, router: AppRouterInstance) => {
     try {
       await notesService.moveNoteToTrash(noteId);
       set(state => ({
         notes: state.notes.filter(note => note.id !== noteId)
       }));
       router.push('/note');
-    } catch (error: any) {
+    } catch (error) {
       const errorMessage = error instanceof NoteOperationError 
         ? error.message 
-        : error.message || 'Failed to move note to trash';
+        : error instanceof Error ? error.message : 'Failed to move note to trash';
       set({ error: errorMessage });
     }
   },

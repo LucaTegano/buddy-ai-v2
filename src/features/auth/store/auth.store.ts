@@ -1,12 +1,13 @@
+// ./src/features/auth/store/auth.store.ts
+
 import { create } from 'zustand';
-import { User } from '@/features/user/types/User';
+// import { User } from '@/features/user/types/User'; // <-- FIX 1: Removed unused import
 import { LoginCredentials, SignupCredentials } from '../types/Auth';
 import authService from '../services/auth.service';
 import userService from '@/features/user/services/user.service';
-import { AuthState } from '../types/AuthState'; // Import the interface type
+import { AuthState } from '../types/AuthState';
 import { jwtDecode } from 'jwt-decode';
 
-// FIX: Pass the AuthState interface directly as the generic type.
 export const useAuthStore = create<AuthState>((set) => ({
   isAuthenticated: false,
   user: null,
@@ -21,8 +22,9 @@ export const useAuthStore = create<AuthState>((set) => ({
     try {
       await authService.signup(credentials);
       set({ isLoading: false });
-    } catch (err: any) {
-      set({ error: err.message || 'Signup failed', isLoading: false });
+    } catch (err: unknown) { // <-- FIX 2: 'any' changed to 'unknown'
+      const errorMessage = err instanceof Error ? err.message : 'Signup failed';
+      set({ error: errorMessage, isLoading: false });
       throw err;
     }
   },
@@ -30,28 +32,22 @@ export const useAuthStore = create<AuthState>((set) => ({
   login: async (credentials: LoginCredentials) => {
     set({ isLoading: true, error: null });
     try {
-      console.log('Attempting login with credentials:', credentials);
       const { user, token } = await authService.login(credentials);
-      
       localStorage.setItem('authToken', token);
-
-      console.log('Login successful, user:', user);
       set({ isAuthenticated: true, user, isLoading: false });
-    } catch (err: any) {
-      console.error('Login failed:', err);
+    } catch (err: unknown) { // <-- FIX 3: 'any' changed to 'unknown'
       localStorage.removeItem('authToken');
-      set({ error: err.message || 'Login failed', isLoading: false });
+      const errorMessage = err instanceof Error ? err.message : 'Login failed';
+      set({ error: errorMessage, isLoading: false });
       throw err;
     }
   },
 
-  // FIX: Made async to match the interface's () => Promise<void>
   logout: async () => {
     localStorage.removeItem('authToken');
     set({ isAuthenticated: false, user: null, isLoading: false });
   },
 
-  // FIX: Made async to match the interface's () => Promise<void>
   checkAuth: async () => {
     set({ isCheckingAuth: true });
     try {

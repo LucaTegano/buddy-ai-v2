@@ -2,16 +2,13 @@
 
 import React, {
   useEffect,
-  useState,
-  useMemo
+  useState
 } from 'react';
 import {
   SquarePen,
   ClipboardPen,
   Notebook,
   Settings,
-  
-  User,
 } from "lucide-react"
 
 import {
@@ -21,7 +18,6 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-  CommandSeparator,
   CommandShortcut,
 } from "@/components/ui/command"
 import { useCommandSearch } from '@/lib/hooks/use-command-search';

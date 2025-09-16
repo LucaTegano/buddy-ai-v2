@@ -6,11 +6,11 @@ import { Fullscreen, FullscreenExit } from 'react-bootstrap-icons';
 import { useAuthStore } from '@/features/auth/store/auth.store';
 import { useNotesStore } from '@/features/notes/store/notes.store';
 import { useTaskStore } from '@/shared/store/personal-tasks.store';
-import { useGroupsTasksStore } from '@/shared/store/groups-tasks.store';
+// import { useGroupsTasksStore } from '@/shared/store/groups-tasks.store';
 import { Carousel, NoteCard } from '@/shared/components';
 import TaskList from '@/shared/components/TaskList';
 import { useFullscreen } from '@/lib/hooks/useFullScreen';
-import { EmptyNotes, EmptyProjects } from '@/features/home/components';
+import { EmptyNotes, /* EmptyProjects */ } from '@/features/home/components';
 import HomeLoadingSkeleton from './HomeLoadingSkeleton';
 
 // We'll need to create a service and store for projects later
@@ -21,7 +21,7 @@ export default function HomeView() {
   const { user } = useAuthStore();
   const { notes, isLoading: notesLoading, loadNotes } = useNotesStore();
   const { personalTasks, loadPersonalTasks } = useTaskStore();
-  const { groups, loadGroupTasks } = useGroupsTasksStore();
+  // const { groups, loadGroupTasks } = useGroupsTasksStore();
   const { isFullscreen, toggleFullscreen } = useFullscreen();
   
   // Load data on mount
@@ -36,7 +36,7 @@ export default function HomeView() {
   if (!user) return null;
 
   // Filter groups to only show those with tasks for display
-  const groupsWithTasks = groups.filter(group => group.tasks.length > 0);
+  // const groupsWithTasks = groups.filter(group => group.tasks.length > 0);
 
   return (
     <div className='flex flex-col h-full'>

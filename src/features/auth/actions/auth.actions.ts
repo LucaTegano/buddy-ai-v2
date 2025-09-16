@@ -1,4 +1,5 @@
-// Auth Actions
+// ./src/features/auth/actions/auth.actions.ts
+
 import { useAuthStore } from '@/features/auth/store/auth.store';
 
 export const authActions = {
@@ -6,20 +7,25 @@ export const authActions = {
     try {
       await useAuthStore.getState().login({ username: email, password });
       return { success: true };
-    } catch (error: any) {
-      return { success: false, error: error.message };
+    } catch (error: unknown) { // <-- FIX 1: 'any' changed to 'unknown'
+      // Type-safe error handling
+      if (error instanceof Error) {
+        return { success: false, error: error.message };
+      }
+      return { success: false, error: 'An unknown error occurred' };
     }
   },
 
   signup: async (name: string, email: string, password: string) => {
     try {
-      // --- FIX IS HERE ---
-      // The signup method now accepts a single object with username, email, and password.
       await useAuthStore.getState().signup({ username: name, email, password });
-      // --- END OF FIX ---
       return { success: true };
-    } catch (error: any) {
-      return { success: false, error: error.message };
+    } catch (error: unknown) { // <-- FIX 2: 'any' changed to 'unknown'
+      // Type-safe error handling
+      if (error instanceof Error) {
+        return { success: false, error: error.message };
+      }
+      return { success: false, error: 'An unknown error occurred' };
     }
   },
 
@@ -28,9 +34,6 @@ export const authActions = {
   },
 
   checkAuthStatus: async () => {
-    // --- FIX IS HERE ---
-    // The method was renamed from 'checkAuthStatus' to 'checkAuth' in the store.
     await useAuthStore.getState().checkAuth();
-    // --- END OF FIX ---
   },
 };

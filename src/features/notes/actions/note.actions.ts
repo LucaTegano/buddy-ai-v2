@@ -2,6 +2,8 @@ import { useNotesStore } from '@/features/notes/store/notes.store';
 import { NoteOperationError } from '@/features/notes/utils/errorHandler';
 import { toast } from 'sonner';
 import { Note } from '../types/Note';
+import axios from 'axios';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 export const noteActions = {
   
@@ -37,7 +39,9 @@ export const noteActions = {
       console.error('Failed to create note:', error);
       const errorMessage = error instanceof NoteOperationError 
         ? error.message 
-        : (error as any).response?.data?.message || (error as Error).message || 'Failed to create note';
+        : axios.isAxiosError(error) && error.response?.data?.message 
+        ? error.response.data.message
+        : (error as Error).message || 'Failed to create note';
       toast.error(errorMessage);
       return { success: false, error: errorMessage };
     }
@@ -78,7 +82,7 @@ export const noteActions = {
     }
   },
 
-  moveNoteToTrash: async (noteId: string, router: any) => {
+  moveNoteToTrash: async (noteId: string, router: AppRouterInstance) => {
     try {
       await useNotesStore.getState().moveNoteToTrash(noteId, router);
       toast.success('Note moved to trash.');

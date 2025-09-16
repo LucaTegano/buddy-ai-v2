@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { GroupsState } from '@/features/groups/types/GroupsStore';
 import groupsService from '@/features/groups/services/groups.service';
-import { useRouter } from 'next/navigation';
+
 
 export const useGroupsStore = create<GroupsState>((set, get) => ({
   groups: [],
@@ -14,9 +14,9 @@ export const useGroupsStore = create<GroupsState>((set, get) => ({
     try {
       const groups = await groupsService.getAllGroups();
       set({ groups, isLoading: false });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Failed to load groups:', error);
-      const errorMessage = error.message || 'Failed to load groups';
+      const errorMessage = error instanceof Error ? error.message : 'Failed to load groups';
       set({ error: errorMessage, isLoading: false });
       
       // If it's an authentication error, we might want to redirect to login
@@ -35,9 +35,9 @@ export const useGroupsStore = create<GroupsState>((set, get) => ({
         return newGroup;
       }
       return null;
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Failed to create group:', error);
-      set({ error: error.message || 'Failed to create group' });
+      set({ error: error instanceof Error ? error.message : 'Failed to create group' });
       return null;
     }
   },
@@ -54,9 +54,9 @@ export const useGroupsStore = create<GroupsState>((set, get) => ({
         return updatedGroup;
       }
       return null;
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Failed to join group:', error);
-      set({ error: error.message || 'Failed to join group' });
+      set({ error: error instanceof Error ? error.message : 'Failed to join group' });
       return null;
     }
   },
@@ -68,9 +68,9 @@ export const useGroupsStore = create<GroupsState>((set, get) => ({
         groups: state.groups.filter(group => group.id !== groupId),
         activeGroupId: state.activeGroupId === groupId ? null : state.activeGroupId
       }));
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Failed to leave group:', error);
-      set({ error: error.message || 'Failed to leave group' });
+      set({ error: error instanceof Error ? error.message : 'Failed to leave group' });
     }
   },
   
@@ -87,9 +87,9 @@ export const useGroupsStore = create<GroupsState>((set, get) => ({
           group.id === groupId ? { ...group, tasks } : group
         )
       }));
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Failed to load group tasks:', error);
-      set({ error: error.message || 'Failed to load group tasks' });
+      set({ error: error instanceof Error ? error.message : 'Failed to load group tasks' });
     }
   },
   
@@ -98,9 +98,9 @@ export const useGroupsStore = create<GroupsState>((set, get) => ({
       await groupsService.createGroupTask(groupId, taskText);
       // Reload tasks after creating
       await get().loadGroupTasks(groupId);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Failed to create task:', error);
-      set({ error: error.message || 'Failed to create task' });
+      set({ error: error instanceof Error ? error.message : 'Failed to create task' });
     }
   },
   
@@ -109,9 +109,9 @@ export const useGroupsStore = create<GroupsState>((set, get) => ({
       await groupsService.updateGroupTask(groupId, taskId, taskText, completed);
       // Reload tasks after updating
       await get().loadGroupTasks(groupId);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Failed to update task:', error);
-      set({ error: error.message || 'Failed to update task' });
+      set({ error: error instanceof Error ? error.message : 'Failed to update task' });
     }
   },
   
@@ -120,9 +120,9 @@ export const useGroupsStore = create<GroupsState>((set, get) => ({
       await groupsService.deleteGroupTask(groupId, taskId);
       // Reload tasks after deleting
       await get().loadGroupTasks(groupId);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Failed to delete task:', error);
-      set({ error: error.message || 'Failed to delete task' });
+      set({ error: error instanceof Error ? error.message : 'Failed to delete task' });
     }
   },
   
@@ -135,9 +135,9 @@ export const useGroupsStore = create<GroupsState>((set, get) => ({
           group.id === groupId ? { ...group, members } : group
         )
       }));
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Failed to load group members:', error);
-      set({ error: error.message || 'Failed to load group members' });
+      set({ error: error instanceof Error ? error.message : 'Failed to load group members' });
     }
   },
 
@@ -150,9 +150,9 @@ export const useGroupsStore = create<GroupsState>((set, get) => ({
           group.id === groupId ? { ...group, files } : group
         )
       }));
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Failed to load group files:', error);
-      set({ error: error.message || 'Failed to load group files' });
+      set({ error: error instanceof Error ? error.message : 'Failed to load group files' });
     }
   },
 

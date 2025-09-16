@@ -3,7 +3,7 @@
 
 import { useTranslation } from 'react-i18next';
 import TrashList from '@/features/trash/components/TrashList';
-import { Button } from '@/components/ui/button';
+
 import { useTrashStore } from '@/features/trash/store/trash.store';
 
 export default function Trash() {

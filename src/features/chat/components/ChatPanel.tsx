@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect, KeyboardEvent, RefObject } from 're
 import { useChatStore } from '../store/chat.store';
 import { ChatPanelProps } from '@/features/chat/types/AiChat';
 import { useAutoScroll, useAutoResizeTextarea } from '@/lib/hooks';
-import { ChatInput, EmptyState, MessageList, TypingIndicator } from './';
+import { ChatInput, MessageList, TypingIndicator } from './';
 
 const ChatPanel: React.FC<ChatPanelProps> = ({ noteId }) => {
   const [input, setInput] = useState('');

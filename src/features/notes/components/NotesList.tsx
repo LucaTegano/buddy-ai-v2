@@ -1,13 +1,14 @@
 "use client"
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { noteActions } from '../actions/note.actions';
 import NoteCard from './NoteCard';
 import { EmptyNotes } from './EmptyNotes';
 import { PlusIcon } from '@/shared/components/icons';
 import NotesLoadingSkeleton from './NotesLoadingSkeleton';
+import { Note } from '@/features/notes/types/Note';
 interface NotesListProps {
-  notes: any[];
+  notes: Note[];
   isLoading: boolean;
 }
 

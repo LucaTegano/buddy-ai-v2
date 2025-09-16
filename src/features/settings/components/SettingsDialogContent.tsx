@@ -11,11 +11,7 @@ import { Separator } from "@/components/ui/separator";
 import {
   X,
   Settings,
-  Bell,
   Wand2,
-  ServerCog,
-  LucideSquareUser,
-  CircleUserRound,
   LucideProps,
 } from "lucide-react";
 import { useTranslation } from 'react-i18next';

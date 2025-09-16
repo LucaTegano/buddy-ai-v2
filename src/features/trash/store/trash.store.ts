@@ -24,8 +24,8 @@ export const useTrashStore = create<TrashState>((set) => ({
     try {
       const trashItems = await getTrashItems();
       set({ trashItems, isLoading: false });
-    } catch (error: any) {
-      const errorMessage = error.message || 'Failed to load trash items';
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to load trash items';
       set({ error: errorMessage, isLoading: false });
       toast.error(errorMessage);
     }
@@ -38,8 +38,8 @@ export const useTrashStore = create<TrashState>((set) => ({
         trashItems: state.trashItems.filter((item) => item.id !== id),
       }));
       toast.success('Item restored successfully');
-    } catch (error: any) {
-      const errorMessage = error.message || 'Failed to restore item';
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to restore item';
       set({ error: errorMessage });
       toast.error(errorMessage);
     }
@@ -52,8 +52,8 @@ export const useTrashStore = create<TrashState>((set) => ({
         trashItems: state.trashItems.filter((item) => item.id !== id),
       }));
       toast.success('Item deleted permanently');
-    } catch (error: any) {
-      const errorMessage = error.message || 'Failed to delete item';
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to delete item';
       set({ error: errorMessage });
       toast.error(errorMessage);
     }
@@ -64,8 +64,8 @@ export const useTrashStore = create<TrashState>((set) => ({
       await emptyTrash();
       set({ trashItems: [] });
       toast.success('Trash emptied successfully');
-    } catch (error: any) {
-      const errorMessage = error.message || 'Failed to empty trash';
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to empty trash';
       set({ error: errorMessage });
       toast.error(errorMessage);
     }

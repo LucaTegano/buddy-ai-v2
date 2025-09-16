@@ -1,7 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Note } from '@/features/notes/types/Note';
-import { noteActions } from '@/features/notes/actions/note.actions';
 import { DocumentTextIcon, UsersIcon } from '@/shared/components/icons';
 import Link from 'next/link';
 

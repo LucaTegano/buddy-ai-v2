@@ -35,7 +35,7 @@ const NoteEditor: React.FC<NoteEditorProps> = ({
   const [isDirty, setIsDirty] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   
-  const { isResizing, editorHeight, chatPanelHeight, handleMouseDownOnResizer } = useNewResizablePanel(
+  const { editorHeight, chatPanelHeight, handleMouseDownOnResizer } = useNewResizablePanel(
     400, 120, 0.8, { onClose: toggleChatPanel }
   );
 
