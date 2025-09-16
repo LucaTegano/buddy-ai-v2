@@ -9,6 +9,7 @@ export interface NotesState {
   // Actions
   loadNotes: () => Promise<void>;
   createNote: (note: Partial<Note>) => Promise<Note | null>;
+  getNoteById: (id: string) => Promise<Note | null>;
   updateNote: (noteId: string, updates: Partial<Note>) => Promise<Note | null>;
   deleteNote: (noteId: string) => Promise<void>;
   moveNoteToTrash: (noteId: string, router: any) => Promise<void>;
