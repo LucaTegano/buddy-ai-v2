@@ -1,5 +1,5 @@
 import { User } from '@/features/user/types/User';
-import { LoginCredentials } from '../types/Auth';
+import { LoginCredentials, SignupCredentials } from '../types/Auth';
 
 export interface AuthState {
   isAuthenticated: boolean;
@@ -7,6 +7,7 @@ export interface AuthState {
   isLoading: boolean; // For login/logout actions
   isCheckingAuth: boolean; // For the initial app load check
   error: string | null;
+  signup: (credentials: SignupCredentials) => Promise<void>;
   login: (credentials: LoginCredentials) => Promise<void>;
   logout: () => Promise<void>;
   checkAuth: () => Promise<void>;

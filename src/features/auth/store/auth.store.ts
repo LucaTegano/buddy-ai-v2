@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { User } from '@/features/user/types/User';
-import { LoginCredentials } from '../types/Auth';
+import { LoginCredentials, SignupCredentials } from '../types/Auth';
 import authService from '../services/auth.service';
 import userService from '@/features/user/services/user.service';
 import { AuthState } from '../types/AuthState'; // Import the interface type
@@ -15,6 +15,17 @@ export const useAuthStore = create<AuthState>((set) => ({
   error: null,
   
   clearError: () => set({ error: null }),
+
+  signup: async (credentials: SignupCredentials) => {
+    set({ isLoading: true, error: null });
+    try {
+      await authService.signup(credentials);
+      set({ isLoading: false });
+    } catch (err: any) {
+      set({ error: err.message || 'Signup failed', isLoading: false });
+      throw err;
+    }
+  },
 
   login: async (credentials: LoginCredentials) => {
     set({ isLoading: true, error: null });
