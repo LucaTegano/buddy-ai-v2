@@ -1,83 +1,63 @@
+// src/features/chat/components/ChatPanel.tsx
 "use client"
-import React, { useState, useRef, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useChatStore } from '@/features/chat/store/chat.store';
-import { SendIcon, SparklesIcon } from '@/shared/components/icons';
-export enum MessageRole {
-  USER = 'user',
-  MODEL = 'model',
-}
-export interface ChatMessage {
-  role: MessageRole;
-  text: string;
-}
+import React, { useState, useRef, useEffect, KeyboardEvent } from 'react';
+import { useChatStore } from '../store/chat.store';
+import { ChatPanelProps } from '@/features/chat/types/AiChat';
+import { useAutoScroll, useAutoResizeTextarea } from '@/lib/hooks';
+import { ChatInput, EmptyState, MessageList, TypingIndicator } from './';
 
-const ChatPanel: React.FC = () => {
-  const { t } = useTranslation();
+const ChatPanel: React.FC<ChatPanelProps> = ({ noteId }) => {
   const [input, setInput] = useState('');
-  const { messages, isLoading, sendMessage } = useChatStore();
+  const { messages, isLoading, sendMessage, setNoteId, loadChatHistory } = useChatStore();
+  
   const chatHistoryRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+  // Custom hooks for side-effects
+  useAutoScroll(chatHistoryRef, [messages, isLoading]);
+  useAutoResizeTextarea(textareaRef, input);
+
+  // Effect for initializing chat history
   useEffect(() => {
-    if (chatHistoryRef.current) {
-      chatHistoryRef.current.scrollTop = chatHistoryRef.current.scrollHeight;
-    }
-  }, [messages, isLoading]);
+    setNoteId(noteId);
+    loadChatHistory();
+  }, [noteId, setNoteId, loadChatHistory]);
 
+  // --- Event Handlers ---
+  const handleSendMessage = (message: string) => {
+    if (message.trim() && !isLoading) {
+      sendMessage(message.trim());
+      setInput('');
+    }
+  };
+  
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (input.trim() && !isLoading) {
-      sendMessage(input.trim());
-      setInput('');
+    handleSendMessage(input);
+  };
+  
+  const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage(input);
     }
   };
 
   return (
-    <div className="flex flex-col h-full bg-surface backdrop-blur-sm border border-border-subtle rounded-2xl shadow-lg shadow-subtle">
+    <div className="flex flex-col h-full bg-surface border border-border-subtle rounded-2xl shadow-lg shadow-subtle overflow-hidden">
       <div ref={chatHistoryRef} className="flex-grow p-4 sm:p-6 overflow-y-auto">
-        {messages.map((msg, index) => (
-          <div key={index} className={`flex items-start gap-2.5 my-4 ${msg.role === MessageRole.MODEL ? 'justify-start' : 'justify-end'}`}>
-            {msg.role === MessageRole.MODEL && (
-              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-brand-subtle flex items-center justify-center text-brand-primary">
-                <SparklesIcon className="w-5 h-5" />
-              </div>
-            )}
-            <div className={`relative max-w-lg px-4 py-2.5 rounded-xl ${msg.role === MessageRole.MODEL ? 'bg-hover/80 text-text-primary' : 'bg-brand-primary text-white shadow'}`}>
-              <p className="text-sm break-words whitespace-pre-wrap leading-relaxed">{msg.text}</p>
-            </div>
-          </div>
-        ))}
-        {isLoading && (
-          <div className="flex items-start gap-3 my-4 justify-start">
-             <div className="flex-shrink-0 w-8 h-8 rounded-full bg-brand-subtle flex items-center justify-center text-brand-primary">
-                <SparklesIcon className="w-5 h-5 animate-pulse" />
-            </div>
-            <div className="px-4 py-3 rounded-xl bg-surface">
-                <p className="text-sm text-text-secondary">{t('chatPanel.thinking')}</p>
-            </div>
-          </div>
-        )}
+          <MessageList messages={messages} />
+        {isLoading && <TypingIndicator />}
       </div>
-      <div className="p-3 border-t border-border-subtle">
-        <form onSubmit={handleSubmit} className="flex items-center gap-2">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder={t('chatPanel.placeholder')}
-            className="w-full px-4 py-2.5 text-sm bg-surface text-text-primary rounded-lg border-transparent focus:ring-2 focus:ring-brand-primary focus:outline-none transition-colors duration-300"
-            disabled={isLoading}
-          />
-          <button
-            type="submit"
-            disabled={isLoading || !input.trim()}
-            className="flex-shrink-0 p-2.5 rounded-lg bg-brand-primary text-on-brand hover:bg-brand-hover disabled:bg-disabled disabled:text-text-disabled disabled:cursor-not-allowed transition-colors"
-            aria-label={t('chatPanel.sendMessage')}
-          >
-            <SendIcon className="w-5 h-5" />
-          </button>
-        </form>
-      </div>
+
+      <ChatInput
+        input={input}
+        setInput={setInput}
+        handleSubmit={handleSubmit}
+        handleKeyDown={handleKeyDown}
+        isLoading={isLoading}
+        textareaRef={textareaRef}
+      />
     </div>
   );
 };
