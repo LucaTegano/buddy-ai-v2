@@ -2,8 +2,11 @@
 
 <h3 align="center">Your AI-Powered Companion for Notes and Productivity</h3>
 
----
-
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=GoFUnKAcPsc&autoplay=1">
+    <img src="https://img.youtube.com/vi/GoFUnKAcPsc/maxresdefault.jpg" alt="Watch the video">
+  </a>
+</p>
 
 ## ✨ Introduction
 
