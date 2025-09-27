@@ -4,11 +4,6 @@
 
 ---
 
-<div align="center">
-
-https://github.com/LucaTegano/buddy-ai-v2/issues/1#issue-3460602280
-
-</div>
 
 ## ✨ Introduction
 
