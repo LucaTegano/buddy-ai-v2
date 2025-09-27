@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Buddy AI
 
-## Getting Started
+<div align="center">
+  <img src="public/globe.svg" alt="Buddy AI Logo" width="150">
+</div>
 
-First, run the development server:
+<h3 align="center">Your AI-Powered Companion for Notes and Productivity</h3>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+<div align="center">
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+[Watch the Demo Video](video-demo-modified.mp4)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+</div>
 
-## Learn More
+## ✨ Introduction
 
-To learn more about Next.js, take a look at the following resources:
+Buddy AI is an intelligent, AI-powered web application designed to be your ultimate companion for managing notes and boosting productivity. It offers a seamless and modern interface to organize your thoughts, track personal tasks, and much more. With a rich set of features and extensive customization options, Buddy AI is tailored to fit your workflow.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🚀 Key Features
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **🤖 AI-Powered Assistance:** Leverage the power of AI to streamline your note-taking and task management.
+- **📝 Personal Task Management:** Keep track of your to-dos and manage your personal projects efficiently.
+- **🎨 Modern & Customizable Design:** Enjoy a sleek, contemporary design with both **Light and Dark modes** to suit your preference.
+- **🌍 Multilingual Support:** Buddy AI is available in 7 languages:
+  - Arabic (ar)
+  - Italian (it)
+  - English (en)
+  - Spanish (es)
+  - French (fr)
+  - Hindi (hi)
+  - Chinese (zh)
+- **🔍 Powerful Search:** Quickly find your notes and tasks with a fast and intuitive search bar.
+- **⌨️ Keyboard Shortcuts:** Boost your productivity with a range of keyboard shortcuts for common actions.
 
-## Deploy on Vercel
+## 🛠️ Tech Stack
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Buddy AI is built with a modern and robust technology stack:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Framework:** [Next.js](https://nextjs.org/)
+- **Language:** [TypeScript](https://www.typescriptlang.org/)
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+- **UI Components:** [Radix UI](https://www.radix-ui.com/) & [Shadcn UI](https://ui.shadcn.com/)
+- **State Management:** [Zustand](https://zustand-demo.pmnd.rs/)
+- **Internationalization:** [i18next](https://www.i18next.com/)
+
+## 📄 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
