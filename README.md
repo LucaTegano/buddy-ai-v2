@@ -10,7 +10,7 @@
 
 ## ✨ Introduction
 
-Buddy AI is an intelligent, AI-powered web application designed to be your ultimate companion for managing notes and boosting productivity. It offers a seamless and modern interface to organize your thoughts, track personal tasks, and much more. With a rich set of features and extensive customization options, Buddy AI is tailored to fit your workflow.
+Buddy AI is an intelligent, AI-powered web application designed to be your ultimate companion for managing school notes using an ai that always has context of the note . It offers a seamless and modern interface to organize your thoughts, track personal tasks.
 
 ## 🚀 Key Features
 
