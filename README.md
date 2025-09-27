@@ -1,16 +1,12 @@
 # Buddy AI
 
-<div align="center">
-  <img src="public/globe.svg" alt="Buddy AI Logo" width="150">
-</div>
-
 <h3 align="center">Your AI-Powered Companion for Notes and Productivity</h3>
 
 ---
 
 <div align="center">
 
-[Watch the Demo Video](video-demo-modified.mp4)
+https://github.com/LucaTegano/buddy-ai-v2/issues/1#issue-3460602280
 
 </div>
 
