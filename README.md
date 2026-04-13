@@ -2,6 +2,8 @@
 
 Welcome to the Buddy AI v2 monorepo. This repository contains both the frontend (Next.js) and backend (Spring Boot) for the Buddy AI platform.
 
+![Image](https://github.com/user-attachments/assets/c1994777-c4d3-4dde-ac3b-e7ed803acbd8)
+
 ## 📁 Structure
 
 - **`client/`**: The frontend application built with Next.js, Tailwind CSS, and Radix UI.
