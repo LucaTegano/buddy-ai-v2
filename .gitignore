@@ -1,0 +1,24 @@
+# Environment files
+.env
+.env.example
+
+# Node/Next.js
+client/node_modules
+client/.next
+client/out
+client/.env*.local
+
+# Java/Maven
+server/target/
+server/.mvn/wrapper/maven-wrapper.jar
+server/mvnw
+server/mvnw.cmd
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.log
+
+# Docker
+.docker/

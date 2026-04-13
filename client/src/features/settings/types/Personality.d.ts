@@ -1,0 +1,1 @@
+export type Personality = 'default' | 'robot' | 'nerd';

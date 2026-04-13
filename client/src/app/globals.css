@@ -1,0 +1,256 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@custom-variant dark (&:is(.dark *));
+
+/* 
+  This @theme block now only contains mappings for YOUR custom variables.
+*/
+@theme {
+  /* Background colors */
+  --color-primary: var(--bg-primary);
+  --color-secondary: var(--bg-secondary);
+  --color-surface: var(--bg-surface);
+  --color-hover: var(--bg-hover);
+
+  /* Text colors */
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-disabled: var(--text-disabled);
+
+  /* Brand colors */
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-subtle: var(--brand-subtle);
+  --color-brand-subtle-2: var(--brand-subtle-2);
+  --color-brand-subtle-3: var(--brand-subtle-3);
+
+  /* Border colors */
+  --color-border-subtle: var(--border-subtle);
+
+  --color-shadow-subtle: var(--shadow-subtle);
+
+  --color-accent-blue: var(--accent-blue);
+  --color-accent-purple: var(--accent-purple);
+  --color-accent-orange: var(--accent-orange);
+  --color-accent-pink: var(--accent-pink);
+  --color-feedback-success: var(--feedback-success);
+  --color-feedback-warning: var(--feedback-warning);
+  --color-feedback-error: var(--feedback-error);
+  --color-feedback-success-hover: var(--feedback-success-hover);
+  --color-feedback-error-text: var(--feedback-error-text);
+  --color-feedback-error-bg-subtle: var(--feedback-error-bg-subtle);
+  --color-feedback-error-bg-subtle-hover: var(--feedback-error-bg-subtle-hover);
+  --color-bg-accent-unread: var(--bg-accent-unread);
+/* Prefixed Shadcn/UI Variables */
+ --radius-scn-sm: calc(var(--scn-radius) - 4px);
+  --radius-scn-md: calc(var(--scn-radius) - 2px);
+  --radius-scn-lg: var(--scn-radius);
+  --radius-scn-xl: calc(var(--scn-radius) + 4px);
+  --color-scn-background: var(--scn-background);
+  --color-scn-foreground: var(--scn-foreground);
+  --color-scn-card: var(--scn-card);
+  --color-scn-card-foreground: var(--scn-card-foreground);
+  --color-scn-popover: var(--scn-popover);
+  --color-scn-popover-foreground: var(--scn-popover-foreground);
+  --color-scn-primary: var(--scn-primary);
+  --color-scn-primary-foreground: var(--scn-primary-foreground);
+  --color-scn-secondary: var(--scn-secondary);
+  --color-scn-secondary-foreground: var(--scn-secondary-foreground);
+  --color-scn-muted: var(--scn-muted);
+  --color-scn-muted-foreground: var(--scn-muted-foreground);
+  --color-scn-accent: var(--scn-accent);
+  --color-scn-accent-foreground: var(--scn-accent-foreground);
+  --color-scn-destructive: var(--scn-destructive);
+  --color-scn-border: var(--scn-border);
+  --color-scn-input: var(--scn-input);
+  --color-scn-ring: var(--scn-ring);
+  --color-scn-chart-1: var(--scn-chart-1);
+  --color-scn-chart-2: var(--scn-chart-2);
+  --color-scn-chart-3: var(--scn-chart-3);
+  --color-scn-chart-4: var(--scn-chart-4);
+  --color-scn-chart-5: var(--scn-chart-5);
+  --color-scn-sidebar: var(--scn-sidebar);
+  --color-scn-sidebar-foreground: var(--scn-sidebar-foreground);
+  --color-scn-sidebar-primary: var(--scn-sidebar-primary);
+  --color-scn-sidebar-primary-foreground: var(--scn-sidebar-primary-foreground);
+  --color-scn-sidebar-accent: var(--scn-sidebar-accent);
+  --color-scn-sidebar-accent-foreground: var(--scn-sidebar-accent-foreground);
+  --color-scn-sidebar-border: var(--scn-sidebar-border);
+  --color-scn-sidebar-ring: var(--scn-sidebar-ring);
+}
+
+/* Light Mode (Default) */
+:root {
+  --bg-primary: #fbfbfb;
+  --bg-secondary: #f3f4f6;
+  --bg-surface: #ffffff;
+  --bg-hover: #f3f4f6;
+  --bg-accent: #e5e7eb;
+  --border-subtle: #e5e7eb;
+  --text-primary: #111827;
+  --text-secondary: #4b5563;
+  --text-disabled: #9ca3af;
+
+  --brand-primary: #10b981;
+  --brand-hover: #059669;
+  --brand-subtle: #ecfdf5;
+  --brand-subtle-2: #10b981;
+  --brand-subtle-3: #6ee7b7;
+
+  --accent-blue: #3b82f6;
+  --accent-purple: #8b5cf6;
+  --accent-orange: #f59e0b;
+  --accent-pink: #ec4899;
+
+  --feedback-success: #10b981;
+  --feedback-warning: #f59e0b;
+  --feedback-error: #ef4444;
+  --feedback-success-hover: #059669;
+  --feedback-error-text: #991b1b;
+  --feedback-error-bg-subtle: #fee2e2;
+  --feedback-error-bg-subtle-hover: #fecaca;
+  --bg-accent-unread: #f0fdf4;
+  --shadow-subtle: rgba(0, 0, 0, 0.05);
+
+  /* Prefixed Shadcn/UI Variables */
+  --scn-radius: 0.75rem;
+  --scn-background: oklch(1 0 0);
+  --scn-foreground: oklch(0.129 0.042 264.695);
+  --scn-card: oklch(1 0 0);
+  --scn-card-foreground: oklch(0.129 0.042 264.695);
+  --scn-popover: oklch(1 0 0);
+  --scn-popover-foreground: oklch(0.129 0.042 264.695);
+  --scn-primary: oklch(0.627 0.194 149.214); /* Brand Emerald */
+  --scn-primary-foreground: oklch(0.985 0 0);
+  --scn-secondary: oklch(0.967 0.003 264.542);
+  --scn-secondary-foreground: oklch(0.208 0.042 265.755);
+  --scn-muted: oklch(0.967 0.003 264.542);
+  --scn-muted-foreground: oklch(0.552 0.016 285.938);
+  --scn-accent: oklch(0.967 0.003 264.542);
+  --scn-accent-foreground: oklch(0.208 0.042 265.755);
+  --scn-destructive: oklch(0.577 0.245 27.325);
+  --scn-border: oklch(0.922 0 0);
+  --scn-input: oklch(0.922 0 0);
+  --scn-ring: oklch(0.708 0 0);
+  --scn-chart-1: oklch(0.646 0.222 41.116);
+  --scn-chart-2: oklch(0.6 0.118 184.704);
+  --scn-chart-3: oklch(0.398 0.07 227.392);
+  --scn-chart-4: oklch(0.828 0.189 84.429);
+  --scn-chart-5: oklch(0.769 0.188 70.08);
+  --scn-sidebar: oklch(0.985 0 0);
+  --scn-sidebar-foreground: oklch(0.129 0.042 264.695);
+  --scn-sidebar-primary: oklch(0.627 0.194 149.214);
+  --scn-sidebar-primary-foreground: oklch(0.985 0 0);
+  --scn-sidebar-accent: oklch(0.967 0.003 264.542);
+  --scn-sidebar-accent-foreground: oklch(0.208 0.042 265.755);
+  --scn-sidebar-border: oklch(0.922 0 0);
+  --scn-sidebar-ring: oklch(0.708 0 0);
+}
+
+/* Dark Mode */
+.dark {
+  --bg-primary: #09090b;
+  --bg-secondary: #18181b;
+  --bg-surface: #09090b;
+  --bg-hover: #27272a;
+  --bg-accent: #1e1e21;
+  --border-subtle: #27272a;
+  --text-primary: #f9fafb;
+  --text-secondary: #a1a1aa;
+  --text-disabled: #52525b;
+
+  --brand-primary: #10b981;
+  --brand-hover: #34d399;
+  --brand-subtle: #064e3b;
+  --brand-subtle-2: #059669;
+  --brand-subtle-3: #064e3b;
+
+  --accent-blue: #3b82f6;
+  --accent-purple: #8b5cf6;
+  --accent-orange: #f59e0b;
+  --accent-pink: #ec4899;
+
+  --feedback-success: #10b981;
+  --feedback-warning: #f59e0b;
+  --feedback-error: #ef4444;
+  --feedback-success-hover: #059669;
+  --feedback-error-text: #fecaca;
+  --feedback-error-bg-subtle: #450a0a;
+  --feedback-error-bg-subtle-hover: #7f1d1d;
+  --bg-accent-unread: rgba(16, 185, 129, 0.1);
+
+  --shadow-subtle: rgba(0, 0, 0, 0.5);
+
+  /* Prefixed Shadcn/UI Variables */
+  --scn-background: oklch(0.129 0.042 264.695);
+  --scn-foreground: oklch(0.985 0 0);
+  --scn-card: oklch(0.129 0.042 264.695);
+  --scn-card-foreground: oklch(0.985 0 0);
+  --scn-popover: oklch(0.129 0.042 264.695);
+  --scn-popover-foreground: oklch(0.985 0 0);
+  --scn-primary: oklch(0.627 0.194 149.214);
+  --scn-primary-foreground: oklch(0.129 0.042 264.695);
+  --scn-secondary: oklch(0.208 0.042 265.755);
+  --scn-secondary-foreground: oklch(0.985 0 0);
+  --scn-muted: oklch(0.208 0.042 265.755);
+  --scn-muted-foreground: oklch(0.707 0.022 261.325);
+  --scn-accent: oklch(0.208 0.042 265.755);
+  --scn-accent-foreground: oklch(0.985 0 0);
+  --scn-destructive: oklch(0.396 0.141 25.723);
+  --scn-border: oklch(0.274 0.006 286.033);
+  --scn-input: oklch(0.274 0.006 286.033);
+  --scn-ring: oklch(0.439 0 0);
+  --scn-chart-1: oklch(0.488 0.243 264.376);
+  --scn-chart-2: oklch(0.696 0.17 162.48);
+  --scn-chart-3: oklch(0.769 0.188 70.08);
+  --scn-chart-4: oklch(0.627 0.265 303.9);
+  --scn-chart-5: oklch(0.645 0.246 16.439);
+  --scn-sidebar: oklch(0.129 0.042 264.695);
+  --scn-sidebar-foreground: oklch(0.985 0 0);
+  --scn-sidebar-primary: oklch(0.627 0.194 149.214);
+  --scn-sidebar-primary-foreground: oklch(0.985 0 0);
+  --scn-sidebar-accent: oklch(0.208 0.042 265.755);
+  --scn-sidebar-accent-foreground: oklch(0.985 0 0);
+  --scn-sidebar-border: oklch(0.274 0.006 286.033);
+  --scn-sidebar-ring: oklch(0.439 0 0);
+}
+
+/* Custom styles for sonner toasts */
+:root {
+  --toast-success-border: var(--feedback-success);
+  --toast-error-border: var(--feedback-error);
+  --toast-warning-border: var(--feedback-warning);
+}
+
+[data-sonner-toast] {
+  font-size: 1rem !important;
+  padding: 1rem !important;
+  border-width: 2px !important;
+}
+
+[data-sonner-toast][data-type="success"] {
+  border-color: var(--toast-success-border) !important;
+}
+
+[data-sonner-toast][data-type="error"] {
+  border-color: var(--toast-error-border) !important;
+}
+
+[data-sonner-toast][data-type="warning"] {
+  border-color: var(--toast-warning-border) !important;
+}
+
+/* Increase toast size */
+[data-sonner-toast] {
+  min-height: 60px !important;
+  min-width: 300px !important;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* 
+  NOTE: The shadcn-specific '@theme inline' block has been removed.
+  It should only exist in your new 'shadcn-theme.css' file.
+*/
