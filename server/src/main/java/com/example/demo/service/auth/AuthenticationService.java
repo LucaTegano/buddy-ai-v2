@@ -58,9 +58,11 @@ public class AuthenticationService {
         User user = new User(input.getUsername(), input.getEmail(), passwordEncoder.encode(input.getPassword()));
         user.setVerificationCode(generateVerificationCode());
         user.setVerificationCodeExpiresAt(LocalDateTime.now().plusMinutes(5));
-        user.setEnabled(false);
-        sendVerificationEmail(user);
+        user.setEnabled(true); // Auto-enable for development
         userRepository.save(user);
+        
+        // Send verification email
+        sendVerificationEmail(user);
     }
 
     public User authenticate(LoginUserDto input) {
@@ -98,7 +100,8 @@ public class AuthenticationService {
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             if (user.isEnabled()) {
-                throw new RuntimeException("Account is already verified");
+                // In development mode, just return success since users are auto-enabled
+                return;
             }
             user.setVerificationCode(generateVerificationCode());
             user.setVerificationCodeExpiresAt(LocalDateTime.now().plusHours(1));

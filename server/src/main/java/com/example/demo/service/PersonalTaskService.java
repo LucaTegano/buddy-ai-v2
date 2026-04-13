@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.PersonalTaskDto;
 import com.example.demo.model.PersonalTask;
 import com.example.demo.model.User;
 import com.example.demo.repository.PersonalTaskRepository;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PersonalTaskService {
@@ -17,22 +19,27 @@ public class PersonalTaskService {
     @Autowired
     private UserService userService;
 
-    public List<PersonalTask> getAllTasksForUser(String username) {
+    public List<PersonalTaskDto> getAllTasksForUser(String username) {
         User owner = userService.getUserByUsername(username);
-        return personalTaskRepository.findByOwner_Id(owner.getId());
+        return personalTaskRepository.findByOwner_Id(owner.getId())
+                .stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
     }
 
-    public PersonalTask createTask(PersonalTask taskRequest, String username) {
+    public PersonalTaskDto createTask(PersonalTask taskRequest, String username) {
         User owner = userService.getUserByUsername(username);
         taskRequest.setOwner(owner);
-        return personalTaskRepository.save(taskRequest);
+        PersonalTask savedTask = personalTaskRepository.save(taskRequest);
+        return convertToDto(savedTask);
     }
 
-    public PersonalTask updateTask(Long taskId, PersonalTask taskRequest, String username) {
+    public PersonalTaskDto updateTask(Long taskId, PersonalTask taskRequest, String username) {
         PersonalTask task = getTaskAndVerifyOwner(taskId, username);
         task.setText(taskRequest.getText());
         task.setCompleted(taskRequest.isCompleted());
-        return personalTaskRepository.save(task);
+        PersonalTask updatedTask = personalTaskRepository.save(task);
+        return convertToDto(updatedTask);
     }
 
     public void deleteTask(Long taskId, String username) {
@@ -49,5 +56,13 @@ public class PersonalTaskService {
         }
 
         return task;
+    }
+
+    private PersonalTaskDto convertToDto(PersonalTask task) {
+        return PersonalTaskDto.builder()
+                .id(task.getId())
+                .text(task.getText())
+                .completed(task.isCompleted())
+                .build();
     }
 }

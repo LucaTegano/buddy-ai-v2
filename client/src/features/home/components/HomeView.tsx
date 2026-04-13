@@ -2,6 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useRouter } from 'next/navigation';
 import { Maximize2, Minimize2 } from 'lucide-react';
 import { useAuthStore } from '@/features/auth/store/auth.store';
 import { useNotesStore } from '@/features/notes/store/notes.store';
@@ -19,12 +20,19 @@ export default function HomeView() {
   const { personalTasks, loadPersonalTasks } = useTaskStore();
   const { isFullscreen, toggleFullscreen } = useFullscreen();
   
+  const router = useRouter();
+  
   useEffect(() => {
+    if (!user) {
+      const lng = window.location.pathname.split('/')[1] || 'en';
+      router.push(`/${lng}/login`);
+      return;
+    }
     loadNotes();
     loadPersonalTasks();
-  }, [loadNotes, loadPersonalTasks]);
+  }, [user, loadNotes, loadPersonalTasks, router]);
 
-  if (!user) return null;
+  if (!user) return <HomeLoadingSkeleton />;
 
   return (
     <div className='flex flex-col h-full animate-in fade-in duration-700'>

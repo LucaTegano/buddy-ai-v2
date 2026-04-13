@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.PersonalTaskDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,17 +20,17 @@ public class PersonalTaskController {
     private PersonalTaskService personalTaskService;
 
     @GetMapping
-    public List<PersonalTask> getTasks(@AuthenticationPrincipal UserDetails userDetails) {
+    public List<PersonalTaskDto> getTasks(@AuthenticationPrincipal UserDetails userDetails) {
         return personalTaskService.getAllTasksForUser(userDetails.getUsername());
     }
 
     @PostMapping
-    public PersonalTask createTask(@RequestBody PersonalTask task, @AuthenticationPrincipal UserDetails userDetails) {
+    public PersonalTaskDto createTask(@RequestBody PersonalTask task, @AuthenticationPrincipal UserDetails userDetails) {
         return personalTaskService.createTask(task, userDetails.getUsername());
     }
 
     @PutMapping("/{id}")
-    public PersonalTask updateTask(@PathVariable Long id, @RequestBody PersonalTask taskDetails, @AuthenticationPrincipal UserDetails userDetails) {
+    public PersonalTaskDto updateTask(@PathVariable Long id, @RequestBody PersonalTask taskDetails, @AuthenticationPrincipal UserDetails userDetails) {
         return personalTaskService.updateTask(id, taskDetails, userDetails.getUsername());
     }
 

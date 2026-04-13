@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { Command as CommandPrimitive } from "cmdk"
-//import { SearchIcon } from "lucide-react"
+import { SearchIcon, CommandIcon, CornerDownLeftIcon, ArrowUpIcon, ArrowDownIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import {
@@ -10,6 +10,8 @@ import {
   DialogContent,
   DialogDescription,
   DialogHeader,
+  DialogPortal,
+  DialogOverlay,
   DialogTitle,
 } from "@/components/ui/dialog"
 
@@ -21,7 +23,7 @@ function Command({
     <CommandPrimitive
       data-slot="command"
       className={cn(
-        "max-h-[450px] bg-scn-popover text-scn-popover-foreground flex h-full w-full flex-col overflow-hidden p-3",
+        "flex h-full w-full flex-col overflow-hidden bg-transparent text-scn-foreground",
         className
       )}
       {...props}
@@ -34,7 +36,7 @@ function CommandDialog({
   description = "Search for a command to run...",
   children,
   className,
-  showCloseButton = true,
+  showCloseButton = false, // Usually hidden for spotlight-style palettes
   ...props
 }: React.ComponentProps<typeof Dialog> & {
   title?: string
@@ -50,22 +52,17 @@ function CommandDialog({
       </DialogHeader>
       <DialogContent
         className={cn(
-          "overflow-hidden p-0 spotlight-backdrop sm:max-w-3xl",
-          // ADDED: Make the dialog more rounded
-          "rounded-2xl",
-          // ADDED: Move the close button ('X') to the top right
-          "[&>button]:top-7",
+          "fixed top-[20%] left-[50%] z-50 w-full max-w-[calc(100%-2rem)] translate-x-[-50%] sm:max-w-2xl",
+          "overflow-hidden border border-white/10 p-0 shadow-2xl transition-all duration-300",
+          "bg-scn-background/80 backdrop-blur-2xl dark:bg-black/80",
+          "rounded-[2.5rem] ring-1 ring-black/5 dark:ring-white/10",
+          "animate-in fade-in zoom-in-95 slide-in-from-top-4",
           className
         )}
         showCloseButton={showCloseButton}
       >
         <Command
-          className={cn(
-            // Prefixed: text-muted-foreground -> text-scn-muted-foreground
-            "[&_[cmdk-group-heading]]:text-scn-muted-foreground",
-            // The rest of these are structural and don't need prefixes
-            "**:data-[slot=command-input-wrapper]:h-12 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group]]:px-2 [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5"
-          )}
+          className="[&_[cmdk-group-heading]]:text-scn-muted-foreground/50 [&_[cmdk-group-heading]]:px-6 [&_[cmdk-group-heading]]:pb-2 [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:font-bold [&_[cmdk-group-heading]]:tracking-wider [&_[cmdk-group-heading]]:uppercase"
         >
           {children}
         </Command>
@@ -81,16 +78,13 @@ function CommandInput({
   return (
     <div
       data-slot="command-input-wrapper"
-      // Prefixed: border-border -> border-scn-border
-      className="flex h-14 items-center gap-3 border-b border-scn-border/50 px-4"
+      className="flex h-16 items-center border-b border-scn-border/30 px-6 gap-3"
     >
-      {/* Prefixed: text-muted-foreground -> text-scn-muted-foreground */}
-      {/* <SearchIcon className="size-5 shrink-0 text-scn-muted-foreground/70" /> */}
+      <SearchIcon className="size-5 shrink-0 text-scn-muted-foreground/40" />
       <CommandPrimitive.Input
         data-slot="command-input"
         className={cn(
-          // Prefixed: placeholder, rounded-md
-          "placeholder:text-scn-muted-foreground flex h-11 w-full rounded-scn-md bg-transparent py-3 text-base outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
+          "flex h-full w-full bg-transparent py-3 text-lg outline-hidden placeholder:text-scn-muted-foreground/30 disabled:cursor-not-allowed disabled:opacity-50",
           className
         )}
         {...props}
@@ -107,8 +101,7 @@ function CommandList({
     <CommandPrimitive.List
       data-slot="command-list"
       className={cn(
-        // Prefixed: scrollbar-thumb-border -> scrollbar-thumb-scn-border
-        "max-h-[700px] overflow-x-hidden overflow-y-auto overscroll-contain py-2 scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-transparent scrollbar-thumb-scn-border/30",
+        "max-h-[500px] overflow-x-hidden overflow-y-auto overscroll-contain px-2 py-4 scrollbar-none",
         className
       )}
       {...props}
@@ -119,13 +112,15 @@ function CommandList({
 function CommandEmpty({
   ...props
 }: React.ComponentProps<typeof CommandPrimitive.Empty>) {
-  // No theme classes to change here
   return (
     <CommandPrimitive.Empty
       data-slot="command-empty"
-      className="py-6 text-center text-sm"
+      className="py-12 text-center text-sm text-scn-muted-foreground/50 flex flex-col items-center gap-2"
       {...props}
-    />
+    >
+      <CommandIcon className="size-8 opacity-20" />
+      <span>No results found.</span>
+    </CommandPrimitive.Empty>
   )
 }
 
@@ -134,15 +129,14 @@ function CommandGroup({
   ...props
 }: React.ComponentProps<typeof CommandPrimitive.Group>) {
   return (
-  <CommandPrimitive.Group
-    data-slot="command-group"
-    className={cn(
-      // Prefixed: text-foreground, text-muted-foreground
-      "text-scn-foreground [&_[cmdk-group-heading]]:text-scn-muted-foreground overflow-hidden p-1 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-sm [&_[cmdk-group-heading]]:font-medium spotlight-group-heading",
-      className
-    )}
-    {...props}
-  />
+    <CommandPrimitive.Group
+      data-slot="command-group"
+      className={cn(
+        "overflow-hidden text-scn-foreground",
+        className
+      )}
+      {...props}
+    />
   )
 }
 
@@ -153,7 +147,7 @@ function CommandSeparator({
   return (
     <CommandPrimitive.Separator
       data-slot="command-separator"
-      className={cn("bg-scn-border -mx-1 h-px", className)}
+      className={cn("bg-scn-border/30 mx-6 h-px my-2", className)}
       {...props}
     />
   )
@@ -167,8 +161,13 @@ function CommandItem({
     <CommandPrimitive.Item
       data-slot="command-item"
       className={cn(
-        // Prefixed: bg-accent, text-accent-foreground, text-muted-foreground, rounded-sm
-        "data-[selected=true]:bg-scn-accent data-[selected=true]:text-scn-accent-foreground [&_svg:not([class*='text-'])]:text-scn-muted-foreground relative flex cursor-default items-center gap-2 rounded-scn-sm px-2 py-1.5 text-sm outline-hidden select-none data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 spotlight-item",
+        "relative flex cursor-default select-none items-center gap-4 rounded-3xl px-6 py-4 text-sm outline-hidden transition-all duration-200",
+        "mx-2",
+        "data-[selected=true]:bg-scn-foreground/5 data-[selected=true]:text-scn-foreground",
+        "data-[selected=true]:shadow-[0_0_20px_-10px_rgba(0,0,0,0.1)] dark:data-[selected=true]:shadow-[0_0_20px_-10px_rgba(255,255,255,0.1)]",
+        "data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
+        "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5",
+        "[&_svg:not([class*='text-'])]:text-scn-muted-foreground group",
         className
       )}
       {...props}
@@ -184,11 +183,41 @@ function CommandShortcut({
     <span
       data-slot="command-shortcut"
       className={cn(
-        "text-scn-muted-foreground ml-auto text-xs tracking-widest",
+        "ml-auto flex items-center gap-1 text-[10px] font-medium tracking-wide text-scn-muted-foreground/40",
         className
       )}
       {...props}
     />
+  )
+}
+
+function CommandShortcutFooter() {
+  return (
+    <div className="flex items-center gap-6 border-t border-scn-border/30 px-6 py-4 text-[10px] font-semibold uppercase tracking-widest text-scn-muted-foreground/30">
+      <div className="flex items-center gap-2">
+        <kbd className="flex h-5 w-5 items-center justify-center rounded-md bg-scn-foreground/5 px-1 font-sans ring-1 ring-scn-border/20">
+          <CornerDownLeftIcon className="size-3" />
+        </kbd>
+        <span>to select</span>
+      </div>
+      <div className="flex items-center gap-2">
+        <div className="flex gap-1">
+          <kbd className="flex h-5 w-5 items-center justify-center rounded-md bg-scn-foreground/5 px-1 font-sans ring-1 ring-scn-border/20">
+            <ArrowUpIcon className="size-3" />
+          </kbd>
+          <kbd className="flex h-5 w-5 items-center justify-center rounded-md bg-scn-foreground/5 px-1 font-sans ring-1 ring-scn-border/20">
+            <ArrowDownIcon className="size-3" />
+          </kbd>
+        </div>
+        <span>to navigate</span>
+      </div>
+      <div className="flex items-center gap-2 ml-auto">
+        <kbd className="flex items-center justify-center rounded-md bg-scn-foreground/5 px-2 py-0.5 font-sans ring-1 ring-scn-border/20">
+          ESC
+        </kbd>
+        <span>to close</span>
+      </div>
+    </div>
   )
 }
 
@@ -202,4 +231,5 @@ export {
   CommandItem,
   CommandShortcut,
   CommandSeparator,
+  CommandShortcutFooter,
 }

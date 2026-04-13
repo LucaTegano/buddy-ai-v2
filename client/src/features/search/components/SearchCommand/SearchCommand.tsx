@@ -18,7 +18,9 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
+  CommandSeparator,
   CommandShortcut,
+  CommandShortcutFooter,
 } from "@/components/ui/command"
 import { useCommandSearch } from '@/lib/hooks/use-command-search';
 import { useTranslation } from 'react-i18next';
@@ -173,7 +175,6 @@ export function SearchCommand() {
     <CommandDialog open={isOpen} onOpenChange={handleClose}>
       <CommandInput
         placeholder={t('search.placeholder')}
-        className="h-14 text-base mb-2"
         onValueChange={handleSearchChange}
         value={searchQuery}
       />
@@ -187,23 +188,26 @@ export function SearchCommand() {
             <CommandItem
               key={note.id}
               value={note.title}
-              className="py-3 text-base"
               onSelect={() => {
                 router.push(`/note/${note.id}`);
                 handleClose();
               }}
             >
-              <Notebook className="mr-3 h-5 w-5" />
-              <span className="truncate max-w-xs">{note.title}</span>
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-scn-secondary/50">
+                <Notebook className="h-5 w-5 text-scn-muted-foreground" />
+              </div>
+              <div className="flex flex-1 flex-col truncate">
+                <span className="font-medium truncate">{note.title}</span>
+                <span className="text-[10px] text-scn-muted-foreground/60 uppercase tracking-tight">Note</span>
+              </div>
             </CommandItem>
           ))}
         </CommandGroup>
 
         {/* Default View */}
         <div style={{ display: hasSearchQuery ? 'none' : 'block' }}>
-          <CommandGroup>
+          <CommandGroup heading="Quick Actions">
             <CommandItem
-              className="py-3 text-base"
               onSelect={async () => {
                 const result = await noteActions.handleCreateNote();
                 if (result.success && result.note) {
@@ -212,32 +216,34 @@ export function SearchCommand() {
                 }
               }}
             >
-              <SquarePen className="mr-3 h-5 w-5" />
-              <span>{t('search.newNote')}</span>
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-brand-primary/10">
+                <SquarePen className="h-5 w-5 text-brand-primary" />
+              </div>
+              <span className="font-medium">{t('search.newNote')}</span>
             </CommandItem>
             <CommandItem
-              className="py-3 text-base"
               onSelect={() => {
                 router.push('/home');
                 setFocusTaskInput(true);
                 handleClose();
               }}
             >
-              <ClipboardPen className="mr-3 h-5 w-5" />
-              <span>{t('search.newTask')}</span>
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-blue-500/10">
+                <ClipboardPen className="h-5 w-5 text-blue-500" />
+              </div>
+              <span className="font-medium">{t('search.newTask')}</span>
             </CommandItem>
-          </CommandGroup>
-          <CommandGroup>
             <CommandItem
-              className="py-3 text-base"
               onSelect={() => {
                 router.push('/settings');
                 handleClose();
               }}
             >
-              <Settings className="mr-3 h-5 w-5" />
-              <span>{t('search.settings')}</span>
-              <CommandShortcut>{t('search.shortcutSettings')}</CommandShortcut>
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-slate-500/10 dark:bg-slate-400/10">
+                <Settings className="h-5 w-5 text-slate-500 dark:text-slate-400" />
+              </div>
+              <span className="font-medium">{t('search.settings')}</span>
+              <CommandShortcut>⌘S</CommandShortcut>
             </CommandItem>
           </CommandGroup>
 
@@ -246,15 +252,19 @@ export function SearchCommand() {
               {previous7DaysNotes.map((note) => (
                 <CommandItem
                   key={note.id}
-                  value={note.title}
-                  className="py-3 text-base"
+                  value={`${note.title}-previous-7`}
                   onSelect={() => {
                     router.push(`/note/${note.id}`);
                     handleClose();
                   }}
                 >
-                  <Notebook className="mr-3 h-5 w-5" />
-                  <span className="truncate max-w-xs">{note.title}</span>
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-scn-secondary/50 font-sans">
+                    <Notebook className="h-5 w-5 text-scn-muted-foreground" />
+                  </div>
+                  <div className="flex flex-1 flex-col truncate">
+                    <span className="font-medium truncate">{note.title}</span>
+                    <span className="text-[10px] text-scn-muted-foreground/60">2 minutes ago</span>
+                  </div>
                 </CommandItem>
               ))}
             </CommandGroup>
@@ -265,15 +275,19 @@ export function SearchCommand() {
               {previous30DaysNotes.map((note) => (
                 <CommandItem
                   key={note.id}
-                  value={note.title}
-                  className="py-3 text-base"
+                  value={`${note.title}-previous-30`}
                   onSelect={() => {
                     router.push(`/note/${note.id}`);
                     handleClose();
                   }}
                 >
-                  <Notebook className="mr-3 h-5 w-5" />
-                  <span className="truncate max-w-xs">{note.title}</span>
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-scn-secondary/50">
+                    <Notebook className="h-5 w-5 text-scn-muted-foreground" />
+                  </div>
+                  <div className="flex flex-1 flex-col truncate">
+                    <span className="font-medium truncate">{note.title}</span>
+                    <span className="text-[10px] text-scn-muted-foreground/60">Last month</span>
+                  </div>
                 </CommandItem>
               ))}
             </CommandGroup>
@@ -284,15 +298,18 @@ export function SearchCommand() {
               {latestNotes.map((note) => (
                 <CommandItem
                   key={note.id}
-                  value={note.title}
-                  className="py-3 text-base"
+                  value={`${note.title}-latest`}
                   onSelect={() => {
                     router.push(`/note/${note.id}`);
                     handleClose();
                   }}
                 >
-                  <Notebook className="mr-3 h-5 w-5" />
-                  <span className="truncate max-w-xs">{note.title}</span>
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-scn-secondary/50">
+                    <Notebook className="h-5 w-5 text-scn-muted-foreground" />
+                  </div>
+                  <div className="flex flex-1 flex-col truncate">
+                    <span className="font-medium truncate">{note.title}</span>
+                  </div>
                 </CommandItem>
               ))}
             </CommandGroup>
@@ -308,6 +325,7 @@ export function SearchCommand() {
           <CommandEmpty>{t('search.empty')}</CommandEmpty>
         ) : null}
       </CommandList>
+      <CommandShortcutFooter />
     </CommandDialog>
   );
 }

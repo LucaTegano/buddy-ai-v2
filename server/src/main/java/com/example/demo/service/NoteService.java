@@ -177,6 +177,9 @@ public class NoteService {
         Note note = getNoteAndVerifyOwner(noteId, username);
         note.setTitle(noteRequest.getTitle());
         note.setContent(noteRequest.getContent());
+        note.getOwner().getId();
+        note.getCollaborators().size();
+        note.getAiChatHistory().size();
         return noteRepository.save(note);
     }
 
@@ -188,6 +191,10 @@ public class NoteService {
     @Transactional(readOnly = true)
     public Note getNoteByIdForUser(Long noteId, String username) {
         Note note = getNoteAndVerifyOwner(noteId, username);
+        // Force initialization of lazy collections before session closes
+        note.getOwner().getId(); // Force load owner
+        note.getCollaborators().size();
+        note.getAiChatHistory().size();
         return note;
     }
 

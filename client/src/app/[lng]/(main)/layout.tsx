@@ -1,9 +1,10 @@
 'use client';
-
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useUIStore } from '@/shared/store/ui.store';
 import { useAuthStore } from '@/features/auth/store/auth.store';
 import Sidebar from '@/shared/layout/sidebar/Sidebar';
+import HomeLoadingSkeleton from '@/features/home/components/HomeLoadingSkeleton';
 
 export default function MainLayout({
   children,
@@ -11,15 +12,27 @@ export default function MainLayout({
   children: React.ReactNode;
 }) {
   const isSidebarOpen = useUIStore(state => state.isSidebarOpen);
-  const { checkAuth } = useAuthStore();
-  
+  const { user, checkAuth, isCheckingAuth } = useAuthStore();
+  const router = useRouter();
+
   useEffect(() => {
-    // We still fetch user details in the background, but don't block rendering
     checkAuth();
   }, [checkAuth]);
 
+  useEffect(() => {
+    if (!isCheckingAuth && !user) {
+      const lng = window.location.pathname.split('/')[1] || 'en';
+      router.push(`/${lng}/login`);
+    }
+  }, [isCheckingAuth, user, router]);
+
+  if (isCheckingAuth || !user) {
+    return <HomeLoadingSkeleton />;
+  }
+
   return (
     <div className="flex bg-background min-h-screen">
+...
       <Sidebar />
       <main
         className={`flex-grow p-4 md:p-6 lg:p-8 transition-all duration-300 ease-in-out ${

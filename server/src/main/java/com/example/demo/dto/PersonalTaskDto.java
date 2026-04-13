@@ -1,12 +1,16 @@
-package com.example.demo.dto; // Create a new 'dto' package
-
-import com.example.demo.model.User;
+package com.example.demo.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 
-@Data // A shortcut for @Getter, @Setter, @ToString, @EqualsAndHashCode
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class PersonalTaskDto {
-    private User owner;
+    private Long id;
     private String text;
     private boolean completed;
 }

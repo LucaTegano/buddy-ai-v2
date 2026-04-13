@@ -3,23 +3,14 @@ package com.example.demo.service.ai;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.google.genai.Client;
-import com.google.genai.types.GenerateContentResponse;
-
 @Service
 public class GeminiService {
-    private final Client client;
 
     public GeminiService(@Value("${google.api.key}") String apiKey) {
-        this.client = Client.builder().apiKey(apiKey).build();
+        // AI service disabled - dependency not available
     }
 
-    public String askGemini(String promt) {
-
-        GenerateContentResponse response = client.models.generateContent(
-                "gemini-2.0-flash",
-                promt,
-                null);
-        return response.text();
+    public String askGemini(String prompt) {
+        return "AI service is currently unavailable. Please try again later.";
     }
 }

@@ -37,6 +37,7 @@ public class SecurityConfiguration {
                                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Apply CORS
                                                                                                    // configuration
                                 .authorizeHttpRequests(authorize -> authorize
+                                                .requestMatchers("/actuator/health").permitAll()
                                                 .requestMatchers("/auth/**").permitAll() // Your public endpoints
                                                 .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll() // Allow all OPTIONS requests
                                                 .anyRequest().authenticated() // All other requests need authentication

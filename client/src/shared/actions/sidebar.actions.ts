@@ -13,7 +13,7 @@ export const useSidebarActions = () => {
     toggleUserMenu
   } = useUIStore();
   
-  const { logout } = useAuthStore();
+  const { logout: storeLogout } = useAuthStore();
   const router = useRouter();
 
   const handleUserMenuToggle = (e: React.MouseEvent) => {
@@ -29,6 +29,13 @@ export const useSidebarActions = () => {
 
   const openSettings = () => {
     router.push('/settings');
+    setIsUserMenuOpen(false);
+  };
+
+  const logout = async () => {
+    await storeLogout();
+    const lng = window.location.pathname.split('/')[1] || 'en';
+    router.push(`/${lng}/login`);
     setIsUserMenuOpen(false);
   };
 

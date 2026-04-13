@@ -23,7 +23,7 @@ public class AiChatService {
 
     private final NoteRepository noteRepository;
     private final AiChatMessageRepository aiChatMessageRepository;
-    private final GeminiService geminiService;
+    private final OpenRouterService openRouterService;
     private final UserService userService; // Assuming you have a UserService
 
     @Transactional
@@ -46,7 +46,7 @@ public class AiChatService {
         String fullPrompt = buildPrompt(note, userMessageContent);
 
         // 3. Call the AI service
-        String aiResponseContent = geminiService.askGemini(fullPrompt);
+        String aiResponseContent = openRouterService.ask(fullPrompt);
 
         // 4. Save the AI's response
         AiChatMessage aiMessage = new AiChatMessage();
