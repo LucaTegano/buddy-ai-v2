@@ -1,3 +1,13 @@
+export enum MessageRole {
+  USER = 'user',
+  MODEL = 'model',
+}
+
+export interface ChatMessage {
+  role: MessageRole;
+  text: string;
+}
+
 export interface ChatState {
   messages: ChatMessage[];
   isChatPanelOpen: boolean;
@@ -11,22 +21,15 @@ export interface ChatState {
 
 export interface AiChatMessageDto {
   id: number;
-  role: MessageRole;
+  role: string;
   content: string;
   createdAt: string;
 }
+
 export interface SendMessageRequestDto {
   message: string;
 }
-// --- Enums and Interfaces (No Change) ---
-export enum MessageRole {
-  USER = 'user',
-  MODEL = 'model',
-}
-export interface ChatMessage {
-  role: MessageRole;
-  text: string;
-}
-interface ChatPanelProps {
+
+export interface ChatPanelProps {
   noteId: number;
 }

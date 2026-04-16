@@ -44,7 +44,7 @@ const EditorToolbar: React.FC<EditorToolbarProps> = ({ editor }) => {
     }
 
     return (
-        <div className="flex items-center flex-wrap gap-1 p-2 border-b border-border-subtle bg-surface">
+        <div className="flex items-center flex-wrap gap-1 p-2 border-b border-border-subtle bg-background">
             <ToolbarButton onClick={() => editor.chain().focus().undo().run()} disabled={!editor.can().undo()} title={t('scratchpad.undo')}>
                 <ArrowUturnLeftIcon className="w-5 h-5" />
             </ToolbarButton>

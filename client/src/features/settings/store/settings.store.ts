@@ -8,6 +8,8 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
   personality: 'default',
   customInstructions: '',
   isCustomizationEnabled: false,
+  theme: 'system',
+  language: 'en',
 
   openModal: (modal) => {
     set({ activeModal: modal });
@@ -20,6 +22,8 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
   setPersonality: (p) => set({ personality: p }),
   setCustomInstructions: (i) => set({ customInstructions: i }),
   setIsCustomizationEnabled: (e) => set({ isCustomizationEnabled: e }),
+  setTheme: (t) => set({ theme: t }),
+  setLanguage: (l) => set({ language: l }),
 
   loadUserSettings: async () => {
     try {
@@ -28,6 +32,8 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
         personality: userSettings.personality as Personality || 'default',
         customInstructions: userSettings.customInstructions || '',
         isCustomizationEnabled: userSettings.customizationEnabled || false,
+        theme: userSettings.theme || 'system',
+        language: userSettings.language || 'en',
       });
     } catch (error) {
       console.error('Failed to load user settings:', error);
@@ -37,15 +43,17 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
   saveUserSettings: async () => {
     try {
       const { 
-        personality, customInstructions, isCustomizationEnabled } = get();
+        personality, customInstructions, isCustomizationEnabled, theme, language } = get();
       await settingsService.updateSettings({
         personality,
         customInstructions,
         customizationEnabled: isCustomizationEnabled,
+        theme,
+        language,
       });
     } catch (error) {
       console.error('Failed to save user settings:', error);
-      throw error; // Re-throw to be handled by the UI
+      throw error;
     }
   },
 }));

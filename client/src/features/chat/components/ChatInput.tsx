@@ -16,7 +16,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({ input, setInput, handleSub
   const { t } = useTranslation();
 
   return (
-    <div className="p-3 border-t border-border-subtle bg-surface">
+    <div className="bg-transparent">
       <form onSubmit={handleSubmit} className="flex items-end gap-2">
         <textarea
           ref={textareaRef}
@@ -25,7 +25,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({ input, setInput, handleSub
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder={t('chatPanel.placeholder')}
-          className="w-full px-4 py-2.5 text-sm bg-hover text-text-primary rounded-lg border-transparent focus:ring-2 focus:ring-brand-primary focus:outline-none transition-all duration-300 resize-none max-h-40"
+          className="w-full px-4 py-2.5 text-sm bg-surface text-text-primary rounded-lg border-transparent focus:ring-2 focus:ring-brand-primary focus:outline-none transition-all duration-300 resize-none max-h-40"
           disabled={isLoading}
         />
         <button

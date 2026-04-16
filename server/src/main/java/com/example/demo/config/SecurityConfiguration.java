@@ -37,9 +37,11 @@ public class SecurityConfiguration {
                                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Apply CORS
                                                                                                    // configuration
                                 .authorizeHttpRequests(authorize -> authorize
+                                                .requestMatchers(org.springframework.web.bind.annotation.RequestMethod.OPTIONS.name(), "/**").permitAll()
                                                 .requestMatchers("/actuator/health").permitAll()
                                                 .requestMatchers("/auth/**").permitAll() // Your public endpoints
-                                                .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll() // Allow all OPTIONS requests
+                                                .requestMatchers("/ask").permitAll() // OpenRouter AI public endpoint
+                                                .requestMatchers("/error").permitAll() // Allow access to error endpoint
                                                 .anyRequest().authenticated() // All other requests need authentication
                                 )
                                 .sessionManagement(session -> session

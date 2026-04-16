@@ -3,4 +3,9 @@ export interface User {
   username: string;
   picture: string;
   email: string;
+  personality: string;
+  customInstructions: string;
+  customizationEnabled: boolean;
+  theme: string;
+  language: string;
 }

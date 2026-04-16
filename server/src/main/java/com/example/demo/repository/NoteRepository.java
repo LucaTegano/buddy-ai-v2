@@ -8,10 +8,16 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
 @Repository
 // It's a best practice to use JpaRepository, which extends CrudRepository and
 // adds more features.
 public interface NoteRepository extends JpaRepository<Note, Long> {
+
+    @Query("SELECT n FROM Note n LEFT JOIN FETCH n.owner LEFT JOIN FETCH n.collaborators WHERE n.id = :id")
+    Optional<Note> findByIdWithDetails(@Param("id") Long id);
 
     /**
      * Finds all notes owned by a specific user.

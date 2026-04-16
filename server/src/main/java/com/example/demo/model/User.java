@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,6 +33,7 @@ public class User implements UserDetails {
     @Column(unique = true, nullable = false, length = 100)
     private String email;
 
+    @JsonIgnore
     @Column(nullable = false)
     private String password;
 
@@ -40,6 +42,21 @@ public class User implements UserDetails {
 
     @Column(length = 255) // Optional: Specify a max length for the URL/path
     private String picture;
+
+    @Column(name = "personality", length = 50)
+    private String personality = "default";
+
+    @Column(name = "custom_instructions", columnDefinition = "TEXT")
+    private String customInstructions;
+
+    @Column(name = "customization_enabled")
+    private boolean customizationEnabled = false;
+
+    @Column(name = "theme", length = 20)
+    private String theme = "system";
+
+    @Column(name = "language", length = 10)
+    private String language = "en";
 
     @Column(name = "verification_code", length = 64)
     private String verificationCode;

@@ -1,6 +1,6 @@
 'use client';
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useUIStore } from '@/shared/store/ui.store';
 import { useAuthStore } from '@/features/auth/store/auth.store';
 import Sidebar from '@/shared/layout/sidebar/Sidebar';
@@ -14,6 +14,7 @@ export default function MainLayout({
   const isSidebarOpen = useUIStore(state => state.isSidebarOpen);
   const { user, checkAuth, isCheckingAuth } = useAuthStore();
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     checkAuth();
@@ -30,16 +31,17 @@ export default function MainLayout({
     return <HomeLoadingSkeleton />;
   }
 
+  const isNotePage = pathname.includes('/note/');
+
   return (
-    <div className="flex bg-background min-h-screen">
-...
+    <div className={`flex bg-background ${isNotePage ? 'h-screen overflow-hidden' : 'min-h-screen'}`}>
       <Sidebar />
       <main
-        className={`flex-grow p-4 md:p-6 lg:p-8 transition-all duration-300 ease-in-out ${
+        className={`flex-grow transition-all duration-300 ease-in-out ${
           isSidebarOpen ? 'ml-64' : 'ml-20'
-        }`}
+        } ${isNotePage ? 'h-full' : 'p-4 md:p-6 lg:p-8'}`}
       >
-        <div className="max-w-7xl mx-auto w-full animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div className={`${isNotePage ? 'h-full' : 'max-w-7xl mx-auto w-full animate-in fade-in slide-in-from-bottom-4 duration-500'}`}>
           {children}
         </div>
       </main>

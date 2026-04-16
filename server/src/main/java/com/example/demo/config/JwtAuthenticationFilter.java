@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.context.annotation.Lazy;
 
 import java.io.IOException;
 
@@ -22,8 +23,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
 
-    // REMOVED: HandlerExceptionResolver is no longer needed here.
-    public JwtAuthenticationFilter(JwtService jwtService, UserDetailsService userDetailsService) {
+    public JwtAuthenticationFilter(JwtService jwtService, @Lazy UserDetailsService userDetailsService) {
         this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
     }
@@ -36,44 +36,53 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         String jwt = null;
         final String authHeader = request.getHeader("Authorization");
+        
+        System.out.println("JWT Filter: processing " + request.getMethod() + " " + request.getRequestURI());
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             jwt = authHeader.substring(7);
+            System.out.println("JWT Filter: Token found in Authorization header");
         } else if (request.getCookies() != null) {
             for (jakarta.servlet.http.Cookie cookie : request.getCookies()) {
                 if ("authToken".equals(cookie.getName())) {
                     jwt = cookie.getValue();
+                    System.out.println("JWT Filter: Token found in Cookie");
                     break;
                 }
             }
         }
 
         if (jwt == null) {
+            System.out.println("JWT Filter: No token found in request");
             filterChain.doFilter(request, response);
             return;
         }
 
-        // The broad try-catch block is removed.
-        // Let JWT exceptions propagate up to Spring Security's machinery.
+        try {
+            final String userEmail = jwtService.extractUsername(jwt);
+            System.out.println("JWT Filter: extracted subject = " + userEmail);
 
-        final String userEmail = jwtService.extractUsername(jwt);
+            if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
+                System.out.println("JWT Filter: User found in DB: " + userDetails.getUsername());
 
-        // Check if user is not already authenticated
-        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
-
-            if (jwtService.isTokenValid(jwt, userDetails)) {
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        userDetails.getAuthorities()
-                );
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                // Update the security context
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+                if (jwtService.isTokenValid(jwt, userDetails)) {
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                            userDetails,
+                            null,
+                            userDetails.getAuthorities()
+                    );
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                    System.out.println("JWT Filter: User authenticated successfully");
+                } else {
+                    System.out.println("JWT Filter: Token invalid for user " + userDetails.getUsername());
+                }
             }
+        } catch (Exception e) {
+            System.err.println("JWT Filter: Error during token validation: " + e.getMessage());
         }
-        // Always continue the filter chain.
+        
         filterChain.doFilter(request, response);
     }
 }

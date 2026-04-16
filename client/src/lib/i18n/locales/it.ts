@@ -104,7 +104,7 @@ export const it = {
       label: "Lingua",
       auto: "Rilevamento automatico"
     },
-
+    enable: "Attiva Personalizzazione",
     title: "Impostazioni",
     goBack: "Torna indietro",
     appearance: "Aspetto",
@@ -120,7 +120,7 @@ export const it = {
     title: "Personalizza BuddyAI",
     goBack: "Torna indietro",
     behavior: "Comportamento IA",
-    enable: "Abilita Personalizzazione",
+    enable: "Attiva Personalizzazione",
     personality: "Personalità",
     personalityAdaptive: "Adattiva",
     personalityDirect: "Diretta",

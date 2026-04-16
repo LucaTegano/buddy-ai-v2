@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect, KeyboardEvent, RefObject } from 're
 import { useChatStore } from '../store/chat.store';
 import { ChatPanelProps } from '@/features/chat/types/AiChat';
 import { useAutoScroll, useAutoResizeTextarea } from '@/lib/hooks';
-import { ChatInput, MessageList, TypingIndicator } from './';
+import { ChatInput, MessageList, TypingIndicator, EmptyState } from './';
 
 const ChatPanel: React.FC<ChatPanelProps> = ({ noteId }) => {
   const [input, setInput] = useState('');
@@ -44,20 +44,22 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ noteId }) => {
   };
 
   return (
-    <div className="flex flex-col h-full bg-surface border border-border-subtle rounded-2xl shadow-lg shadow-subtle overflow-hidden">
+    <div className="flex flex-col h-full bg-background overflow-hidden">
       <div ref={chatHistoryRef} className="flex-grow p-4 sm:p-6 overflow-y-auto">
-          <MessageList messages={messages} />
+        <MessageList messages={messages} />
         {isLoading && <TypingIndicator />}
       </div>
 
-      <ChatInput
-        input={input}
-        setInput={setInput}
-        handleSubmit={handleSubmit}
-        handleKeyDown={handleKeyDown}
-        isLoading={isLoading}
-        textareaRef={textareaRef as RefObject<HTMLTextAreaElement>}
-      />
+      <div className="p-4 border-t border-border-subtle">
+        <ChatInput
+          input={input}
+          setInput={setInput}
+          handleSubmit={handleSubmit}
+          handleKeyDown={handleKeyDown}
+          isLoading={isLoading}
+          textareaRef={textareaRef as RefObject<HTMLTextAreaElement>}
+        />
+      </div>
     </div>
   );
 };

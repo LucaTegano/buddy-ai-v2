@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.UserSettingsDto;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.auth.EmailService;
@@ -27,5 +28,25 @@ public class UserService {
         return userRepository.findByUsername(username)
                 .or(() -> userRepository.findByEmail(username))
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+    }
+
+    public User updateUserSettings(String username, UserSettingsDto settingsDto) {
+        User user = getUserByUsername(username);
+        
+        if (settingsDto.getPersonality() != null) {
+            user.setPersonality(settingsDto.getPersonality());
+        }
+        if (settingsDto.getCustomInstructions() != null) {
+            user.setCustomInstructions(settingsDto.getCustomInstructions());
+        }
+        user.setCustomizationEnabled(settingsDto.isCustomizationEnabled());
+        if (settingsDto.getTheme() != null) {
+            user.setTheme(settingsDto.getTheme());
+        }
+        if (settingsDto.getLanguage() != null) {
+            user.setLanguage(settingsDto.getLanguage());
+        }
+        
+        return userRepository.save(user);
     }
 }

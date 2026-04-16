@@ -44,21 +44,24 @@ const apiClient = axios.create({
 
 // --- Axios Interceptors ---
 
-// 1. Request Interceptor: Dynamically add the Authorization header
 apiClient.interceptors.request.use(
   (config) => {
     const token = getJwtToken();
-    console.log('Token being used:', token ? 'Present' : 'Missing');
+    console.log(`[API Request] ${config.method?.toUpperCase()} ${config.url}`);
+    
     if (token) {
-      // Add the Authorization header to the request
       config.headers['Authorization'] = `Bearer ${token}`;
+      console.log(`[API Request] Token attached (length: ${token.length})`);
     } else {
-      console.warn('No authentication token found for request');
+      console.warn(`[API Request] No token found in cookies for ${config.url}`);
     }
+    
+    // Log headers (excluding sensitive data if needed, but here we want to see them)
+    console.log('[API Request] Headers:', config.headers);
+    
     return config;
   },
   (error) => {
-    // Handle request errors (e.g., network issues)
     return Promise.reject(error);
   }
 );
@@ -70,24 +73,22 @@ apiClient.interceptors.response.use(
     console.log('API Response:', response.status, response.config.url);
     return response;
   },
-  // Any status codes that falls outside the range of 2xx cause this function to trigger
-  (error) => {
-    console.error('API Error:', error.response?.status, error.response?.config?.url, error.message);
-    
-    const isAuthEndpoint = error.config?.url?.includes('/auth/');
-
-    // Check if the error is a 401 Unauthorized response
-    if (error.response && error.response.status === 401 && !isAuthEndpoint) {
-      // This is where you would typically handle token expiration.
-      // For now, we'll just log the user out.
-      // In a more advanced setup, you would try to refresh the token here.
-      console.error("Unauthorized request. The token may be expired or invalid.");
-      handleLogout();
+      // Any status codes that falls outside the range of 2xx cause this function to trigger
+    (error) => {
+      console.error('API Error:', error.response?.status, error.response?.config?.url, error.message);
+      
+      const isAuthEndpoint = error.config?.url?.includes('/auth/');
+  
+      // Check if the error is a 401 Unauthorized response
+      if (error.response && error.response.status === 401 && !isAuthEndpoint) {
+        // This is where you would typically handle token expiration.
+        // We'll log the error but avoid automatic logout for now, per user request.
+        console.warn("Unauthorized request. The token may be expired or invalid, but we're not logging you out yet.");
+      }
+      
+      // Return the error so that the component making the call can also handle it
+      return Promise.reject(error);
     }
-    
-    // Return the error so that the component making the call can also handle it
-    return Promise.reject(error);
-  }
 );
 
 export default apiClient;

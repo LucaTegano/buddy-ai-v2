@@ -1,13 +1,8 @@
 // src/features/chat/components/MessageList.tsx
-import React from 'react';
-import { ChatMessage,  } from '@/features/chat/types/AiChat';
+import { ChatMessage, MessageRole } from '@/features/chat/types/AiChat';
 import { UserMessage } from './UserMessage';
 import { ModelMessage } from './ModelMessage';
 
-enum MessageRole {
-  USER = 'user',
-  MODEL = 'model',
-}
 interface MessageListProps {
   messages: ChatMessage[];
 }

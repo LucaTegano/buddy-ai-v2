@@ -66,7 +66,7 @@ const NoteEditor: React.FC<NoteEditorProps> = ({
     content: note?.content || '',
     editorProps: {
       attributes: {
-        class: 'tiptap prose dark:prose-invert prose-sm sm:prose-base m-5 focus:outline-none w-full max-w-6xl', // Increased from max-w-4xl to max-w-6xl for 50% more width
+        class: 'tiptap prose dark:prose-invert prose-sm sm:prose-base m-5 focus:outline-none w-full max-w-none', // Changed to max-w-none to fill all space
       },
     },
     onUpdate: ({ editor }) => {
@@ -163,8 +163,8 @@ const NoteEditor: React.FC<NoteEditorProps> = ({
   };
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex flex-col flex-grow min-h-0 bg-surface backdrop-blur-sm border border-border-subtle shadow-subtle">
+    <div className="flex flex-col h-full bg-background overflow-hidden">
+      <div className="flex flex-col flex-grow min-h-0 bg-background">
         <EditorComponents.EditorHeader
           noteTitle={noteTitle}
           isNewNote={isNewNote}
@@ -181,7 +181,7 @@ const NoteEditor: React.FC<NoteEditorProps> = ({
         </div>
         <EditorComponents.EditorContentArea 
           editor={editor} 
-          height={editorHeight}
+          height={isChatPanelOpen ? editorHeight : undefined}
         />
         <EditorComponents.EditorFooter 
           isChatPanelOpen={isChatPanelOpen}
@@ -201,9 +201,11 @@ const NoteEditor: React.FC<NoteEditorProps> = ({
       {isChatPanelOpen && (
         <>
           <Resizer onMouseDown={handleMouseDownOnResizer} />
-          <div className="flex-shrink-0" style={{ height: chatPanelHeight }}>
+          <div className="flex-shrink-0 bg-background border-t border-border-subtle" style={{ height: chatPanelHeight }}>
             {note?.id && (
-            <ChatPanel noteId={parseInt(note.id, 10)} />
+            <ChatPanel 
+              noteId={parseInt(note.id, 10)} 
+            />
             )}
           </div>
         </>

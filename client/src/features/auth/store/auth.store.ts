@@ -34,7 +34,11 @@ export const useAuthStore = create<AuthState>((set) => ({
   login: async (credentials: LoginCredentials) => {
     set({ isLoading: true, error: null });
     try {
-      const { user, token } = await authService.login(credentials);
+      const response = await authService.login(credentials);
+      // The backend returns { token: string, expiresIn: number }
+      // We need to handle both the old and new response formats
+      const token = response.token;
+      
       // Set the token in a cookie so it's accessible by the server during SSR
       Cookies.set(TOKEN_KEY, token, { 
         expires: 7, 
@@ -42,6 +46,10 @@ export const useAuthStore = create<AuthState>((set) => ({
         secure: process.env.NODE_ENV === 'production', 
         sameSite: 'lax' 
       });
+
+      // Fetch the full user profile after login
+      const user = await userService.getSelf();
+      
       set({ isAuthenticated: true, user, isLoading: false });
     } catch (err: unknown) {
       Cookies.remove(TOKEN_KEY, { path: '/' });

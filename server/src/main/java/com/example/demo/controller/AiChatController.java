@@ -25,7 +25,7 @@ public class AiChatController {
     @PostMapping
     public ResponseEntity<AiChatMessageDto> sendMessage(
             @PathVariable Long noteId,
-            @Valid @RequestBody SendMessageRequestDto request,
+            @RequestBody SendMessageRequestDto request,
             @AuthenticationPrincipal UserDetails userDetails) {
 
         String username = userDetails.getUsername();

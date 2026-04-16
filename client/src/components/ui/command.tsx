@@ -52,8 +52,8 @@ function CommandDialog({
       </DialogHeader>
       <DialogContent
         className={cn(
-          "fixed top-[20%] left-[50%] z-50 w-full max-w-[calc(100%-2rem)] translate-x-[-50%] sm:max-w-2xl",
-          "overflow-hidden border border-white/10 p-0 shadow-2xl transition-all duration-300",
+          "fixed top-[50%] left-[50%] z-50 w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] sm:max-w-2xl",
+          "flex flex-col max-h-[85vh] overflow-hidden border border-white/10 p-0 shadow-2xl transition-all duration-300",
           "bg-scn-background/80 backdrop-blur-2xl dark:bg-black/80",
           "rounded-[2.5rem] ring-1 ring-black/5 dark:ring-white/10",
           "animate-in fade-in zoom-in-95 slide-in-from-top-4",

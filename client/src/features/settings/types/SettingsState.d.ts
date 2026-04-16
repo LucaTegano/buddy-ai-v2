@@ -8,11 +8,15 @@ export interface SettingsState {
   personality: Personality;
   customInstructions: string;
   isCustomizationEnabled: boolean;
+  theme: string;
+  language: string;
   openModal: (modal: NonNullable<ActiveModal>) => void;
   closeModal: () => void;
   setPersonality: (p: Personality) => void;
   setCustomInstructions: (i: string) => void;
   setIsCustomizationEnabled: (e: boolean) => void;
+  setTheme: (t: string) => void;
+  setLanguage: (l: string) => void;
   loadUserSettings: () => Promise<void>;
   saveUserSettings: () => Promise<void>;
 }
