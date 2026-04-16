@@ -5,6 +5,7 @@ import { useTheme } from 'next-themes';
 import { useTranslation } from 'react-i18next';
 import { changeLanguage } from '@/lib/i18n/i18n.global';
 import { useSettingsStore } from "../store/settings.store";
+import { Personality } from "../types/Personality";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -95,9 +96,7 @@ export function SettingsDialogContent({ className }: { className?: string }) {
     setCustomInstructions,
     isCustomizationEnabled,
     setIsCustomizationEnabled,
-    theme: storeTheme,
     setTheme: setStoreTheme,
-    language: storeLanguage,
     setLanguage: setStoreLanguage,
     saveUserSettings,
     loadUserSettings,
@@ -237,7 +236,7 @@ export function SettingsDialogContent({ className }: { className?: string }) {
                   <>
                     <Separator className="bg-border-subtle/50" />
                     <SettingRow label="Buddy Personality">
-                      <Select value={personality} onValueChange={(val) => setPersonality(val as any)}>
+                      <Select value={personality} onValueChange={(val) => setPersonality(val as Personality)}>
                         <SelectTrigger className="w-[180px] bg-secondary/50 border-border-subtle focus:ring-brand-primary rounded-xl">
                           <SelectValue placeholder="Choose a personality" />
                         </SelectTrigger>

@@ -18,7 +18,6 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-  CommandSeparator,
   CommandShortcut,
   CommandShortcutFooter,
 } from "@/components/ui/command"

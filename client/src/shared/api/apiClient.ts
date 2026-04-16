@@ -16,17 +16,6 @@ const getJwtToken = () => {
   return token;
 };
 
-/**
- * A placeholder for a function that would handle user logout.
- */
-const handleLogout = () => {
-  if (typeof window !== 'undefined') {
-    Cookies.remove('authToken', { path: '/' });
-    console.error("User is unauthorized. Logging out.");
-  }
-};
-
-
 // --- Create the Axios Instance ---
 
 const apiClient = axios.create({

@@ -10,8 +10,6 @@ import {
   DialogContent,
   DialogDescription,
   DialogHeader,
-  DialogPortal,
-  DialogOverlay,
   DialogTitle,
 } from "@/components/ui/dialog"
 

@@ -3,11 +3,6 @@ import { User } from '@/features/user/types/User';
 import { AuthResponse, LoginCredentials, SignupCredentials, VerifyUserDto } from '../types/Auth';
 import { AUTH_ENDPOINTS } from '../api/auth.api';
 
-export interface AuthResponse {
-  token: string;
-  expiresIn: number;
-}
-
 class AuthService {
   async signup(credentials: SignupCredentials): Promise<User> {
     const response = await apiClient.post<User>(AUTH_ENDPOINTS.SIGNUP, credentials);
